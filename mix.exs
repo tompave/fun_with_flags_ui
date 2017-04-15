@@ -28,6 +28,9 @@ defmodule FunWithFlagsUi.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:plug, "~> 1.3.4"},
+      {:fun_with_flags, "~> 0.7.0"},
+    ]
   end
 end

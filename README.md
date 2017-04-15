@@ -1,6 +1,6 @@
-# FunWithFlagsUi
+# FunWithFlags.UI
 
-**TODO: Add description**
+A Web dashboard for the [FunWithFlags](https://github.com/tompave/fun_with_flags) Elixir package.
 
 ## Installation
 

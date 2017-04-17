@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <%= FunWithFlags.UI.Templates._head(title: "List") %>
+  <body>
+    <h1>All Flags</h1>
+
+    <ul>
+      <%= for flag <- @flags do %>
+        <li>
+          <a href="/flags/<%= flag.name %>"><%= flag.name %></a>
+        </li>
+      <% end %>
+    </ul>
+  </body>
+</html>

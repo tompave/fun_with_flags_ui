@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <%= FunWithFlags.UI.Templates._head(title: @flag.name) %>
+  <body>
+    <h1><%= @flag.name %></h1>
+
+    <ul>
+      <%= for gate <- @flag.gates do %>
+        <li>
+          type: <%= gate.type %>, for: <%= gate.for %>, enabled: <%= gate.enabled %>
+        </li>
+      <% end %>
+    </ul>
+  </body>
+</html>

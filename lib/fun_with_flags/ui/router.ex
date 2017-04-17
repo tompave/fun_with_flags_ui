@@ -2,6 +2,11 @@ defmodule FunWithFlags.UI.Router do
   use Plug.Router
   alias FunWithFlags.UI.Templates
 
+  plug Plug.Static,
+    at: "/assets",
+    from: Path.expand("./assets/", __DIR__)
+
+
   plug :match
   plug :dispatch
 

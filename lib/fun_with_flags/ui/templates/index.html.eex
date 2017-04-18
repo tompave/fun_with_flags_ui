@@ -1,15 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <%= FunWithFlags.UI.Templates._head(title: "List") %>
   <body>
-    <h1>All Flags</h1>
+    <div class="container">
+      <h1>All Flags</h1>
+      
+      <div class="row">
+        <div class="col">
+          <table class="table table-hover">
+            <thead class="thead-default">
+              <tr>
+                <th>name</th>
+                <th>status</th>
+                <th>gates</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= for flag <- @flags do %>
+                <tr>
+                  <td class="border p-2">
+                    <a href="/flags/<%= flag.name %>"><%= flag.name %></a>
+                  </td>
 
-    <ul>
-      <%= for flag <- @flags do %>
-        <li>
-          <a href="/flags/<%= flag.name %>"><%= flag.name %></a>
-        </li>
-      <% end %>
-    </ul>
+                  <td class="border p-2">
+                    <%= if FunWithFlags.Flag.enabled?(flag) do %>
+                      <span class="text-green">Enabled</span>
+                    <% else %>
+                      <span class="text-red">Disabled</span>
+                    <% end %>
+                  </td>
+
+                  <td class="border p-2">
+                    <%= flag.gates |> Enum.map(&(&1.type)) |> Enum.join(", ") %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

@@ -7,6 +7,7 @@ defmodule FunWithFlags.UI.Router do
   plug Plug.Logger, log: :debug
 
   plug Plug.Static,
+    gzip: true,
     at: "/assets",
     from: Path.expand("./assets/", __DIR__)
 

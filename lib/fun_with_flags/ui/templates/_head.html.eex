@@ -2,5 +2,5 @@
   <meta charset="utf-8">
   <title>FunWithFlags - <%= @title %></title>
 
-  <link rel="stylesheet" href="/assets/primer.css">
+  <link rel="stylesheet" href="/assets/bootstrap.min.css">
 </head>

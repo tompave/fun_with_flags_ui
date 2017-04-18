@@ -2,6 +2,8 @@
 
 A Web dashboard for the [FunWithFlags](https://github.com/tompave/fun_with_flags) Elixir package.
 
+It uses Bootstrap `v4.0.0-alpha.6`.
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed

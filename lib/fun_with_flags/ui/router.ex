@@ -1,6 +1,6 @@
 defmodule FunWithFlags.UI.Router do
   use Plug.Router
-  alias FunWithFlags.UI.Templates
+  alias FunWithFlags.UI.{Templates, Utils}
 
   @prefix "/"
 
@@ -23,6 +23,7 @@ defmodule FunWithFlags.UI.Router do
 
   get "/flags" do
     {:ok, flags} = FunWithFlags.all_flags
+    flags = Utils.sort(flags)
     body = Templates.index(flags: flags)
 
     conn

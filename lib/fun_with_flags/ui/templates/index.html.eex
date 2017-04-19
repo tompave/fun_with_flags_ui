@@ -32,11 +32,7 @@
                   </td>
 
                   <td class="border p-2">
-                    <%= if FunWithFlags.Flag.enabled?(flag) do %>
-                      <span class="text-success">Enabled</span>
-                    <% else %>
-                      <span class="text-danger">Disabled</span>
-                    <% end %>
+                    <%= FunWithFlags.UI.Utils.html_status_for(flag) %>
                   </td>
 
                   <td class="border p-2">

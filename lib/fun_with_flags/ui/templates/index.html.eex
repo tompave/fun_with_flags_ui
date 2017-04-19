@@ -27,15 +27,15 @@
             <tbody>
               <%= for flag <- @flags do %>
                 <tr>
-                  <td class="border p-2">
+                  <td>
                     <a href="/flags/<%= flag.name %>"><%= flag.name %></a>
                   </td>
 
-                  <td class="border p-2">
+                  <td>
                     <%= FunWithFlags.UI.Utils.html_status_for(flag) %>
                   </td>
 
-                  <td class="border p-2">
+                  <td>
                     <%= flag.gates |> Enum.map(&(&1.type)) |> Enum.join(", ") %>
                   </td>
                 </tr>

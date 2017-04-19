@@ -2,9 +2,18 @@
 <html lang="en">
   <%= FunWithFlags.UI.Templates._head(title: "List") %>
   <body>
-    <div class="container">
-      <h1>All Flags</h1>
-      
+    <nav id="top-bar" class="navbar navbar-inverse navbar-toggleable-md">
+      <a class="navbar-brand" href="https://github.com/tompave/fun_with_flags">FunWithFlags</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="">all flags</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container mt-3">      
       <div class="row">
         <div class="col">
           <table class="table table-hover">
@@ -24,9 +33,9 @@
 
                   <td class="border p-2">
                     <%= if FunWithFlags.Flag.enabled?(flag) do %>
-                      <span class="text-green">Enabled</span>
+                      <span class="text-success">Enabled</span>
                     <% else %>
-                      <span class="text-red">Disabled</span>
+                      <span class="text-danger">Disabled</span>
                     <% end %>
                   </td>
 

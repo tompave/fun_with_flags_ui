@@ -2,14 +2,16 @@
 <html lang="en">
   <%= _head(title: "List") %>
   <body>
-    <nav id="top-bar" class="navbar navbar-inverse navbar-toggleable-md">
+    <nav id="top-bar" class="navbar navbar-inverse navbar-toggleable-xl">
       <a class="navbar-brand" href="https://github.com/tompave/fun_with_flags">FunWithFlags</a>
       <div class="collapse navbar-collapse">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="">all flags</a>
           </li>
         </ul>
+
+        <a href="/new" class="btn btn-secondary">New Flag</a>
       </div>
     </nav>
 

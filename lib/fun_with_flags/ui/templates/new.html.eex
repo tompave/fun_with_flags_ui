@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%= _head(title: @flag.name) %>
+  <%= _head(title: "New Flag") %>
   <body>
     <nav id="top-bar" class="navbar navbar-inverse navbar-toggleable-xl">
       <a class="navbar-brand" href="https://github.com/tompave/fun_with_flags">FunWithFlags</a>
@@ -15,26 +15,16 @@
           </span>
 
           <li class="nav-item active">
-            <a class="nav-link" href=""><%= @flag.name %></a>
+            <a class="nav-link" href="">New Flag</a>
           </li>
         </ul>
-
-        <a href="/new" class="btn btn-secondary">New Flag</a>
       </div>
     </nav>
 
-    <div class="container mt-3">
-      <h1><%= @flag.name %></h1>
-
+    <div class="container mt-3">      
       <div class="row">
         <div class="col">
-          <ul>
-            <%= for gate <- @flag.gates do %>
-              <li>
-                type: <%= gate.type %>, for: <%= gate.for %>, enabled: <%= gate.enabled %>
-              </li>
-            <% end %>
-          </ul>
+          form here
         </div>
       </div>
     </div>

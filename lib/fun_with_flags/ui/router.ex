@@ -21,6 +21,13 @@ defmodule FunWithFlags.UI.Router do
   end
 
 
+  get "/new" do
+    conn
+    |> put_resp_content_type("text/html")
+    |> send_resp(200, Templates.new(%{}))
+  end
+
+
   get "/flags" do
     {:ok, flags} = FunWithFlags.all_flags
     flags = Utils.sort(flags)

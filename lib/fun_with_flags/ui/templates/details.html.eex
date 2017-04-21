@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%= FunWithFlags.UI.Templates._head(title: @flag.name) %>
+  <%= _head(title: @flag.name) %>
   <body>
     <nav id="top-bar" class="navbar navbar-inverse navbar-toggleable-md">
       <a class="navbar-brand" href="https://github.com/tompave/fun_with_flags">FunWithFlags</a>

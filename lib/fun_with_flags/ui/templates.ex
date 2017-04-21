@@ -1,5 +1,6 @@
 defmodule FunWithFlags.UI.Templates do
   require EEx
+  alias FunWithFlags.UI.Utils
 
   @templates ~w(_head index details)a
 

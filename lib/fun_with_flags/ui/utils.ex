@@ -63,4 +63,12 @@ defmodule FunWithFlags.UI.Utils do
     end
   end
 
+
+  def gate_list(%Flag{gates: gates}) do
+    gates
+    |> Enum.map(&(&1.type))
+    |> Enum.uniq()
+    |> Enum.join(", ")
+  end
+
 end

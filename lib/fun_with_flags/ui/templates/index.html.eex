@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%= FunWithFlags.UI.Templates._head(title: "List") %>
+  <%= _head(title: "List") %>
   <body>
     <nav id="top-bar" class="navbar navbar-inverse navbar-toggleable-md">
       <a class="navbar-brand" href="https://github.com/tompave/fun_with_flags">FunWithFlags</a>
@@ -32,11 +32,11 @@
                   </td>
 
                   <td>
-                    <%= FunWithFlags.UI.Utils.html_status_for(flag) %>
+                    <%= Utils.html_status_for(flag) %>
                   </td>
 
                   <td>
-                    <%= flag.gates |> Enum.map(&(&1.type)) |> Enum.join(", ") %>
+                    <%= Utils.gate_list(flag) %>
                   </td>
                 </tr>
               <% end %>

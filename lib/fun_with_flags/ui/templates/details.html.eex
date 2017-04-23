@@ -86,6 +86,10 @@
                   none
                 </li>
               <% end %>
+
+              <li class="list-group-item">
+                <%= _new_group_row(flag: @flag) %>
+              </li>
             </ul>
           </div>
         </div>

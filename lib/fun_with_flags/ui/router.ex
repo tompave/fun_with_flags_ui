@@ -97,6 +97,17 @@ defmodule FunWithFlags.UI.Router do
   end
 
 
+  post "/flags/:name/groups" do
+    flag_name = String.to_atom(name)
+    group_name = conn.params["group_name"]
+    enabled = Utils.parse_bool(conn.params["enabled"])
+    gate = %FunWithFlags.Gate{type: :group, for: group_name, enabled: enabled}
+
+    FunWithFlags.Config.store_module.put(flag_name, gate)
+    redirect_to conn, "/flags/#{name}"
+  end
+
+
   match _ do
     send_resp(conn, 404, "")
   end

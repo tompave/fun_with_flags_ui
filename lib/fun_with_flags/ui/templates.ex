@@ -12,6 +12,7 @@ defmodule FunWithFlags.UI.Templates do
     _actor_row: "rows/_actor",
     _group_row: "rows/_group",
     _new_actor_row: "rows/_new_actor",
+    _new_group_row: "rows/_new_group",
   ]
 
   for {fn_name, file_name} <- @templates do

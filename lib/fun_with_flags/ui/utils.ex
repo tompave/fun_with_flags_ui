@@ -1,19 +1,8 @@
 defmodule FunWithFlags.UI.Utils do
   alias FunWithFlags.{Flag, Gate}
 
-  def html_status_for(flag) do
-    case get_status(flag) do
-      :fully_open ->
-        ~s(<span class="text-success">Enabled</span>)
-      :half_open ->
-        ~s(<span class="text-warning">Enabled</span>)
-      :closed ->
-        ~s(<span class="text-danger">Disabled</span>)
-    end
-  end
 
-
-  def get_status(%Flag{gates: gates}) do
+  def get_flag_status(%Flag{gates: gates}) do
     if boolean_gate_open?(gates) do
       :fully_open
     else
@@ -40,13 +29,13 @@ defmodule FunWithFlags.UI.Utils do
   end
 
 
-  def sort(flags) do
+  def sort_flags(flags) do
     Enum.sort(flags, &sorter/2)
   end
 
   defp sorter(a, b) do
-    sa = get_status(a)
-    sb = get_status(b)
+    sa = get_flag_status(a)
+    sb = get_flag_status(b)
 
     if sa == sb do
       a.name < b.name
@@ -61,14 +50,6 @@ defmodule FunWithFlags.UI.Utils do
         :closed -> false
       end
     end
-  end
-
-
-  def gate_list(%Flag{gates: gates}) do
-    gates
-    |> Enum.map(&(&1.type))
-    |> Enum.uniq()
-    |> Enum.join(", ")
   end
 
 

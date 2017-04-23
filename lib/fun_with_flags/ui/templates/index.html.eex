@@ -34,11 +34,11 @@
                   </td>
 
                   <td>
-                    <%= Utils.html_status_for(flag) %>
+                    <%= html_status_for(flag) %>
                   </td>
 
                   <td>
-                    <%= Utils.gate_list(flag) %>
+                    <%= html_gate_list(flag) %>
                   </td>
                 </tr>
               <% end %>

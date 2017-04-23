@@ -42,7 +42,7 @@ defmodule FunWithFlags.UI.Router do
 
   get "/flags" do
     {:ok, flags} = FunWithFlags.all_flags
-    flags = Utils.sort(flags)
+    flags = Utils.sort_flags(flags)
     body = Templates.index(flags: flags)
 
     conn

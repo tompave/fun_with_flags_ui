@@ -15,7 +15,7 @@
           </span>
 
           <li class="nav-item active">
-            <a class="nav-link" href="">New Flag</a>
+            <a class="nav-link" href="<%= path("/new") %>">New Flag</a>
           </li>
         </ul>
       </div>
@@ -25,13 +25,26 @@
       <div class="row">
         <div class="col">
           <form id="new-flag-form" action="/flags" method="post">
-            <div class="form-group">
-              <label for="flag_name">Flag Name</label>
-              <input type="text" class="form-control" id="new-flag-name-field" name="flag_name" placeholder="the name for a new flag">
-              <small id="new-flag-name-help" class="form-text text-muted">
-                Any valid Atom name will work. Letter only, lowercase and snake_case identifers without dashes would be more idiomatic.
-              </small>
-            </div>
+
+            <%= if @error_message do %>
+              <div class="form-group has-danger">
+                <label class="form-control-label" for="flag_name">Flag Name</label>
+                <input type="text" class="form-control form-control-danger" id="new-flag-name-field" name="flag_name" placeholder="the name for a new flag">
+                <div class="form-control-feedback"><%= @error_message %></div>
+                <small id="new-flag-name-help" class="form-text text-muted">
+                  Any valid Atom name will work. Letters only, lowercase and snake_case identifers without dashes would be more idiomatic.
+                </small>
+              </div>
+            <% else %>
+              <div class="form-group">
+                <label for="flag_name">Flag Name</label>
+                <input type="text" class="form-control" id="new-flag-name-field" name="flag_name" placeholder="the name for a new flag">
+                <small id="new-flag-name-help" class="form-text text-muted">
+                  Any valid Atom name will work. Letters only, lowercase and snake_case identifers without dashes would be more idiomatic.
+                </small>
+              </div>
+            <% end %>
+
 
             <button type="submit" class="btn btn-primary">Create</button>
           </form>

@@ -64,7 +64,7 @@ defmodule FunWithFlags.UI.Utils do
   #
   def create_flag_with_name(name) do
     if blank?(name) do
-      {:error, "name is blank"}
+      {:error, "The name cannot be blank."}
     else
       name
       |> String.to_atom()

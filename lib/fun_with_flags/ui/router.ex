@@ -30,8 +30,10 @@ defmodule FunWithFlags.UI.Router do
     name = conn.params["flag_name"]
 
     case Utils.create_flag_with_name(name) do
-      {:error, _reason} ->
-        redirect_to conn, "/new"
+      {:error, reason} ->
+        conn
+        |> put_resp_content_type("text/html")
+        |> send_resp(400, Templates.new(%{error_message: reason}))
       {:ok, _} ->
         redirect_to conn, "/flags/#{name}"
     end

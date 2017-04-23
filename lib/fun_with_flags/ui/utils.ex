@@ -94,4 +94,9 @@ defmodule FunWithFlags.UI.Utils do
     |> Enum.sort_by(&(&1.for))
   end
 
+
+  def parse_bool("true"), do: true
+  def parse_bool("1"), do: true
+  def parse_bool(1), do: true
+  def parse_bool(_), do: false
 end

@@ -16,3 +16,13 @@ colors
 ul.fwf-gate-list > li:first-child {
     border-top: none;
 }
+
+form.fwf-inline-toggle {
+    display: inline-block;
+}
+
+
+span.fwf-global-flag-status {
+    font-size: 1.75rem;
+    font-weight: bold;
+}

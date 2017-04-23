@@ -10,6 +10,7 @@ defmodule FunWithFlags.UI.Router do
     from: Path.expand("./assets/", __DIR__)
 
   plug Plug.Parsers, parsers: [:urlencoded]
+  plug Plug.MethodOverride
 
   plug :match
   plug :dispatch
@@ -54,6 +55,14 @@ defmodule FunWithFlags.UI.Router do
     
     conn
     |> html_resp(200, body)
+  end
+
+
+  patch "/flags/:name/boolean" do
+    enabled = Utils.parse_bool(conn.params["enabled"])
+    flag_name = String.to_atom(name)
+    FunWithFlags.Config.store_module.put(flag_name, FunWithFlags.Gate.new(:boolean, enabled))
+    redirect_to conn, "/flags/#{name}"
   end
 
 

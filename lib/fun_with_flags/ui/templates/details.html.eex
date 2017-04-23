@@ -32,11 +32,7 @@
             <h5 class="card-header">
               Default state
             </h5>
-            <div class="card-block">
-              <p class="card-text">
-                <%= html_status_for Flag.enabled?(@flag) %>
-              </p>
-            </div>
+            <%= _boolean_row(flag: @flag) %>
           </div>
         </div>
       </div>

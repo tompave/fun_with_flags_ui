@@ -3,10 +3,16 @@ defmodule FunWithFlags.UI.Templates do
   alias FunWithFlags.UI.Utils
   alias FunWithFlags.Flag
 
-  @templates ~w(_head index details new)a
+  @templates [
+    _head: "_head",
+    index: "index",
+    details: "details",
+    new: "new",
+    _boolean_row: "rows/_boolean",
+  ]
 
-  for template <- @templates do
-    EEx.function_from_file :def, template, Path.expand("./templates/#{template}.html.eex", __DIR__), [:assigns]
+  for {fn_name, file_name} <- @templates do
+    EEx.function_from_file :def, fn_name, Path.expand("./templates/#{file_name}.html.eex", __DIR__), [:assigns]
   end
 
 
@@ -24,9 +30,9 @@ defmodule FunWithFlags.UI.Templates do
 
   def html_status_for(bool) do
     if bool do
-      ~s(<span class="badge badge-success">Enabled</span>)
+      ~s(<span class="text-success">Enabled</span>)
     else
-      ~s(<span class="badge badge-danger">Disabled</span>)
+      ~s(<span class="text-danger">Disabled</span>)
     end
   end
 

@@ -32,7 +32,7 @@
                 <input type="text" class="form-control form-control-danger" id="new-flag-name-field" name="flag_name" placeholder="the name for a new flag">
                 <div class="form-control-feedback"><%= @error_message %></div>
                 <small id="new-flag-name-help" class="form-text text-muted">
-                  Any valid Atom name will work. Letters only, lowercase and snake_case identifers without dashes would be more idiomatic.
+                  Letters, numbers and underscores only. Lowercase and snake_case identifers without dashes would be more idiomatic.
                 </small>
               </div>
             <% else %>
@@ -40,7 +40,7 @@
                 <label for="flag_name">Flag Name</label>
                 <input type="text" class="form-control" id="new-flag-name-field" name="flag_name" placeholder="the name for a new flag">
                 <small id="new-flag-name-help" class="form-text text-muted">
-                  Any valid Atom name will work. Letters only, lowercase and snake_case identifers without dashes would be more idiomatic.
+                  Letters, numbers and underscores only. Lowercase and snake_case identifers without dashes would be more idiomatic.
                 </small>
               </div>
             <% end %>

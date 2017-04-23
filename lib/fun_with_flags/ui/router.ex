@@ -6,7 +6,7 @@ defmodule FunWithFlags.UI.Router do
 
   plug Plug.Static,
     gzip: true,
-    at: "/assets",
+    at: Utils.prefix("/assets"),
     from: Path.expand("./assets/", __DIR__)
 
   plug Plug.Parsers, parsers: [:urlencoded]
@@ -29,12 +29,13 @@ defmodule FunWithFlags.UI.Router do
   post "/flags" do
     name = conn.params["flag_name"]
 
-    case Utils.create_flag_with_name(name) do
-      {:error, reason} ->
-        conn
-        |> html_resp(400, Templates.new(%{error_message: reason}))
-      {:ok, _} ->
-        redirect_to conn, "/flags/#{name}"
+    if Utils.valid_flag_name?(name) do
+      case Utils.create_flag_with_name(name) do
+        {:error, reason} -> html_resp(conn, 400, Templates.new(%{error_message: reason}))
+        {:ok, _} -> redirect_to conn, "/flags/#{name}"
+      end
+    else
+      html_resp(conn, 400, Templates.new(%{error_message: "Invalid flag name, it must match <code>/^\w+$/</code>."}))
     end
   end
 
@@ -87,6 +88,7 @@ defmodule FunWithFlags.UI.Router do
   patch "/flags/:name/groups/:group_name" do
     enabled = Utils.parse_bool(conn.params["enabled"])
     flag_name = String.to_atom(name)
+    group_name = String.to_atom(group_name)
     gate = %FunWithFlags.Gate{type: :group, for: group_name, enabled: enabled}
 
     Utils.save_gate(flag_name, gate)
@@ -95,6 +97,7 @@ defmodule FunWithFlags.UI.Router do
 
   delete "/flags/:name/groups/:group_name" do
     flag_name = String.to_atom(name)
+    group_name = String.to_atom(group_name)
     gate = %FunWithFlags.Gate{type: :group, for: group_name, enabled: false}
 
     Utils.clear_gate(flag_name, gate)
@@ -115,7 +118,7 @@ defmodule FunWithFlags.UI.Router do
 
   post "/flags/:name/groups" do
     flag_name = String.to_atom(name)
-    group_name = conn.params["group_name"]
+    group_name = String.to_atom(conn.params["group_name"])
     enabled = Utils.parse_bool(conn.params["enabled"])
     gate = FunWithFlags.Gate.new(:group, group_name, enabled)
 

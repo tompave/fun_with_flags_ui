@@ -71,4 +71,26 @@ defmodule FunWithFlags.UI.Utils do
     |> Enum.join(", ")
   end
 
+
+  # Create new flags as disabled
+  #
+  def create_flag_with_name(name) do
+    if blank?(name) do
+      {:error, "name is blank"}
+    else
+      name
+      |> String.to_atom()
+      |> FunWithFlags.disable()
+    end
+  end
+
+
+  defp blank?(nil), do: true
+  defp blank?(""), do: true
+  defp blank?(" "), do: true
+  defp blank?(string) when is_binary(string) do
+    length = string |> String.trim |> String.length
+    length == 0
+  end
+
 end

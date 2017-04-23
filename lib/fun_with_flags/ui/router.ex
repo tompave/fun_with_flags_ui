@@ -11,6 +11,7 @@ defmodule FunWithFlags.UI.Router do
     at: "/assets",
     from: Path.expand("./assets/", __DIR__)
 
+  plug Plug.Parsers, parsers: [:urlencoded]
 
   plug :match
   plug :dispatch
@@ -25,6 +26,17 @@ defmodule FunWithFlags.UI.Router do
     conn
     |> put_resp_content_type("text/html")
     |> send_resp(200, Templates.new(%{}))
+  end
+
+  post "/flags" do
+    name = conn.params["flag_name"]
+
+    case Utils.create_flag_with_name(name) do
+      {:error, _reason} ->
+        redirect_to conn, "/new"
+      {:ok, _} ->
+        redirect_to conn, "/flags/#{name}"
+    end
   end
 
 

@@ -22,8 +22,7 @@ defmodule FunWithFlags.UI.Router do
 
   get "/new" do
     conn
-    |> put_resp_content_type("text/html")
-    |> send_resp(200, Templates.new(%{}))
+    |> html_resp(200, Templates.new(%{}))
   end
 
   post "/flags" do
@@ -32,8 +31,7 @@ defmodule FunWithFlags.UI.Router do
     case Utils.create_flag_with_name(name) do
       {:error, reason} ->
         conn
-        |> put_resp_content_type("text/html")
-        |> send_resp(400, Templates.new(%{error_message: reason}))
+        |> html_resp(400, Templates.new(%{error_message: reason}))
       {:ok, _} ->
         redirect_to conn, "/flags/#{name}"
     end
@@ -46,8 +44,7 @@ defmodule FunWithFlags.UI.Router do
     body = Templates.index(flags: flags)
 
     conn
-    |> put_resp_content_type("text/html")
-    |> send_resp(200, body)
+    |> html_resp(200, body)
   end
 
 
@@ -56,13 +53,19 @@ defmodule FunWithFlags.UI.Router do
     body = Templates.details(flag: flag)
     
     conn
-    |> put_resp_content_type("text/html")
-    |> send_resp(200, body)
+    |> html_resp(200, body)
   end
 
 
   match _ do
     send_resp(conn, 404, "")
+  end
+
+
+  defp html_resp(conn, status, body) do
+    conn
+    |> put_resp_content_type("text/html")
+    |> send_resp(status, body)
   end
 
 

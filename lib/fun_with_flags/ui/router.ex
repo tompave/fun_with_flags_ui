@@ -61,7 +61,27 @@ defmodule FunWithFlags.UI.Router do
   patch "/flags/:name/boolean" do
     enabled = Utils.parse_bool(conn.params["enabled"])
     flag_name = String.to_atom(name)
-    FunWithFlags.Config.store_module.put(flag_name, FunWithFlags.Gate.new(:boolean, enabled))
+    gate = FunWithFlags.Gate.new(:boolean, enabled)
+
+    FunWithFlags.Config.store_module.put(flag_name, gate)
+    redirect_to conn, "/flags/#{name}"
+  end
+
+  patch "/flags/:name/actors/:actor_id" do
+    enabled = Utils.parse_bool(conn.params["enabled"])
+    flag_name = String.to_atom(name)
+    gate = %FunWithFlags.Gate{type: :actor, for: actor_id, enabled: enabled}
+
+    FunWithFlags.Config.store_module.put(flag_name, gate)
+    redirect_to conn, "/flags/#{name}"
+  end
+
+  patch "/flags/:name/groups/:group_id" do
+    enabled = Utils.parse_bool(conn.params["enabled"])
+    flag_name = String.to_atom(name)
+    gate = %FunWithFlags.Gate{type: :group, for: group_id, enabled: enabled}
+
+    FunWithFlags.Config.store_module.put(flag_name, gate)
     redirect_to conn, "/flags/#{name}"
   end
 

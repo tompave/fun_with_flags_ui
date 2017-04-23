@@ -9,6 +9,8 @@ defmodule FunWithFlags.UI.Templates do
     details: "details",
     new: "new",
     _boolean_row: "rows/_boolean",
+    _actor_row: "rows/_actor",
+    _group_row: "rows/_group",
   ]
 
   for {fn_name, file_name} <- @templates do
@@ -30,9 +32,9 @@ defmodule FunWithFlags.UI.Templates do
 
   def html_status_for(bool) do
     if bool do
-      ~s(<span class="text-success">Enabled</span>)
+      ~s(<span class="text-success font-weight-bold">Enabled</span>)
     else
-      ~s(<span class="text-danger">Disabled</span>)
+      ~s(<span class="text-danger font-weight-bold">Disabled</span>)
     end
   end
 

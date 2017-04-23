@@ -26,7 +26,7 @@
         <div class="col">
           <form id="new-flag-form" action="/flags" method="post">
 
-            <%= if @error_message do %>
+            <%= if assigns[:error_message] do %>
               <div class="form-group has-danger">
                 <label class="form-control-label" for="flag_name">Flag Name</label>
                 <input type="text" class="form-control form-control-danger" id="new-flag-name-field" name="flag_name" placeholder="the name for a new flag">

@@ -1,0 +1,15 @@
+<span>
+  <code><%= @gate.for %></code>, <%= html_status_for @gate.enabled %>,
+
+  <form action="<%= path("/flags/#{@flag.name}/actors/#{@gate.for}") %>" method="post" class="fwf-inline-toggle">
+    <input type="hidden" name="_method" value="PATCH">
+
+    <%= if @gate.enabled do %>
+      <input type="hidden" name="enabled" value="false">
+      <button type="submit" class="btn btn-sm btn-danger">Disable</button>
+    <% else %>
+      <input type="hidden" name="enabled" value="true">
+      <button type="submit" class="btn btn-sm btn-success">Enable</button>
+    <% end %>
+  </form>
+</span>

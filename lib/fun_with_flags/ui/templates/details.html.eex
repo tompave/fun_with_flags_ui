@@ -48,7 +48,7 @@
 
               <%= for gate <- actor_gates do %>
                 <li class="list-group-item">
-                  actor: <code><%= gate.for %></code>, enabled: <%= html_status_for gate.enabled %>
+                  <%= _actor_row(flag: @flag, gate: gate) %>
                 </li>
               <% end %>
 
@@ -73,7 +73,7 @@
 
               <%= for gate <- group_gates do %>
                 <li class="list-group-item">
-                  group: <code><%= gate.for %></code>, enabled: <%= html_status_for gate.enabled %>
+                  <%= _group_row(flag: @flag, gate: gate) %>
                 </li>
               <% end %>
 

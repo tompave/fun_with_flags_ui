@@ -76,12 +76,28 @@ defmodule FunWithFlags.UI.Router do
     redirect_to conn, "/flags/#{name}"
   end
 
-  patch "/flags/:name/groups/:group_id" do
+  delete "/flags/:name/actors/:actor_id" do
+    flag_name = String.to_atom(name)
+    gate = %FunWithFlags.Gate{type: :actor, for: actor_id, enabled: false}
+
+    Utils.clear_gate(flag_name, gate)
+    redirect_to conn, "/flags/#{name}"
+  end
+
+  patch "/flags/:name/groups/:group_name" do
     enabled = Utils.parse_bool(conn.params["enabled"])
     flag_name = String.to_atom(name)
-    gate = %FunWithFlags.Gate{type: :group, for: group_id, enabled: enabled}
+    gate = %FunWithFlags.Gate{type: :group, for: group_name, enabled: enabled}
 
     Utils.save_gate(flag_name, gate)
+    redirect_to conn, "/flags/#{name}"
+  end
+
+  delete "/flags/:name/groups/:group_name" do
+    flag_name = String.to_atom(name)
+    gate = %FunWithFlags.Gate{type: :group, for: group_name, enabled: false}
+
+    Utils.clear_gate(flag_name, gate)
     redirect_to conn, "/flags/#{name}"
   end
 

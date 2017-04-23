@@ -12,4 +12,10 @@
       <button type="submit" class="btn btn-sm btn-success">Enable</button>
     <% end %>
   </form>
+  ,
+
+  <form action="<%= path("/flags/#{@flag.name}/groups/#{@gate.for}") %>" method="post" class="fwf-inline-toggle">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit" class="btn btn-sm btn-secondary">Clear</button>
+  </form>
 </span>

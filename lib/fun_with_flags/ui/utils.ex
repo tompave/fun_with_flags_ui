@@ -104,4 +104,8 @@ defmodule FunWithFlags.UI.Utils do
   def save_gate(flag_name, gate) do
     FunWithFlags.Config.store_module.put(flag_name, gate)
   end
+
+  def clear_gate(flag_name, gate) do
+    FunWithFlags.Config.store_module.delete(flag_name, gate)
+  end
 end

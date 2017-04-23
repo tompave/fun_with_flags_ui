@@ -1,0 +1,22 @@
+<span>
+  <form action="<%= path("/flags/#{@flag.name}/actors") %>" method="post" class="form-inline">
+    
+    <div class="input-group mr-2">
+      <div class="input-group-addon">actor ID</div>
+      <input type="text" class="form-control" id="actor_id" name="actor_id" placeholder="e.g. user:123">
+    </div>
+
+    <div class="form-check form-check-inline">
+      <label class="form-check-label">
+        <input class="form-check-input" type="radio" name="enabled" id="actor-enabled-true" value="true"> enabled
+      </label>
+    </div>
+    <div class="form-check form-check-inline">
+      <label class="form-check-label">
+        <input class="form-check-input" type="radio" name="enabled" id="actor-enabled-false" value="false" checked> disabled
+      </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary ml-3">Add</button>
+  </form>
+</span>

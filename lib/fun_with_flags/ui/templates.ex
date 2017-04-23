@@ -11,6 +11,7 @@ defmodule FunWithFlags.UI.Templates do
     _boolean_row: "rows/_boolean",
     _actor_row: "rows/_actor",
     _group_row: "rows/_group",
+    _new_actor_row: "rows/_new_actor",
   ]
 
   for {fn_name, file_name} <- @templates do

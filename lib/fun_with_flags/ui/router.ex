@@ -86,6 +86,17 @@ defmodule FunWithFlags.UI.Router do
   end
 
 
+  post "/flags/:name/actors" do
+    flag_name = String.to_atom(name)
+    actor_id = conn.params["actor_id"]
+    enabled = Utils.parse_bool(conn.params["enabled"])
+    gate = %FunWithFlags.Gate{type: :actor, for: actor_id, enabled: enabled}
+
+    FunWithFlags.Config.store_module.put(flag_name, gate)
+    redirect_to conn, "/flags/#{name}"
+  end
+
+
   match _ do
     send_resp(conn, 404, "")
   end

@@ -57,6 +57,10 @@
                   none
                 </li>
               <% end %>
+
+              <li class="list-group-item">
+                <%= _new_actor_row(flag: @flag) %>
+              </li>
             </ul>
           </div>
         </div>

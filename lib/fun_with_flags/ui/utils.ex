@@ -99,4 +99,9 @@ defmodule FunWithFlags.UI.Utils do
   def parse_bool("1"), do: true
   def parse_bool(1), do: true
   def parse_bool(_), do: false
+
+
+  def save_gate(flag_name, gate) do
+    FunWithFlags.Config.store_module.put(flag_name, gate)
+  end
 end

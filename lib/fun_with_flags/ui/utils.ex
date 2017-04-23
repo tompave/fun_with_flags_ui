@@ -2,6 +2,13 @@ defmodule FunWithFlags.UI.Utils do
   alias FunWithFlags.{Flag, Gate}
 
 
+  @prefix "/"
+
+  def prefix(path) do
+    Path.join(@prefix, path)
+  end
+
+
   def get_flag_status(%Flag{gates: gates}) do
     if boolean_gate_open?(gates) do
       :fully_open

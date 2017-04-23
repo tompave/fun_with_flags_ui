@@ -11,7 +11,7 @@
           </li>
         </ul>
 
-        <a href="/new" class="btn btn-secondary">New Flag</a>
+        <a href="<%= path("/new") %>" class="btn btn-secondary">New Flag</a>
       </div>
     </nav>
 
@@ -30,7 +30,7 @@
               <%= for flag <- @flags do %>
                 <tr>
                   <td>
-                    <a href="/flags/<%= flag.name %>"><%= flag.name %></a>
+                    <a href="<%= path("/flags/#{flag.name}") %>"><%= flag.name %></a>
                   </td>
 
                   <td>

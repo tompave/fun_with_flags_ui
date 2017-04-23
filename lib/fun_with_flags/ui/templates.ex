@@ -28,4 +28,9 @@ defmodule FunWithFlags.UI.Templates do
     |> Enum.uniq()
     |> Enum.join(", ")
   end
+
+
+  def path(path) do
+    Utils.prefix(path)
+  end
 end

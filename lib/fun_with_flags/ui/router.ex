@@ -2,8 +2,6 @@ defmodule FunWithFlags.UI.Router do
   use Plug.Router
   alias FunWithFlags.UI.{Templates, Utils}
 
-  @prefix "/"
-
   plug Plug.Logger, log: :debug
 
   plug Plug.Static,
@@ -67,16 +65,11 @@ defmodule FunWithFlags.UI.Router do
 
 
   defp redirect_to(conn, uri) do
-    path = normalize(uri)
+    path = Utils.prefix(uri)
 
     conn
     |> put_resp_header("location", path)
     |> put_resp_content_type("text/html")
     |> send_resp(302, "<html><body>You are being <a href=\"#{path}\">redirected</a>.</body></html>")
-  end
-
-
-  defp normalize(path) do
-    Path.join(@prefix, path)
   end
 end

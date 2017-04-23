@@ -2,7 +2,7 @@
 <html lang="en">
   <%= _head(title: "List") %>
   <body>
-    <nav id="top-bar" class="navbar navbar-inverse navbar-toggleable-xl">
+    <nav id="fwf-top-bar" class="navbar navbar-inverse navbar-toggleable-xl">
       <a class="navbar-brand" href="https://github.com/tompave/fun_with_flags">FunWithFlags</a>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
@@ -34,7 +34,7 @@
                   </td>
 
                   <td>
-                    <%= html_status_for(flag) %>
+                    <%= html_smart_status_for(flag) %>
                   </td>
 
                   <td>

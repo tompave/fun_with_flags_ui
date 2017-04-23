@@ -10,7 +10,7 @@ defmodule FunWithFlags.UI.Templates do
   end
 
 
-  def html_status_for(flag) do
+  def html_smart_status_for(flag) do
     case Utils.get_flag_status(flag) do
       :fully_open ->
         ~s(<span class="text-success">Enabled</span>)
@@ -18,6 +18,15 @@ defmodule FunWithFlags.UI.Templates do
         ~s(<span class="text-warning">Enabled</span>)
       :closed ->
         ~s(<span class="text-danger">Disabled</span>)
+    end
+  end
+
+
+  def html_status_for(bool) do
+    if bool do
+      ~s(<span class="badge badge-success">Enabled</span>)
+    else
+      ~s(<span class="badge badge-danger">Disabled</span>)
     end
   end
 

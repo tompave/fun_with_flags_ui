@@ -8,6 +8,11 @@ colors
 #4e2a8e; elixir-lang link
 */
 
-#top-bar {
+#fwf-top-bar {
   background-color: #714a94;
+}
+
+
+ul.fwf-gate-list > li:first-child {
+    border-top: none;
 }

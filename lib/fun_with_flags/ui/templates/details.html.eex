@@ -2,7 +2,7 @@
 <html lang="en">
   <%= _head(title: @flag.name) %>
   <body>
-    <nav id="top-bar" class="navbar navbar-inverse navbar-toggleable-xl">
+    <nav id="fwf-top-bar" class="navbar navbar-inverse navbar-toggleable-xl">
       <a class="navbar-brand" href="https://github.com/tompave/fun_with_flags">FunWithFlags</a>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
@@ -26,15 +26,68 @@
     <div class="container mt-3">
       <h1><%= @flag.name %></h1>
 
-      <div class="row">
+      <div id="boolean_gate" class="row mb-3">
         <div class="col">
-          <ul>
-            <%= for gate <- @flag.gates do %>
-              <li>
-                type: <%= gate.type %>, for: <%= gate.for %>, enabled: <%= gate.enabled %>
-              </li>
-            <% end %>
-          </ul>
+          <div class="card">
+            <h5 class="card-header">
+              Default state
+            </h5>
+            <div class="card-block">
+              <p class="card-text">
+                <%= html_status_for Flag.enabled?(@flag) %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="actor_gates" class="row mb-3">
+        <div class="col">
+          <div class="card">
+            <h5 class="card-header">
+              Actors
+            </h5>
+            <ul class="list-group list-group-flush fwf-gate-list">
+              <% actor_gates = Utils.actor_gates(@flag) %>
+
+              <%= for gate <- actor_gates do %>
+                <li class="list-group-item">
+                  actor: <code><%= gate.for %></code>, enabled: <%= html_status_for gate.enabled %>
+                </li>
+              <% end %>
+
+              <%= if Enum.empty?(actor_gates) do %>
+                <li class="list-group-item">
+                  none
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div id="group_gates" class="row mb-3">
+        <div class="col">
+          <div class="card">
+            <h5 class="card-header">
+              Groups
+            </h5>
+            <ul class="list-group list-group-flush fwf-gate-list">
+              <% group_gates = Utils.group_gates(@flag) %>
+
+              <%= for gate <- group_gates do %>
+                <li class="list-group-item">
+                  group: <code><%= gate.for %></code>, enabled: <%= html_status_for gate.enabled %>
+                </li>
+              <% end %>
+
+              <%= if Enum.empty?(group_gates) do %>
+                <li class="list-group-item">
+                  none
+                </li>
+              <% end %>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

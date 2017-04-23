@@ -9,8 +9,8 @@ defmodule FunWithFlags.UI.Utils do
   end
 
 
-  def get_flag_status(%Flag{gates: gates}) do
-    if boolean_gate_open?(gates) do
+  def get_flag_status(%Flag{gates: gates} = flag) do
+    if boolean_gate_open?(flag) do
       :fully_open
     else
       if any_other_gate_open?(gates) do
@@ -21,12 +21,8 @@ defmodule FunWithFlags.UI.Utils do
     end
   end
 
-
-  defp boolean_gate_open?(gates) do
-    case Enum.find(gates, &Gate.boolean?/1) do
-      %Gate{enabled: enabled} -> enabled
-      _ -> false
-    end
+  defp boolean_gate_open?(flag) do
+    Flag.enabled?(flag)
   end
 
   defp any_other_gate_open?(gates) do
@@ -79,6 +75,23 @@ defmodule FunWithFlags.UI.Utils do
   defp blank?(string) when is_binary(string) do
     length = string |> String.trim |> String.length
     length == 0
+  end
+
+
+  def boolean_gate(%Flag{gates: gates}) do
+    Enum.find(gates, &Gate.boolean?/1)
+  end
+
+  def actor_gates(%Flag{gates: gates}) do
+    gates
+    |> Enum.filter(&Gate.actor?/1)
+    |> Enum.sort_by(&(&1.for))
+  end
+
+  def group_gates(%Flag{gates: gates}) do
+    gates
+    |> Enum.filter(&Gate.group?/1)
+    |> Enum.sort_by(&(&1.for))
   end
 
 end

@@ -69,10 +69,10 @@ defmodule FunWithFlags.UI.Utils do
   end
 
 
-  defp blank?(nil), do: true
-  defp blank?(""), do: true
-  defp blank?(" "), do: true
-  defp blank?(string) when is_binary(string) do
+  def blank?(nil), do: true
+  def blank?(""), do: true
+  def blank?(" "), do: true
+  def blank?(string) when is_binary(string) do
     length = string |> String.trim |> String.length
     length == 0
   end

@@ -108,22 +108,34 @@ defmodule FunWithFlags.UI.Router do
   post "/flags/:name/actors" do
     flag_name = String.to_atom(name)
     actor_id = conn.params["actor_id"]
-    enabled = Utils.parse_bool(conn.params["enabled"])
-    gate = %FunWithFlags.Gate{type: :actor, for: actor_id, enabled: enabled}
 
-    Utils.save_gate(flag_name, gate)
-    redirect_to conn, "/flags/#{name}#actor_#{actor_id}"
+    if Utils.blank?(actor_id) do
+      # add error reporting?
+      redirect_to conn, "/flags/#{name}#actor_gates"
+    else
+      enabled = Utils.parse_bool(conn.params["enabled"])
+      gate = %FunWithFlags.Gate{type: :actor, for: actor_id, enabled: enabled}
+
+      Utils.save_gate(flag_name, gate)
+      redirect_to conn, "/flags/#{name}#actor_#{actor_id}"
+    end
   end
 
 
   post "/flags/:name/groups" do
     flag_name = String.to_atom(name)
-    group_name = String.to_atom(conn.params["group_name"])
-    enabled = Utils.parse_bool(conn.params["enabled"])
-    gate = FunWithFlags.Gate.new(:group, group_name, enabled)
+    group_name = conn.params["group_name"]
 
-    Utils.save_gate(flag_name, gate)
-    redirect_to conn, "/flags/#{name}#group_#{group_name}"
+    if Utils.blank?(group_name) do
+      # add error reporting?
+      redirect_to conn, "/flags/#{name}#group_gates"
+    else
+      enabled = Utils.parse_bool(conn.params["enabled"])
+      gate = FunWithFlags.Gate.new(:group, String.to_atom(group_name), enabled)
+
+      Utils.save_gate(flag_name, gate)
+      redirect_to conn, "/flags/#{name}#group_#{group_name}"
+    end
   end
 
 

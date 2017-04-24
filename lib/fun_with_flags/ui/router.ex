@@ -2,6 +2,10 @@ defmodule FunWithFlags.UI.Router do
   use Plug.Router
   alias FunWithFlags.UI.{Templates, Utils}
 
+  if Mix.env == :dev do
+    use Plug.Debugger, otp_app: :fun_with_flags
+  end
+
   plug Plug.Logger, log: :debug
 
   plug Plug.Static,

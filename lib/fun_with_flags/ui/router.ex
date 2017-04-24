@@ -74,7 +74,7 @@ defmodule FunWithFlags.UI.Router do
     gate = %FunWithFlags.Gate{type: :actor, for: actor_id, enabled: enabled}
 
     Utils.save_gate(flag_name, gate)
-    redirect_to conn, "/flags/#{name}"
+    redirect_to conn, "/flags/#{name}#actor_#{actor_id}"
   end
 
   delete "/flags/:name/actors/:actor_id" do
@@ -82,7 +82,7 @@ defmodule FunWithFlags.UI.Router do
     gate = %FunWithFlags.Gate{type: :actor, for: actor_id, enabled: false}
 
     Utils.clear_gate(flag_name, gate)
-    redirect_to conn, "/flags/#{name}"
+    redirect_to conn, "/flags/#{name}#actor_gates"
   end
 
   patch "/flags/:name/groups/:group_name" do
@@ -92,7 +92,7 @@ defmodule FunWithFlags.UI.Router do
     gate = %FunWithFlags.Gate{type: :group, for: group_name, enabled: enabled}
 
     Utils.save_gate(flag_name, gate)
-    redirect_to conn, "/flags/#{name}"
+    redirect_to conn, "/flags/#{name}#group_#{group_name}"
   end
 
   delete "/flags/:name/groups/:group_name" do
@@ -101,7 +101,7 @@ defmodule FunWithFlags.UI.Router do
     gate = %FunWithFlags.Gate{type: :group, for: group_name, enabled: false}
 
     Utils.clear_gate(flag_name, gate)
-    redirect_to conn, "/flags/#{name}"
+    redirect_to conn, "/flags/#{name}#group_gates"
   end
 
 
@@ -112,7 +112,7 @@ defmodule FunWithFlags.UI.Router do
     gate = %FunWithFlags.Gate{type: :actor, for: actor_id, enabled: enabled}
 
     Utils.save_gate(flag_name, gate)
-    redirect_to conn, "/flags/#{name}"
+    redirect_to conn, "/flags/#{name}#actor_#{actor_id}"
   end
 
 
@@ -123,7 +123,7 @@ defmodule FunWithFlags.UI.Router do
     gate = FunWithFlags.Gate.new(:group, group_name, enabled)
 
     Utils.save_gate(flag_name, gate)
-    redirect_to conn, "/flags/#{name}"
+    redirect_to conn, "/flags/#{name}#group_#{group_name}"
   end
 
 

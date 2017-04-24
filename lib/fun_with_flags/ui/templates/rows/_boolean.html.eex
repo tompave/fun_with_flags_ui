@@ -10,10 +10,10 @@
 
       <%= if is_enabled do %>
         <input type="hidden" name="enabled" value="false">
-        <button type="submit" class="btn btn-sm btn-danger">Disable</button>
+        <button type="submit" class="btn btn-sm btn-outline-danger">Disable</button>
       <% else %>
         <input type="hidden" name="enabled" value="true">
-        <button type="submit" class="btn btn-sm btn-success">Enable</button>
+        <button type="submit" class="btn btn-sm btn-outline-success">Enable</button>
       <% end %>
     </form>
   </span>

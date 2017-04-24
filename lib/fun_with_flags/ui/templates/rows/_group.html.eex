@@ -1,4 +1,4 @@
-<div class="container fwf-I-hate-grids">
+<div id="group_<%= @gate.for %>" class="container fwf-I-hate-grids">
   <div class="row no-gutters">
     <div class="col-lg-8 col-md-7 col-sm-5 col-3 text-left">
       <code><%= @gate.for %></code>
@@ -12,10 +12,10 @@
 
         <%= if @gate.enabled do %>
           <input type="hidden" name="enabled" value="false">
-          <button type="submit" class="btn btn-sm btn-danger">Disable</button>
+          <button type="submit" class="btn btn-sm btn-outline-danger">Disable</button>
         <% else %>
           <input type="hidden" name="enabled" value="true">
-          <button type="submit" class="btn btn-sm btn-success">Enable</button>
+          <button type="submit" class="btn btn-sm btn-outline-success">Enable</button>
         <% end %>
       </form>
     </div>

@@ -34,9 +34,9 @@ defmodule FunWithFlags.UI.Templates do
 
   def html_status_for(bool) do
     if bool do
-      ~s(<span class="text-success font-weight-bold">Enabled</span>)
+      ~s(<span class="badge badge-success">Enabled</span>)
     else
-      ~s(<span class="text-danger font-weight-bold">Disabled</span>)
+      ~s(<span class="badge badge-danger">Disabled</span>)
     end
   end
 

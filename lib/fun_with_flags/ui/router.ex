@@ -51,11 +51,10 @@ defmodule FunWithFlags.UI.Router do
 
 
   get "/flags/:name" do
-    {:ok, flag} = FunWithFlags.SimpleStore.lookup(String.to_atom(name))
+    flag = get_flag(name)
     body = Templates.details(flag: flag)
-    
-    conn
-    |> html_resp(200, body)
+
+    html_resp(conn, 200, body)
   end
 
 
@@ -115,8 +114,9 @@ defmodule FunWithFlags.UI.Router do
     actor_id = conn.params["actor_id"]
 
     if Utils.blank?(actor_id) do
-      # add error reporting?
-      redirect_to conn, "/flags/#{name}#actor_gates"
+      flag = get_flag(name)
+      body = Templates.details(flag: flag, actor_error_message: "The actor ID can't be blank.")
+      html_resp(conn, 400, body)
     else
       enabled = Utils.parse_bool(conn.params["enabled"])
       gate = %FunWithFlags.Gate{type: :actor, for: actor_id, enabled: enabled}
@@ -132,8 +132,9 @@ defmodule FunWithFlags.UI.Router do
     group_name = conn.params["group_name"]
 
     if Utils.blank?(group_name) do
-      # add error reporting?
-      redirect_to conn, "/flags/#{name}#group_gates"
+      flag = get_flag(name)
+      body = Templates.details(flag: flag, group_error_message: "The group name can't be blank.")
+      html_resp(conn, 400, body)
     else
       enabled = Utils.parse_bool(conn.params["enabled"])
       gate = FunWithFlags.Gate.new(:group, String.to_atom(group_name), enabled)
@@ -163,5 +164,10 @@ defmodule FunWithFlags.UI.Router do
     |> put_resp_header("location", path)
     |> put_resp_content_type("text/html")
     |> send_resp(302, "<html><body>You are being <a href=\"#{path}\">redirected</a>.</body></html>")
+  end
+
+  defp get_flag(name) do
+    {:ok, flag} = FunWithFlags.SimpleStore.lookup(String.to_atom(name))
+    flag
   end
 end

@@ -1,10 +1,16 @@
 <span>
   <form action="<%= path("/flags/#{@flag.name}/groups") %>" method="post" class="form-inline">
-    
-    <div class="input-group mr-2">
-      <div class="input-group-addon">group name</div>
-      <input type="text" class="form-control" id="group_name" name="group_name" placeholder="e.g. admins">
-    </div>
+    <%= if assigns[:error_message] do %>
+      <div class="input-group mr-2 has-danger">
+        <div class="input-group-addon">group name</div>
+        <input type="text" class="form-control form-control-danger" id="group_name" name="group_name" placeholder="e.g. admins">
+      </div>
+    <% else %>
+      <div class="input-group mr-2">
+        <div class="input-group-addon">group name</div>
+        <input type="text" class="form-control" id="group_name" name="group_name" placeholder="e.g. admins">
+      </div>
+    <% end %>
 
     <div class="form-check form-check-inline">
       <label class="form-check-label">
@@ -18,5 +24,6 @@
     </div>
 
     <button type="submit" class="btn btn-primary ml-3">Add</button>
+    <small class="form-text text-danger ml-3"><%= assigns[:error_message] %></small>
   </form>
 </span>

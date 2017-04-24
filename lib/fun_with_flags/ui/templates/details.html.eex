@@ -15,7 +15,7 @@
           </span>
 
           <li class="nav-item active">
-            <a class="nav-link" href=""><%= @flag.name %></a>
+            <a class="nav-link" href="<%= path("/flags/#{@flag.name}") %>"><%= @flag.name %></a>
           </li>
         </ul>
 
@@ -59,7 +59,7 @@
               <% end %>
 
               <li class="list-group-item">
-                <%= _new_actor_row(flag: @flag) %>
+                <%= _new_actor_row(flag: @flag, error_message: assigns[:actor_error_message]) %>
               </li>
             </ul>
           </div>
@@ -88,7 +88,7 @@
               <% end %>
 
               <li class="list-group-item">
-                <%= _new_group_row(flag: @flag) %>
+                <%= _new_group_row(flag: @flag, error_message: assigns[:group_error_message]) %>
               </li>
             </ul>
           </div>

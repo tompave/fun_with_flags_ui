@@ -47,7 +47,7 @@
               <% actor_gates = Utils.actor_gates(@flag) %>
 
               <%= for gate <- actor_gates do %>
-                <li class="list-group-item">
+                <li class="list-group-item px-0">
                   <%= _actor_row(flag: @flag, gate: gate) %>
                 </li>
               <% end %>
@@ -76,7 +76,7 @@
               <% group_gates = Utils.group_gates(@flag) %>
 
               <%= for gate <- group_gates do %>
-                <li class="list-group-item">
+                <li class="list-group-item px-0">
                   <%= _group_row(flag: @flag, gate: gate) %>
                 </li>
               <% end %>

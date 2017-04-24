@@ -1,21 +1,29 @@
-<span>
-  <code><%= @gate.for %></code>, <%= html_status_for @gate.enabled %>,
+<div class="container fwf-I-hate-grids">
+  <div class="row no-gutters">
+    <div class="col-lg-8 col-md-7 col-sm-5 col-3 text-left">
+      <code><%= @gate.for %></code>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-3 col-3 text-left">
+      <%= html_status_for @gate.enabled %>
+    </div>
+    <div class="col-lg-1 col-md-2 col-sm-2 col-3 text-right">
+      <form action="<%= path("/flags/#{@flag.name}/groups/#{@gate.for}") %>" method="post" class="fwf-inline-toggle">
+        <input type="hidden" name="_method" value="PATCH">
 
-  <form action="<%= path("/flags/#{@flag.name}/groups/#{@gate.for}") %>" method="post" class="fwf-inline-toggle">
-    <input type="hidden" name="_method" value="PATCH">
-
-    <%= if @gate.enabled do %>
-      <input type="hidden" name="enabled" value="false">
-      <button type="submit" class="btn btn-sm btn-danger">Disable</button>
-    <% else %>
-      <input type="hidden" name="enabled" value="true">
-      <button type="submit" class="btn btn-sm btn-success">Enable</button>
-    <% end %>
-  </form>
-  ,
-
-  <form action="<%= path("/flags/#{@flag.name}/groups/#{@gate.for}") %>" method="post" class="fwf-inline-toggle">
-    <input type="hidden" name="_method" value="DELETE">
-    <button type="submit" class="btn btn-sm btn-secondary">Clear</button>
-  </form>
-</span>
+        <%= if @gate.enabled do %>
+          <input type="hidden" name="enabled" value="false">
+          <button type="submit" class="btn btn-sm btn-danger">Disable</button>
+        <% else %>
+          <input type="hidden" name="enabled" value="true">
+          <button type="submit" class="btn btn-sm btn-success">Enable</button>
+        <% end %>
+      </form>
+    </div>
+    <div class="col-lg-1 col-md-1 col-sm-2 col-3 text-right">
+      <form action="<%= path("/flags/#{@flag.name}/groups/#{@gate.for}") %>" method="post" class="fwf-inline-toggle">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit" class="btn btn-sm btn-secondary">Clear</button>
+      </form>
+    </div>
+  </div>
+</div>

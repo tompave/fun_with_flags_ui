@@ -25,3 +25,9 @@ form.fwf-inline-toggle {
 span.fwf-global-flag-status {
     font-size: 1.75rem;
 }
+
+div.container.fwf-I-hate-grids {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+}

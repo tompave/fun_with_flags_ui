@@ -59,6 +59,11 @@ defmodule FunWithFlags.UI.Router do
   end
 
 
+  delete "/flags/:name" do
+    Utils.clear_flag(name)
+    redirect_to conn, "/flags"
+  end
+
   patch "/flags/:name/boolean" do
     enabled = Utils.parse_bool(conn.params["enabled"])
     flag_name = String.to_atom(name)

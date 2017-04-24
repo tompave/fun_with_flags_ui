@@ -109,6 +109,12 @@ defmodule FunWithFlags.UI.Utils do
     FunWithFlags.Config.store_module.delete(flag_name, gate)
   end
 
+  def clear_flag(flag_name) do
+    flag_name
+    |> String.to_atom()
+    |> FunWithFlags.Config.store_module.delete()
+  end
+
 
   def valid_flag_name?(name) do
     Regex.match?(~r/^\w+$/, name)

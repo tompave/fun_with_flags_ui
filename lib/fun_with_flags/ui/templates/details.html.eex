@@ -94,6 +94,22 @@
           </div>
         </div>
       </div>
+
+      <div id="danger_zone" class="row mb-3">
+        <div class="col">
+          <div class="card">
+            <h5 class="card-header">
+              Danger Zone
+            </h5>
+            <div class="card-block">
+              <form action="<%= path("/flags/#{@flag.name}") %>" method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="btn btn-danger">Delete Flag</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

@@ -36,7 +36,7 @@ defmodule FunWithFlags.UI.Router do
   # endpoint to create a new flag
   #
   post "/flags" do
-    name = conn.params["flag_name"]
+    name = Utils.sanitize(conn.params["flag_name"])
 
     if Utils.valid_flag_name?(name) do
       case Utils.create_flag_with_name(name) do
@@ -143,18 +143,18 @@ defmodule FunWithFlags.UI.Router do
   #
   post "/flags/:name/actors" do
     flag_name = String.to_atom(name)
-    actor_id = conn.params["actor_id"]
+    actor_id = Utils.sanitize(conn.params["actor_id"])
 
-    if Utils.blank?(actor_id) do
-      flag = get_flag(name)
-      body = Templates.details(flag: flag, actor_error_message: "The actor ID can't be blank.")
-      html_resp(conn, 400, body)
-    else
-      enabled = Utils.parse_bool(conn.params["enabled"])
-      gate = %FunWithFlags.Gate{type: :actor, for: actor_id, enabled: enabled}
-
-      Utils.save_gate(flag_name, gate)
-      redirect_to conn, "/flags/#{name}#actor_#{actor_id}"
+    case Utils.validate(actor_id) do
+      :ok ->
+        enabled = Utils.parse_bool(conn.params["enabled"])
+        gate = %FunWithFlags.Gate{type: :actor, for: actor_id, enabled: enabled}
+        Utils.save_gate(flag_name, gate)
+        redirect_to conn, "/flags/#{name}#actor_#{actor_id}"
+      {:fail, reason} ->
+        flag = get_flag(name)
+        body = Templates.details(flag: flag, actor_error_message: "The actor ID #{reason}.")
+        html_resp(conn, 400, body)
     end
   end
 
@@ -163,18 +163,18 @@ defmodule FunWithFlags.UI.Router do
   #
   post "/flags/:name/groups" do
     flag_name = String.to_atom(name)
-    group_name = conn.params["group_name"]
+    group_name = Utils.sanitize(conn.params["group_name"])
 
-    if Utils.blank?(group_name) do
-      flag = get_flag(name)
-      body = Templates.details(flag: flag, group_error_message: "The group name can't be blank.")
-      html_resp(conn, 400, body)
-    else
-      enabled = Utils.parse_bool(conn.params["enabled"])
-      gate = FunWithFlags.Gate.new(:group, String.to_atom(group_name), enabled)
-
-      Utils.save_gate(flag_name, gate)
-      redirect_to conn, "/flags/#{name}#group_#{group_name}"
+    case Utils.validate(group_name) do
+      :ok ->
+        enabled = Utils.parse_bool(conn.params["enabled"])
+        gate = FunWithFlags.Gate.new(:group, String.to_atom(group_name), enabled)
+        Utils.save_gate(flag_name, gate)
+        redirect_to conn, "/flags/#{name}#group_#{group_name}"
+      {:fail, reason} ->
+        flag = get_flag(name)
+        body = Templates.details(flag: flag, group_error_message: "The group name #{reason}.")
+        html_resp(conn, 400, body)
     end
   end
 

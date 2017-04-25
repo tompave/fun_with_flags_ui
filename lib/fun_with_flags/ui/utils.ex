@@ -119,4 +119,21 @@ defmodule FunWithFlags.UI.Utils do
   def valid_flag_name?(name) do
     Regex.match?(~r/^\w+$/, name)
   end
+
+  def sanitize(name) do
+    name
+    |> String.trim()
+  end
+
+  def validate(name) do
+    string = to_string(name)
+    cond do
+      blank?(string) ->
+        {:fail, "can't be blank" }
+      String.match?(string, ~r/\?/) ->
+        {:fail, "includes invalid characters: '?'"}
+      true ->
+        :ok
+    end
+  end
 end

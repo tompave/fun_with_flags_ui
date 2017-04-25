@@ -25,11 +25,16 @@ defmodule FunWithFlags.UI.Router do
   end
 
 
+  # form to create a new flag
+  #
   get "/new" do
     conn
     |> html_resp(200, Templates.new(%{}))
   end
 
+
+  # endpoint to create a new flag
+  #
   post "/flags" do
     name = conn.params["flag_name"]
 
@@ -44,6 +49,8 @@ defmodule FunWithFlags.UI.Router do
   end
 
 
+  # get a list of the flags
+  #
   get "/flags" do
     {:ok, flags} = FunWithFlags.all_flags
     flags = Utils.sort_flags(flags)
@@ -54,6 +61,8 @@ defmodule FunWithFlags.UI.Router do
   end
 
 
+  # flag details
+  #
   get "/flags/:name" do
     flag = get_flag(name)
     body = Templates.details(flag: flag)
@@ -62,11 +71,16 @@ defmodule FunWithFlags.UI.Router do
   end
 
 
+  # to clear an entire flag
+  #
   delete "/flags/:name" do
     Utils.clear_flag(name)
     redirect_to conn, "/flags"
   end
 
+
+  # to toggle the default state of a flag
+  #
   patch "/flags/:name/boolean" do
     enabled = Utils.parse_bool(conn.params["enabled"])
     flag_name = String.to_atom(name)
@@ -76,6 +90,9 @@ defmodule FunWithFlags.UI.Router do
     redirect_to conn, "/flags/#{name}"
   end
 
+
+  # to toggle an actor gate
+  #
   patch "/flags/:name/actors/:actor_id" do
     enabled = Utils.parse_bool(conn.params["enabled"])
     flag_name = String.to_atom(name)
@@ -85,6 +102,9 @@ defmodule FunWithFlags.UI.Router do
     redirect_to conn, "/flags/#{name}#actor_#{actor_id}"
   end
 
+
+  # to clear an actor gate
+  #
   delete "/flags/:name/actors/:actor_id" do
     flag_name = String.to_atom(name)
     gate = %FunWithFlags.Gate{type: :actor, for: actor_id, enabled: false}
@@ -93,6 +113,9 @@ defmodule FunWithFlags.UI.Router do
     redirect_to conn, "/flags/#{name}#actor_gates"
   end
 
+
+  # to toggle a group gate
+  #
   patch "/flags/:name/groups/:group_name" do
     enabled = Utils.parse_bool(conn.params["enabled"])
     flag_name = String.to_atom(name)
@@ -103,6 +126,9 @@ defmodule FunWithFlags.UI.Router do
     redirect_to conn, "/flags/#{name}#group_#{group_name}"
   end
 
+
+  # to clear a group gate
+  #
   delete "/flags/:name/groups/:group_name" do
     flag_name = String.to_atom(name)
     group_name = String.to_atom(group_name)
@@ -113,6 +139,8 @@ defmodule FunWithFlags.UI.Router do
   end
 
 
+  # to add a new actor to a flag
+  #
   post "/flags/:name/actors" do
     flag_name = String.to_atom(name)
     actor_id = conn.params["actor_id"]
@@ -131,6 +159,8 @@ defmodule FunWithFlags.UI.Router do
   end
 
 
+  # to add a new group to a flag
+  #
   post "/flags/:name/groups" do
     flag_name = String.to_atom(name)
     group_name = conn.params["group_name"]

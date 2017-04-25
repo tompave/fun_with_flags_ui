@@ -104,12 +104,13 @@
             <div class="card-block">
               <form action="<%= path("/flags/#{@flag.name}") %>" method="post">
                 <input type="hidden" name="_method" value="DELETE">
-                <button type="submit" class="btn btn-danger">Delete Flag</button>
+                <button type="submit" class="btn btn-danger" data-confirm="Are you sure you want to completely delete the flag '<%= @flag.name %>'?">Delete Flag</button>
               </form>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <script type="text/javascript" src="<%= path("/assets/details.js") %>"></script>
   </body>
 </html>

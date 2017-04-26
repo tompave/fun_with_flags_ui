@@ -1,6 +1,7 @@
 defmodule FunWithFlags.UI.Router do
   use Plug.Router
   alias FunWithFlags.UI.{Templates, Utils}
+  alias FunWithFlags.UI.SimpleActor
 
   if Mix.env == :dev do
     use Plug.Debugger, otp_app: :fun_with_flags
@@ -75,7 +76,10 @@ defmodule FunWithFlags.UI.Router do
   # to clear an entire flag
   #
   delete "/flags/:name" do
-    Utils.clear_flag(name)
+    name
+    |> String.to_atom()
+    |> FunWithFlags.clear()
+
     redirect_to conn, "/flags"
   end
 
@@ -85,9 +89,13 @@ defmodule FunWithFlags.UI.Router do
   patch "/flags/:name/boolean" do
     enabled = Utils.parse_bool(conn.params["enabled"])
     flag_name = String.to_atom(name)
-    gate = FunWithFlags.Gate.new(:boolean, enabled)
 
-    Utils.save_gate(flag_name, gate)
+    if enabled do
+      FunWithFlags.enable(flag_name)
+    else
+      FunWithFlags.disable(flag_name)
+    end
+
     redirect_to conn, "/flags/#{name}"
   end
 
@@ -97,9 +105,14 @@ defmodule FunWithFlags.UI.Router do
   patch "/flags/:name/actors/:actor_id" do
     enabled = Utils.parse_bool(conn.params["enabled"])
     flag_name = String.to_atom(name)
-    gate = %FunWithFlags.Gate{type: :actor, for: actor_id, enabled: enabled}
+    actor = %SimpleActor{id: actor_id}
 
-    Utils.save_gate(flag_name, gate)
+    if enabled do
+      FunWithFlags.enable(flag_name, for_actor: actor)
+    else
+      FunWithFlags.disable(flag_name, for_actor: actor)
+    end
+
     redirect_to conn, "/flags/#{name}#actor_#{actor_id}"
   end
 
@@ -108,9 +121,9 @@ defmodule FunWithFlags.UI.Router do
   #
   delete "/flags/:name/actors/:actor_id" do
     flag_name = String.to_atom(name)
-    gate = %FunWithFlags.Gate{type: :actor, for: actor_id, enabled: false}
+    actor = %SimpleActor{id: actor_id}
 
-    Utils.clear_gate(flag_name, gate)
+    FunWithFlags.clear(flag_name, for_actor: actor)
     redirect_to conn, "/flags/#{name}#actor_gates"
   end
 
@@ -121,9 +134,13 @@ defmodule FunWithFlags.UI.Router do
     enabled = Utils.parse_bool(conn.params["enabled"])
     flag_name = String.to_atom(name)
     group_name = String.to_atom(group_name)
-    gate = %FunWithFlags.Gate{type: :group, for: group_name, enabled: enabled}
 
-    Utils.save_gate(flag_name, gate)
+    if enabled do
+      FunWithFlags.enable(flag_name, for_group: group_name)
+    else
+      FunWithFlags.disable(flag_name, for_group: group_name)
+    end
+
     redirect_to conn, "/flags/#{name}#group_#{group_name}"
   end
 
@@ -133,9 +150,9 @@ defmodule FunWithFlags.UI.Router do
   delete "/flags/:name/groups/:group_name" do
     flag_name = String.to_atom(name)
     group_name = String.to_atom(group_name)
-    gate = %FunWithFlags.Gate{type: :group, for: group_name, enabled: false}
 
-    Utils.clear_gate(flag_name, gate)
+    FunWithFlags.clear(flag_name, for_group: group_name)
+
     redirect_to conn, "/flags/#{name}#group_gates"
   end
 
@@ -149,8 +166,12 @@ defmodule FunWithFlags.UI.Router do
     case Utils.validate(actor_id) do
       :ok ->
         enabled = Utils.parse_bool(conn.params["enabled"])
-        gate = %FunWithFlags.Gate{type: :actor, for: actor_id, enabled: enabled}
-        Utils.save_gate(flag_name, gate)
+        actor = %SimpleActor{id: actor_id}
+        if enabled do
+          FunWithFlags.enable(flag_name, for_actor: actor)
+        else
+          FunWithFlags.disable(flag_name, for_actor: actor)
+        end
         redirect_to conn, "/flags/#{name}#actor_#{actor_id}"
       {:fail, reason} ->
         flag = Utils.get_flag(name)
@@ -169,8 +190,12 @@ defmodule FunWithFlags.UI.Router do
     case Utils.validate(group_name) do
       :ok ->
         enabled = Utils.parse_bool(conn.params["enabled"])
-        gate = FunWithFlags.Gate.new(:group, String.to_atom(group_name), enabled)
-        Utils.save_gate(flag_name, gate)
+        group_name = String.to_atom(group_name)
+        if enabled do
+          FunWithFlags.enable(flag_name, for_group: group_name)
+        else
+          FunWithFlags.disable(flag_name, for_group: group_name)
+        end
         redirect_to conn, "/flags/#{name}#group_#{group_name}"
       {:fail, reason} ->
         flag = Utils.get_flag(name)

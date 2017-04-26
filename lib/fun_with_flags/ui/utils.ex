@@ -103,21 +103,6 @@ defmodule FunWithFlags.UI.Utils do
   def parse_bool(_), do: false
 
 
-  def save_gate(flag_name, gate) do
-    FunWithFlags.Config.store_module.put(flag_name, gate)
-  end
-
-  def clear_gate(flag_name, gate) do
-    FunWithFlags.Config.store_module.delete(flag_name, gate)
-  end
-
-  def clear_flag(flag_name) do
-    flag_name
-    |> String.to_atom()
-    |> FunWithFlags.Config.store_module.delete()
-  end
-
-
   def validate_flag_name(name) do
     if Regex.match?(~r/^\w+$/, name) do
       if flag_exists?(name) do

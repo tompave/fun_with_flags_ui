@@ -1,13 +1,21 @@
 defmodule FunWithFlagsUi.Mixfile do
   use Mix.Project
 
+  @version "0.0.1"
+
   def project do
-    [app: :fun_with_flags_ui,
-     version: "0.1.0",
-     elixir: "~> 1.4",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    [
+      app: :fun_with_flags_ui,
+      source_url: "https://github.com/tompave/fun_with_flags",
+      version: @version,
+      elixir: "~> 1.4",
+      build_embedded: Mix.env == :prod,
+      start_permanent: Mix.env == :prod,
+      deps: deps(),
+      description: description(),
+      package: package(),
+      docs: docs(),
+    ]
   end
 
   # Configuration for the OTP application
@@ -32,6 +40,36 @@ defmodule FunWithFlagsUi.Mixfile do
       {:plug, "~> 1.3.5"},
       {:cowboy, "~> 1.1", optional: true},
       {:fun_with_flags, "~> 0.7.1"},
+    ]
+  end
+
+  defp description do
+    """
+    FunWithFlags.UI, a web dashboard for the FunWithFlags Elixir package.
+    """
+  end
+
+  defp package do
+    [
+      maintainers: [
+        "Tommaso Pavese"
+      ],
+      licenses: [
+        "MIT"
+      ],
+      links: %{
+        "GitHub" => "https://github.com/tompave/fun_with_flags_ui",
+      }
+    ]
+  end
+
+
+  defp docs do
+    [
+      extras: ["README.md"],
+      main: "FunWithFlags.UI",
+      source_url: "https://github.com/tompave/fun_with_flags_ui/",
+      source_ref: "v#{@version}"
     ]
   end
 end

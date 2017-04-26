@@ -38,13 +38,14 @@ defmodule FunWithFlags.UI.Router do
   post "/flags" do
     name = Utils.sanitize(conn.params["flag_name"])
 
-    if Utils.valid_flag_name?(name) do
-      case Utils.create_flag_with_name(name) do
-        {:error, reason} -> html_resp(conn, 400, Templates.new(%{error_message: reason}))
-        {:ok, _} -> redirect_to conn, "/flags/#{name}"
-      end
-    else
-      html_resp(conn, 400, Templates.new(%{error_message: "Invalid flag name, it must match <code>/^\w+$/</code>."}))
+    case Utils.validate_flag_name(name) do
+      :ok ->
+        case Utils.create_flag_with_name(name) do
+          {:ok, _} -> redirect_to conn, "/flags/#{name}"
+          _ -> html_resp(conn, 400, Templates.new(%{error_message: "Something went wrong!"}))
+        end
+      {:fail, reason} ->
+        html_resp(conn, 400, Templates.new(%{error_message: reason}))
     end
   end
 
@@ -64,7 +65,7 @@ defmodule FunWithFlags.UI.Router do
   # flag details
   #
   get "/flags/:name" do
-    flag = get_flag(name)
+    flag = Utils.get_flag(name)
     body = Templates.details(flag: flag)
 
     html_resp(conn, 200, body)
@@ -152,7 +153,7 @@ defmodule FunWithFlags.UI.Router do
         Utils.save_gate(flag_name, gate)
         redirect_to conn, "/flags/#{name}#actor_#{actor_id}"
       {:fail, reason} ->
-        flag = get_flag(name)
+        flag = Utils.get_flag(name)
         body = Templates.details(flag: flag, actor_error_message: "The actor ID #{reason}.")
         html_resp(conn, 400, body)
     end
@@ -172,7 +173,7 @@ defmodule FunWithFlags.UI.Router do
         Utils.save_gate(flag_name, gate)
         redirect_to conn, "/flags/#{name}#group_#{group_name}"
       {:fail, reason} ->
-        flag = get_flag(name)
+        flag = Utils.get_flag(name)
         body = Templates.details(flag: flag, group_error_message: "The group name #{reason}.")
         html_resp(conn, 400, body)
     end
@@ -198,10 +199,5 @@ defmodule FunWithFlags.UI.Router do
     |> put_resp_header("location", path)
     |> put_resp_content_type("text/html")
     |> send_resp(302, "<html><body>You are being <a href=\"#{path}\">redirected</a>.</body></html>")
-  end
-
-  defp get_flag(name) do
-    {:ok, flag} = FunWithFlags.SimpleStore.lookup(String.to_atom(name))
-    flag
   end
 end

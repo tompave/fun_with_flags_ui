@@ -59,13 +59,15 @@ defmodule FunWithFlags.UI.Utils do
   # Create new flags as disabled
   #
   def create_flag_with_name(name) do
-    if blank?(name) do
-      {:error, "The name cannot be blank."}
-    else
-      name
-      |> String.to_atom()
-      |> FunWithFlags.disable()
-    end
+    name
+    |> String.to_atom()
+    |> FunWithFlags.disable()
+  end
+
+
+  def get_flag(name) do
+    {:ok, flag} = FunWithFlags.SimpleStore.lookup(String.to_atom(name))
+    flag
   end
 
 
@@ -116,8 +118,23 @@ defmodule FunWithFlags.UI.Utils do
   end
 
 
-  def valid_flag_name?(name) do
-    Regex.match?(~r/^\w+$/, name)
+  def validate_flag_name(name) do
+    if Regex.match?(~r/^\w+$/, name) do
+      if flag_exists?(name) do
+        {:fail, "A flag named '#{name}' <u><a href='#{prefix("/flags/" <> name)}' class='text-danger'>already exists</a></u>."}
+      else
+        :ok
+      end
+    else
+      {:fail, "Invalid flag name, it must match <code>/^\w+$/</code>."}
+    end
+  end
+
+
+  defp flag_exists?(name) do
+    {:ok, all} = FunWithFlags.all_flag_names
+    this = String.to_atom(name)
+    Enum.member?(all, this)
   end
 
   def sanitize(name) do

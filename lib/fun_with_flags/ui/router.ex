@@ -11,8 +11,8 @@ defmodule FunWithFlags.UI.Router do
 
   plug Plug.Static,
     gzip: true,
-    at: Utils.prefix("/assets"),
-    from: Path.expand("./assets/", __DIR__)
+    at: "/assets",
+    from: :fun_with_flags_ui
 
   plug Plug.Parsers, parsers: [:urlencoded]
   plug Plug.MethodOverride

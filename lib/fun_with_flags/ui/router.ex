@@ -17,9 +17,14 @@ defmodule FunWithFlags.UI.Router do
   plug Plug.Parsers, parsers: [:urlencoded]
   plug Plug.MethodOverride
 
-  plug :extract_namespace
   plug :match
   plug :dispatch
+
+
+  def call(conn, opts) do
+    conn = extract_namespace(conn, opts)
+    super(conn, opts)
+  end
 
   get "/" do
     conn
@@ -229,7 +234,7 @@ defmodule FunWithFlags.UI.Router do
 
 
   def extract_namespace(conn, opts) do
-    ns = opts[:namespace] || "/"
-    Plug.Conn.assign(conn, :namespace, ns)
+    ns = opts[:namespace] || ""
+    Plug.Conn.assign(conn, :namespace, "/" <> ns)
   end
 end

@@ -2,13 +2,6 @@ defmodule FunWithFlags.UI.Utils do
   alias FunWithFlags.{Flag, Gate}
 
 
-  @prefix "/"
-
-  def prefix(path) do
-    Path.join(@prefix, path)
-  end
-
-
   def get_flag_status(%Flag{gates: gates} = flag) do
     if boolean_gate_open?(flag) do
       :fully_open
@@ -103,10 +96,11 @@ defmodule FunWithFlags.UI.Utils do
   def parse_bool(_), do: false
 
 
-  def validate_flag_name(name) do
+  def validate_flag_name(conn, name) do
     if Regex.match?(~r/^\w+$/, name) do
       if flag_exists?(name) do
-        {:fail, "A flag named '#{name}' <u><a href='#{prefix("/flags/" <> name)}' class='text-danger'>already exists</a></u>."}
+        path = Path.join(conn.assigns[:namespace], "/flags/" <> name)
+        {:fail, "A flag named '#{name}' <u><a href='#{path}' class='text-danger'>already exists</a></u>."}
       else
         :ok
       end

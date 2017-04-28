@@ -1,5 +1,5 @@
 <span>
-  <form action="<%= path("/flags/#{@flag.name}/groups") %>" method="post" class="form-inline">
+  <form action="<%= path(@conn, "/flags/#{@flag.name}/groups") %>" method="post" class="form-inline">
     <%= if assigns[:error_message] do %>
       <div class="input-group mr-2 has-danger">
         <div class="input-group-addon">group name</div>

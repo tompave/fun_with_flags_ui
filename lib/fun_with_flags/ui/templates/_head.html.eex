@@ -2,6 +2,6 @@
   <meta charset="utf-8">
   <title>FunWithFlags - <%= @title %></title>
 
-  <link rel="stylesheet" href="<%= path("/assets/bootstrap.min.css") %>">
-  <link rel="stylesheet" href="<%= path("/assets/style.css") %>">
+  <link rel="stylesheet" href="<%= path(@conn, "/assets/bootstrap.min.css") %>">
+  <link rel="stylesheet" href="<%= path(@conn, "/assets/style.css") %>">
 </head>

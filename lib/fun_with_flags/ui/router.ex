@@ -17,6 +17,7 @@ defmodule FunWithFlags.UI.Router do
   plug Plug.Parsers, parsers: [:urlencoded]
   plug Plug.MethodOverride
 
+  plug :extract_namespace
   plug :match
   plug :dispatch
 
@@ -30,7 +31,7 @@ defmodule FunWithFlags.UI.Router do
   #
   get "/new" do
     conn
-    |> html_resp(200, Templates.new(%{}))
+    |> html_resp(200, Templates.new(%{conn: conn}))
   end
 
 
@@ -39,14 +40,14 @@ defmodule FunWithFlags.UI.Router do
   post "/flags" do
     name = Utils.sanitize(conn.params["flag_name"])
 
-    case Utils.validate_flag_name(name) do
+    case Utils.validate_flag_name(conn, name) do
       :ok ->
         case Utils.create_flag_with_name(name) do
           {:ok, _} -> redirect_to conn, "/flags/#{name}"
-          _ -> html_resp(conn, 400, Templates.new(%{error_message: "Something went wrong!"}))
+          _ -> html_resp(conn, 400, Templates.new(%{conn: conn, error_message: "Something went wrong!"}))
         end
       {:fail, reason} ->
-        html_resp(conn, 400, Templates.new(%{error_message: reason}))
+        html_resp(conn, 400, Templates.new(%{conn: conn, error_message: reason}))
     end
   end
 
@@ -56,7 +57,7 @@ defmodule FunWithFlags.UI.Router do
   get "/flags" do
     {:ok, flags} = FunWithFlags.all_flags
     flags = Utils.sort_flags(flags)
-    body = Templates.index(flags: flags)
+    body = Templates.index(conn: conn, flags: flags)
 
     conn
     |> html_resp(200, body)
@@ -67,7 +68,7 @@ defmodule FunWithFlags.UI.Router do
   #
   get "/flags/:name" do
     flag = Utils.get_flag(name)
-    body = Templates.details(flag: flag)
+    body = Templates.details(conn: conn, flag: flag)
 
     html_resp(conn, 200, body)
   end
@@ -175,7 +176,7 @@ defmodule FunWithFlags.UI.Router do
         redirect_to conn, "/flags/#{name}#actor_#{actor_id}"
       {:fail, reason} ->
         flag = Utils.get_flag(name)
-        body = Templates.details(flag: flag, actor_error_message: "The actor ID #{reason}.")
+        body = Templates.details(conn: conn, flag: flag, actor_error_message: "The actor ID #{reason}.")
         html_resp(conn, 400, body)
     end
   end
@@ -199,7 +200,7 @@ defmodule FunWithFlags.UI.Router do
         redirect_to conn, "/flags/#{name}#group_#{group_name}"
       {:fail, reason} ->
         flag = Utils.get_flag(name)
-        body = Templates.details(flag: flag, group_error_message: "The group name #{reason}.")
+        body = Templates.details(conn: conn, flag: flag, group_error_message: "The group name #{reason}.")
         html_resp(conn, 400, body)
     end
   end
@@ -218,11 +219,17 @@ defmodule FunWithFlags.UI.Router do
 
 
   defp redirect_to(conn, uri) do
-    path = Utils.prefix(uri)
+    path = Path.join(conn.assigns[:namespace], uri)
 
     conn
     |> put_resp_header("location", path)
     |> put_resp_content_type("text/html")
     |> send_resp(302, "<html><body>You are being <a href=\"#{path}\">redirected</a>.</body></html>")
+  end
+
+
+  def extract_namespace(conn, opts) do
+    ns = opts[:namespace] || "/"
+    Plug.Conn.assign(conn, :namespace, ns)
   end
 end

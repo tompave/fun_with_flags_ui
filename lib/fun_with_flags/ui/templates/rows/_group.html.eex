@@ -7,7 +7,7 @@
       <%= html_status_for @gate.enabled %>
     </div>
     <div class="col-lg-1 col-md-2 col-sm-2 col-3 text-right">
-      <form action="<%= path("/flags/#{@flag.name}/groups/#{@gate.for}") %>" method="post" class="fwf-inline-toggle">
+      <form action="<%= path(@conn, "/flags/#{@flag.name}/groups/#{@gate.for}") %>" method="post" class="fwf-inline-toggle">
         <input type="hidden" name="_method" value="PATCH">
 
         <%= if @gate.enabled do %>
@@ -20,7 +20,7 @@
       </form>
     </div>
     <div class="col-lg-1 col-md-1 col-sm-2 col-3 text-right">
-      <form action="<%= path("/flags/#{@flag.name}/groups/#{@gate.for}") %>" method="post" class="fwf-inline-toggle">
+      <form action="<%= path(@conn, "/flags/#{@flag.name}/groups/#{@gate.for}") %>" method="post" class="fwf-inline-toggle">
         <input type="hidden" name="_method" value="DELETE">
         <button type="submit" class="btn btn-sm btn-secondary" data-confirm="Are you sure you want to clear group '<%= @gate.for %>'?">Clear</button>
       </form>

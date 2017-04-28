@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%= _head(title: @flag.name) %>
+  <%= _head(conn: @conn, title: @flag.name) %>
   <body>
     <nav id="fwf-top-bar" class="navbar navbar-inverse navbar-toggleable-xl">
       <a class="navbar-brand" href="https://github.com/tompave/fun_with_flags">FunWithFlags</a>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="<%= path("/flags") %>">all flags</a>
+            <a class="nav-link" href="<%= path(@conn, "/flags") %>">all flags</a>
           </li>
 
           <span class="navbar-text">
@@ -15,11 +15,11 @@
           </span>
 
           <li class="nav-item active">
-            <a class="nav-link" href="<%= path("/flags/#{@flag.name}") %>"><%= @flag.name %></a>
+            <a class="nav-link" href="<%= path(@conn, "/flags/#{@flag.name}") %>"><%= @flag.name %></a>
           </li>
         </ul>
 
-        <a href="<%= path("/new") %>" class="btn btn-secondary">New Flag</a>
+        <a href="<%= path(@conn, "/new") %>" class="btn btn-secondary">New Flag</a>
       </div>
     </nav>
 
@@ -32,7 +32,7 @@
             <h5 class="card-header">
               Default state
             </h5>
-            <%= _boolean_row(flag: @flag) %>
+            <%= _boolean_row(conn: @conn, flag: @flag) %>
           </div>
         </div>
       </div>
@@ -48,7 +48,7 @@
 
               <%= for gate <- actor_gates do %>
                 <li class="list-group-item px-0">
-                  <%= _actor_row(flag: @flag, gate: gate) %>
+                  <%= _actor_row(conn: @conn, flag: @flag, gate: gate) %>
                 </li>
               <% end %>
 
@@ -59,7 +59,7 @@
               <% end %>
 
               <li class="list-group-item">
-                <%= _new_actor_row(flag: @flag, error_message: assigns[:actor_error_message]) %>
+                <%= _new_actor_row(conn: @conn, flag: @flag, error_message: assigns[:actor_error_message]) %>
               </li>
             </ul>
           </div>
@@ -77,7 +77,7 @@
 
               <%= for gate <- group_gates do %>
                 <li class="list-group-item px-0">
-                  <%= _group_row(flag: @flag, gate: gate) %>
+                  <%= _group_row(conn: @conn, flag: @flag, gate: gate) %>
                 </li>
               <% end %>
 
@@ -88,7 +88,7 @@
               <% end %>
 
               <li class="list-group-item">
-                <%= _new_group_row(flag: @flag, error_message: assigns[:group_error_message]) %>
+                <%= _new_group_row(conn: @conn, flag: @flag, error_message: assigns[:group_error_message]) %>
               </li>
             </ul>
           </div>
@@ -102,7 +102,7 @@
               Danger Zone
             </h5>
             <div class="card-block">
-              <form action="<%= path("/flags/#{@flag.name}") %>" method="post">
+              <form action="<%= path(@conn, "/flags/#{@flag.name}") %>" method="post">
                 <input type="hidden" name="_method" value="DELETE">
                 <button type="submit" class="btn btn-danger" data-confirm="Are you sure you want to completely delete the flag '<%= @flag.name %>'?">Delete Flag</button>
               </form>
@@ -111,6 +111,6 @@
         </div>
       </div>
     </div>
-    <script type="text/javascript" src="<%= path("/assets/details.js") %>"></script>
+    <script type="text/javascript" src="<%= path(@conn, "/assets/details.js") %>"></script>
   </body>
 </html>

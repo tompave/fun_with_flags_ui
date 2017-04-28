@@ -49,7 +49,7 @@ defmodule FunWithFlags.UI.Templates do
   end
 
 
-  def path(path) do
-    Utils.prefix(path)
+  def path(conn, path) do
+    Path.join(conn.assigns[:namespace], path)
   end
 end

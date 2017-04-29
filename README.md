@@ -18,14 +18,18 @@ wip
 The main plug can be mounted inside the Phoenix router with [`Phoenix.Router.forward/4`](https://hexdocs.pm/phoenix/Phoenix.Router.html#forward/4).
 
 ```elixir
-pipeline :mounted_apps do
-  plug :accepts, ["html"]
-  plug :put_secure_browser_headers
-end
+defmodule MyPhoenixApp.Web.Router do
+  use MyPhoenixApp.Web, :router
 
-scope path: "/feature-flags" do
-  pipe_through :mounted_apps
-  forward "/", FunWithFlags.UI.Router, namespace: "feature-flags"
+  pipeline :mounted_apps do
+    plug :accepts, ["html"]
+    plug :put_secure_browser_headers
+  end
+
+  scope path: "/feature-flags" do
+    pipe_through :mounted_apps
+    forward "/", FunWithFlags.UI.Router, namespace: "feature-flags"
+  end
 end
 ```
 
@@ -51,22 +55,27 @@ The easiest thing to do is to protect it with HTTP Basic Auth, provided by the [
 For example, in Phoenix:
 
 ```elixir
-pipeline :mounted_and_protected_apps do
-  plug :accepts, ["html"]
-  plug :put_secure_browser_headers
+defmodule MyPhoenixApp.Web.Router do
+  use MyPhoenixApp.Web, :router
 
-  plug BasicAuth, realm: "admin_tools", callback: fn(conn, username, password) ->
+  def my_basic_auth(conn, username, password) do
     if username == "foo" && password == "bar" do
       conn
     else
       Plug.Conn.halt(conn)
     end
   end
-end
 
-scope path: "/feature-flags" do
-  pipe_through :mounted_and_protected_apps
-  forward "/", FunWithFlags.UI.Router, namespace: "feature-flags"
+  pipeline :mounted_and_protected_apps do
+    plug :accepts, ["html"]
+    plug :put_secure_browser_headers
+    plug BasicAuth, callback: &__MODULE__.my_basic_auth/3
+  end
+
+  scope path: "/feature-flags" do
+    pipe_through :mounted_and_protected_apps
+    forward "/", FunWithFlags.UI.Router, namespace: "feature-flags"
+  end
 end
 ```
 

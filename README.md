@@ -2,6 +2,8 @@
 
 A Web dashboard for the [FunWithFlags](https://github.com/tompave/fun_with_flags) Elixir package.
 
+![](https://raw.githubusercontent.com/tompave/fun_with_flags_ui/master/demo/demo.gif)
+
 This package is still a work in progress.
 
 

@@ -21,6 +21,11 @@ defmodule FunWithFlags.UI.Router do
   plug :dispatch
 
 
+  def init(opts) do
+    Application.ensure_started(:fun_with_flags)
+    super(opts)
+  end
+
   def call(conn, opts) do
     conn = extract_namespace(conn, opts)
     super(conn, opts)

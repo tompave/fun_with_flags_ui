@@ -1,4 +1,6 @@
 defmodule FunWithFlags.UI.SimpleActor do
+  @moduledoc false
+
   defstruct [:id]
 end
 

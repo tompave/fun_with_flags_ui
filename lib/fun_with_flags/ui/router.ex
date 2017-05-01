@@ -1,4 +1,10 @@
 defmodule FunWithFlags.UI.Router do
+  @moduledoc """
+  A `Plug.Router`. This module is meant to be plugged into host applications.
+
+  See the [Readme](/fun_with_flags_ui/readme.html#how-to-run) for more detailed instructions.
+  """
+
   use Plug.Router
   alias FunWithFlags.UI.{Templates, Utils}
   alias FunWithFlags.UI.SimpleActor
@@ -20,16 +26,18 @@ defmodule FunWithFlags.UI.Router do
   plug :match
   plug :dispatch
 
-
+  @doc false
   def init(opts) do
     Application.ensure_started(:fun_with_flags)
     super(opts)
   end
 
+  @doc false
   def call(conn, opts) do
     conn = extract_namespace(conn, opts)
     super(conn, opts)
   end
+
 
   get "/" do
     conn
@@ -238,7 +246,7 @@ defmodule FunWithFlags.UI.Router do
   end
 
 
-  def extract_namespace(conn, opts) do
+  defp extract_namespace(conn, opts) do
     ns = opts[:namespace] || ""
     Plug.Conn.assign(conn, :namespace, "/" <> ns)
   end

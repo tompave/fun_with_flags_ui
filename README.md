@@ -7,8 +7,6 @@ A Web dashboard for the [FunWithFlags](https://github.com/tompave/fun_with_flags
 
 ![](https://raw.githubusercontent.com/tompave/fun_with_flags_ui/master/demo/demo.gif)
 
-This package is still a work in progress.
-
 
 ## How to run
 

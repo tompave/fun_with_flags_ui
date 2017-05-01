@@ -77,7 +77,7 @@ defmodule FunWithFlagsUi.Mixfile do
   defp docs do
     [
       extras: ["README.md"],
-      main: "FunWithFlags.UI",
+      main: "readme",
       source_url: "https://github.com/tompave/fun_with_flags_ui/",
       source_ref: "v#{@version}"
     ]

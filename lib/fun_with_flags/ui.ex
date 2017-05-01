@@ -1,10 +1,13 @@
 defmodule FunWithFlags.UI do
-  @moduledoc false
+  @moduledoc """
+  FunWithFlags.UI, a Web dashboard for the [FunWithFlags](https://github.com/tompave/fun_with_flags) package.
+
+  See the [Readme](/fun_with_flags_ui/readme.html#how-to-run) for more detailed instructions.
+  """
 
   use Application
 
-  # Mix Application callback.
-  #
+  @doc false
   def start(_type, _args) do
     check_cowboy()
 
@@ -38,19 +41,23 @@ defmodule FunWithFlags.UI do
   end
 
 
-  # Convenience function to simply run the Plug in Cowboy.
-  # This _will_ be supervided, but in the private supervsion tree
-  # of :cowboy and :ranch.
-  #
+  @doc """
+  Convenience function to simply run the Plug in Cowboy.
+
+  This _will_ be supervided, but in the private supervsion tree
+  of :cowboy and :ranch.
+  """#"""
   def run_standalone do
     Plug.Adapters.Cowboy.http FunWithFlags.UI.Router, [], port: 8080
   end
 
 
-  # Convenience function to run the Plug in a custom supervision tree.
-  # This is just an example. If you actually need this, you might want
-  # to use your own supervision setup.
-  # 
+  @doc """
+  Convenience function to run the Plug in a custom supervision tree.
+
+  This is just an example. If you actually need this, you might want
+  to use your own supervision setup.
+  """
   def run_supervised do
     start(nil, nil)
   end

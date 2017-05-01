@@ -1,4 +1,6 @@
 defmodule FunWithFlags.UI.Templates do
+  @moduledoc false
+
   require EEx
   alias FunWithFlags.UI.Utils
   alias FunWithFlags.Flag

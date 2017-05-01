@@ -1,4 +1,6 @@
 defmodule FunWithFlags.UI.Utils do
+  @moduledoc false
+
   alias FunWithFlags.{Flag, Gate}
 
 

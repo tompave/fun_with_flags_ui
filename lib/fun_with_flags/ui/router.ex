@@ -4,7 +4,7 @@ defmodule FunWithFlags.UI.Router do
   alias FunWithFlags.UI.SimpleActor
 
   if Mix.env == :dev do
-    use Plug.Debugger, otp_app: :fun_with_flags
+    use Plug.Debugger, otp_app: :fun_with_flags_ui
   end
 
   plug Plug.Logger, log: :debug

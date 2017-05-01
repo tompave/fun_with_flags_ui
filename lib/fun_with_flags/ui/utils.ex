@@ -93,6 +93,7 @@ defmodule FunWithFlags.UI.Utils do
   def parse_bool("true"), do: true
   def parse_bool("1"), do: true
   def parse_bool(1), do: true
+  def parse_bool(true), do: true
   def parse_bool(_), do: false
 
 
@@ -125,7 +126,7 @@ defmodule FunWithFlags.UI.Utils do
     string = to_string(name)
     cond do
       blank?(string) ->
-        {:fail, "can't be blank" }
+        {:fail, "can't be blank"}
       String.match?(string, ~r/\?/) ->
         {:fail, "includes invalid characters: '?'"}
       true ->

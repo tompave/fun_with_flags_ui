@@ -121,6 +121,6 @@ The package can be installed by adding `fun_with_flags_ui` to your list of depen
 
 ```elixir
 def deps do
-  [{:fun_with_flags_ui, "~> 0.0.2"}]
+  [{:fun_with_flags_ui, "~> 0.0.3"}]
 end
 ```

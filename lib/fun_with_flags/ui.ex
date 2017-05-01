@@ -1,6 +1,6 @@
 defmodule FunWithFlags.UI do
   @moduledoc """
-  FunWithFlags.UI, a Web dashboard for the [FunWithFlags](https://github.com/tompave/fun_with_flags) package.
+  FunWithFlags.UI, a web dashboard for the [FunWithFlags](https://github.com/tompave/fun_with_flags) package.
 
   See the [Readme](/fun_with_flags_ui/readme.html#how-to-run) for more detailed instructions.
   """
@@ -46,7 +46,7 @@ defmodule FunWithFlags.UI do
 
   This _will_ be supervided, but in the private supervsion tree
   of :cowboy and :ranch.
-  """#"""
+  """
   def run_standalone do
     Plug.Adapters.Cowboy.http FunWithFlags.UI.Router, [], port: 8080
   end

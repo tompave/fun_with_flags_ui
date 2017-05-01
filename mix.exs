@@ -6,7 +6,7 @@ defmodule FunWithFlagsUi.Mixfile do
   def project do
     [
       app: :fun_with_flags_ui,
-      source_url: "https://github.com/tompave/fun_with_flags",
+      source_url: "https://github.com/tompave/fun_with_flags_ui",
       version: @version,
       elixir: "~> 1.4",
       elixirc_paths: elixirc_paths(Mix.env),

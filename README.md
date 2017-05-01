@@ -13,14 +13,11 @@ This package is still a work in progress.
 ## How to run
 
 `FunWithFlags.UI` is just a plug and it can be run in a number of ways.
-
-### Standalone
-
-wip
+It's primarily meant to be embedded in a host Plug application, either Phoenix or another Plug app.
 
 ### Mounted in Phoenix
 
-The main plug can be mounted inside the Phoenix router with [`Phoenix.Router.forward/4`](https://hexdocs.pm/phoenix/Phoenix.Router.html#forward/4).
+The router plug can be mounted inside the Phoenix router with [`Phoenix.Router.forward/4`](https://hexdocs.pm/phoenix/Phoenix.Router.html#forward/4).
 
 ```elixir
 defmodule MyPhoenixApp.Web.Router do
@@ -49,11 +46,31 @@ defmodule Another.App do
 end
 ```
 
+### Standalone
+
+Again, because it's just a plug, it can be run standalone in [different](https://hexdocs.pm/plug/readme.html#supervised-handlers) [ways](https://hexdocs.pm/plug/Plug.Adapters.Cowboy.html#http/3).
+
+If you clone the repository, the library comes with two convenience functions to accomplish this:
+
+```elixir
+# Simple, let Cowboy sort out the supervision tree:
+{:ok, pid} = FunWithFlags.UI.run_standalone()
+
+# Uses some explicit supervision configuration:
+{:ok, pid} = FunWithFlags.UI.run_supervised()
+```
+
+These functions come in handy for local development, and are _not_ necessary when embedding the Plug into a host application.
+
+Please note that even though the `FunWithFlags.UI` module implements the `Application` behavior and comes with a proper `start/2` callback, this is not enabled by design and, in fact, the Mixfile doesn't declare an entry module.
+
+If you really need to run it standalone in a reliable manner, you are encouraged to write your own supervision setup.
+
 ### Security
 
 For obvious reasons, you don't want to make this web control panel publicly accessible.
 
-The library itself doesn't provide any auth functionality because, as a plug, it is easier to wrap it into the specific authentication of the host application.
+The library itself doesn't provide any auth functionality because, as a Plug, it is easier to wrap it into the authentication and authorization logic of the host application.
 
 The easiest thing to do is to protect it with HTTP Basic Auth, provided by the [`basic_auth`](https://hex.pm/packages/basic_auth) plug.
 

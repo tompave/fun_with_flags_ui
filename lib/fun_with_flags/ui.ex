@@ -3,6 +3,8 @@ defmodule FunWithFlags.UI do
 
   use Application
 
+  # Mix Application callback.
+  #
   def start(_type, _args) do
     check_cowboy()
 
@@ -15,6 +17,15 @@ defmodule FunWithFlags.UI do
   end
 
 
+  # Since :cowboy is an optional dependency, if we want to run this
+  # standalone we want to return a clear error message if Cowboy is
+  # missing.
+  #
+  # On the other hand, if :fun_with_flags_ui is run as a Plug in a
+  # host application, we don't really care about this dependency
+  # here, as the responsibility of managing the HTTP layer belongs
+  # to the host app.
+  #
   defp check_cowboy do
     with :ok <- Application.ensure_started(:ranch),
          :ok <- Application.ensure_started(:cowlib),
@@ -27,11 +38,19 @@ defmodule FunWithFlags.UI do
   end
 
 
+  # Convenience function to simply run the Plug in Cowboy.
+  # This _will_ be supervided, but in the private supervsion tree
+  # of :cowboy and :ranch.
+  #
   def run_standalone do
     Plug.Adapters.Cowboy.http FunWithFlags.UI.Router, [], port: 8080
   end
 
 
+  # Convenience function to run the Plug in a custom supervision tree.
+  # This is just an example. If you actually need this, you might want
+  # to use your own supervision setup.
+  # 
   def run_supervised do
     start(nil, nil)
   end

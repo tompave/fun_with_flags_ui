@@ -19,9 +19,18 @@ defmodule FunWithFlagsUi.Mixfile do
     ]
   end
 
-  # Configuration for the OTP application
+  
+  # The most common use case for this library is to embed it in
+  # a host web application and serve it from a sub path: it should
+  # just be plug'ed into a Phoenix or Plug router.
+  # In that case, there is no need to start :fun_with_flags_ui as
+  # its own application, as the Router plug will be managed as a simpl
+  # termination plug for the host's HTTP handler.
   #
-  # Type "mix help compile.app" for more information
+  # The commented out `mod: {}` configuration, below, is provided just
+  # as _an example_ of what it would be needed to run :fun_with_flags_ui
+  # fully standalone.
+  #
   def application do
     [
       extra_applications: [:logger],
@@ -29,15 +38,7 @@ defmodule FunWithFlagsUi.Mixfile do
     ]
   end
 
-  # Dependencies can be Hex packages:
-  #
-  #   {:my_dep, "~> 0.3.0"}
-  #
-  # Or git/path repositories:
-  #
-  #   {:my_dep, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
-  #
-  # Type "mix help deps" for more examples and options
+
   defp deps do
     [
       {:plug, "~> 1.3.5"},

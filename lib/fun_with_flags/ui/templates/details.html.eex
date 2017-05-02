@@ -102,7 +102,7 @@
               Danger Zone
             </h5>
             <div class="card-block">
-              <form action="<%= path(@conn, "/flags/#{@flag.name}") %>" method="post">
+              <form id="fwf-delete-flag-form" action="<%= path(@conn, "/flags/#{@flag.name}") %>" method="post">
                 <input type="hidden" name="_method" value="DELETE">
                 <button type="submit" class="btn btn-danger" data-confirm="Are you sure you want to completely delete the flag '<%= @flag.name %>'?">Delete Flag</button>
               </form>

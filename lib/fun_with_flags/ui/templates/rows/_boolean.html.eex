@@ -5,7 +5,7 @@
     <%= html_status_for is_enabled %>
   
 
-    <form action="<%= path(@conn, "/flags/#{@flag.name}/boolean") %>" method="post" class="fwf-inline-toggle">
+    <form id="fwf-global-toggle-form" action="<%= path(@conn, "/flags/#{@flag.name}/boolean") %>" method="post" class="fwf-inline-toggle">
       <input type="hidden" name="_method" value="PATCH">
 
       <%= if is_enabled do %>

@@ -114,4 +114,18 @@ defmodule FunWithFlags.UI.TemplatesTest do
       assert String.contains?(out, ~s{<form action="/pear/flags/avocado/groups/rocks" method="post"})
     end
   end
+
+
+  describe "new()" do
+    test "it renders", %{conn: conn} do
+      out = Templates.new(conn: conn)
+      assert is_binary(out)
+    end
+
+    test "it includes the right content", %{conn: conn} do
+      out = Templates.new(conn: conn)
+      assert String.contains?(out, "<title>FunWithFlags - New Flag</title>")
+      assert String.contains?(out, ~s{<form id="new-flag-form" action="/pear/flags" method="post">})
+    end
+  end
 end

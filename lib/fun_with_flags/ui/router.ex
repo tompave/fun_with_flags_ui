@@ -100,7 +100,7 @@ defmodule FunWithFlags.UI.Router do
   #
   delete "/flags/:name" do
     name
-    |> String.to_atom()
+    |> String.to_existing_atom()
     |> FunWithFlags.clear()
 
     redirect_to conn, "/flags"
@@ -111,7 +111,7 @@ defmodule FunWithFlags.UI.Router do
   #
   patch "/flags/:name/boolean" do
     enabled = Utils.parse_bool(conn.params["enabled"])
-    flag_name = String.to_atom(name)
+    flag_name = String.to_existing_atom(name)
 
     if enabled do
       FunWithFlags.enable(flag_name)
@@ -127,7 +127,7 @@ defmodule FunWithFlags.UI.Router do
   #
   patch "/flags/:name/actors/:actor_id" do
     enabled = Utils.parse_bool(conn.params["enabled"])
-    flag_name = String.to_atom(name)
+    flag_name = String.to_existing_atom(name)
     actor = %SimpleActor{id: actor_id}
 
     if enabled do
@@ -143,7 +143,7 @@ defmodule FunWithFlags.UI.Router do
   # to clear an actor gate
   #
   delete "/flags/:name/actors/:actor_id" do
-    flag_name = String.to_atom(name)
+    flag_name = String.to_existing_atom(name)
     actor = %SimpleActor{id: actor_id}
 
     FunWithFlags.clear(flag_name, for_actor: actor)
@@ -155,7 +155,7 @@ defmodule FunWithFlags.UI.Router do
   #
   patch "/flags/:name/groups/:group_name" do
     enabled = Utils.parse_bool(conn.params["enabled"])
-    flag_name = String.to_atom(name)
+    flag_name = String.to_existing_atom(name)
     group_name = String.to_atom(group_name)
 
     if enabled do
@@ -171,8 +171,8 @@ defmodule FunWithFlags.UI.Router do
   # to clear a group gate
   #
   delete "/flags/:name/groups/:group_name" do
-    flag_name = String.to_atom(name)
-    group_name = String.to_atom(group_name)
+    flag_name = String.to_existing_atom(name)
+    group_name = String.to_existing_atom(group_name)
 
     FunWithFlags.clear(flag_name, for_group: group_name)
 
@@ -183,7 +183,7 @@ defmodule FunWithFlags.UI.Router do
   # to add a new actor to a flag
   #
   post "/flags/:name/actors" do
-    flag_name = String.to_atom(name)
+    flag_name = String.to_existing_atom(name)
     actor_id = Utils.sanitize(conn.params["actor_id"])
 
     case Utils.validate(actor_id) do
@@ -207,7 +207,7 @@ defmodule FunWithFlags.UI.Router do
   # to add a new group to a flag
   #
   post "/flags/:name/groups" do
-    flag_name = String.to_atom(name)
+    flag_name = String.to_existing_atom(name)
     group_name = Utils.sanitize(conn.params["group_name"])
 
     case Utils.validate(group_name) do

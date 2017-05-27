@@ -51,7 +51,13 @@ defmodule FunWithFlags.UI.Utils do
   end
 
 
-  # Create new flags as disabled
+  # Create new flags as disabled.
+  #
+  # Here we are converting a user-provided string to an atom, which is
+  # potentially dangerous because atoms are not garbage collected.
+  # Since we're going to persist it, however, the idea is that it's going
+  # to be used anyway, and to be fair filling the persistent store with
+  # unneeded data is a bigger concern.
   #
   def create_flag_with_name(name) do
     name
@@ -61,8 +67,16 @@ defmodule FunWithFlags.UI.Utils do
 
 
   def get_flag(name) do
-    {:ok, flag} = FunWithFlags.SimpleStore.lookup(String.to_atom(name))
-    flag
+    if safe_flag_exists?(name) do
+      case FunWithFlags.SimpleStore.lookup(String.to_existing_atom(name)) do
+        {:ok, _flag} = result ->
+          result
+        {:error, _reason} = error ->
+          error
+      end
+    else
+      {:error, "not found"}
+    end
   end
 
 
@@ -101,7 +115,7 @@ defmodule FunWithFlags.UI.Utils do
 
   def validate_flag_name(conn, name) do
     if Regex.match?(~r/^\w+$/, name) do
-      if flag_exists?(name) do
+      if safe_flag_exists?(name) do
         path = Path.join(conn.assigns[:namespace], "/flags/" <> name)
         {:fail, "A flag named '#{name}' <u><a href='#{path}' class='text-danger'>already exists</a></u>."}
       else
@@ -113,11 +127,24 @@ defmodule FunWithFlags.UI.Utils do
   end
 
 
-  defp flag_exists?(name) do
-    {:ok, all} = FunWithFlags.all_flag_names
-    this = String.to_atom(name)
-    Enum.member?(all, this)
+  # We don't want to just convert any user provided string to an atom because
+  # atoms are not garbage collected, and this could potentially leak memory
+  # if some endpoint was abused and hammered with random non-existing flag names.
+  #
+  # Getting the list of the current flag names will reference and create all the
+  # current atoms, and then `String.to_existing_atom/1` will simply raise an
+  # error if the name doesn't match any existing atom. That implicitly proves
+  # that there is no flag for that name
+  #
+  defp safe_flag_exists?(name) do
+    try do
+      {:ok, all} = FunWithFlags.all_flag_names()
+      Enum.member?(all, String.to_existing_atom(name))
+    rescue
+      ArgumentError -> false
+    end
   end
+
 
   def sanitize(name) do
     name

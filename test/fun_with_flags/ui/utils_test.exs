@@ -66,17 +66,17 @@ defmodule FunWithFlags.UI.UtilsTest do
 
 
   describe "get_flag(name)" do
-    test "it returns a disabled flag for non existing flags" do
+    test "it returns {:error, \"not found\"} for non existing flags" do
       name = unique_atom()
-      assert %Flag{name: ^name, gates: []} = Utils.get_flag(to_string(name))
+      assert {:error, "not found"} = Utils.get_flag(to_string(name))
     end
 
-    test "it returns a flag for exsisting flags" do
+    test "it returns {:ok, flag} for exsisting flags" do
       name = unique_atom()
       FunWithFlags.enable(name, for_group: :berries)
 
       gate = Gate.new(:group, :berries, true)
-      assert %Flag{name: ^name, gates: [^gate]} = Utils.get_flag(to_string(name))
+      assert {:ok, %Flag{name: ^name, gates: [^gate]}} = Utils.get_flag(to_string(name))
     end
   end
 

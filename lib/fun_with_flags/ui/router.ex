@@ -85,10 +85,14 @@ defmodule FunWithFlags.UI.Router do
   # flag details
   #
   get "/flags/:name" do
-    flag = Utils.get_flag(name)
-    body = Templates.details(conn: conn, flag: flag)
-
-    html_resp(conn, 200, body)
+    case Utils.get_flag(name) do
+      {:ok, flag} ->
+        body = Templates.details(conn: conn, flag: flag)
+        html_resp(conn, 200, body)
+      {:error, _} ->
+        body = Templates.not_found(conn: conn, name: name)
+        html_resp(conn, 404, body)
+    end
   end
 
 
@@ -193,7 +197,7 @@ defmodule FunWithFlags.UI.Router do
         end
         redirect_to conn, "/flags/#{name}#actor_#{actor_id}"
       {:fail, reason} ->
-        flag = Utils.get_flag(name)
+        {:ok, flag} = Utils.get_flag(name)
         body = Templates.details(conn: conn, flag: flag, actor_error_message: "The actor ID #{reason}.")
         html_resp(conn, 400, body)
     end
@@ -217,7 +221,7 @@ defmodule FunWithFlags.UI.Router do
         end
         redirect_to conn, "/flags/#{name}#group_#{group_name}"
       {:fail, reason} ->
-        flag = Utils.get_flag(name)
+        {:ok, flag} = Utils.get_flag(name)
         body = Templates.details(conn: conn, flag: flag, group_error_message: "The group name #{reason}.")
         html_resp(conn, 400, body)
     end

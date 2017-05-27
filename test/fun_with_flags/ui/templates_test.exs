@@ -128,4 +128,17 @@ defmodule FunWithFlags.UI.TemplatesTest do
       assert String.contains?(out, ~s{<form id="new-flag-form" action="/pear/flags" method="post">})
     end
   end
+
+  describe "not_found()" do
+    test "it renders", %{conn: conn} do
+      out = Templates.not_found(conn: conn, name: "watermelon")
+      assert is_binary(out)
+    end
+
+    test "it includes the right content", %{conn: conn} do
+      out = Templates.not_found(conn: conn, name: "watermelon")
+      assert String.contains?(out, "<title>FunWithFlags - Not Found</title>")
+      assert String.contains?(out, ~s{The flag <strong>watermelon</strong> doesn't exist.})
+    end
+  end
 end

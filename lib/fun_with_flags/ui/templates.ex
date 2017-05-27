@@ -10,6 +10,7 @@ defmodule FunWithFlags.UI.Templates do
     index: "index",
     details: "details",
     new: "new",
+    not_found: "not_found",
     _boolean_row: "rows/_boolean",
     _actor_row: "rows/_actor",
     _group_row: "rows/_group",

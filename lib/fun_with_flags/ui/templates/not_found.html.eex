@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%= _head(conn: @conn, title: "Not Found") %>
+  <body>
+    <nav id="fwf-top-bar" class="navbar navbar-inverse navbar-toggleable-xl">
+      <a class="navbar-brand" href="https://github.com/tompave/fun_with_flags">FunWithFlags</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="<%= path(@conn, "/flags") %>">all flags</a>
+          </li>
+
+          <span class="navbar-text">
+            &gt;
+          </span>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="<%= path(@conn, "/flags/#{@name}") %>"><%= @name %></a>
+          </li>
+        </ul>
+
+        <a href="<%= path(@conn, "/new") %>" class="btn btn-secondary">New Flag</a>
+      </div>
+    </nav>
+
+    <div class="container mt-3">
+      <div class="alert alert-danger" role="alert">
+        The flag <strong><%= @name %></strong> doesn't exist.
+      </div>
+    </div>
+  </body>
+</html>

@@ -84,6 +84,25 @@ defmodule FunWithFlags.UI.RouterTest do
   end
 
 
+  describe "GET /flags/:name" do
+    test "when the flag exists, it responds the the details page" do
+      {:ok, true} = FunWithFlags.enable :coconut
+
+      conn = request!(:get, "/flags/coconut")
+      assert 200 = conn.status
+      assert is_binary(conn.resp_body)
+      assert ["text/html; charset=utf-8"] = get_resp_header(conn, "content-type")
+    end
+
+    test "when the flag doesn't exists, it responds the the details page" do
+      conn = request!(:get, "/flags/#{unique_atom()}")
+      assert 404 = conn.status
+      assert is_binary(conn.resp_body)
+      assert ["text/html; charset=utf-8"] = get_resp_header(conn, "content-type")
+    end
+  end
+
+
   # For GET and DELETE
   #
   defp request!(method, path) do

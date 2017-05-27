@@ -122,6 +122,6 @@ It requires [`fun_with_flags`](https://hex.pm/packages/fun_with_flags), see its 
 
 ```elixir
 def deps do
-  [{:fun_with_flags_ui, "~> 0.0.3"}]
+  [{:fun_with_flags_ui, "~> 0.1.0"}]
 end
 ```

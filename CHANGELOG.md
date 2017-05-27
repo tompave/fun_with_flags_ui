@@ -4,6 +4,7 @@
 
 * Visiting the details page for a non-exising flag will now render a 404 page, rather than displaying the details page with the flag disabled.
 * Fixed an issue where atoms where being dynamically created when requesting the details page for non existing flags.
+* Updated `fun_with_flags` dependency.
 
 ## v0.0.3
 

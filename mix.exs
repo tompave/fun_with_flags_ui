@@ -43,7 +43,7 @@ defmodule FunWithFlagsUi.Mixfile do
     [
       {:plug, "~> 1.3.5"},
       {:cowboy, "~> 1.1", optional: true},
-      {:fun_with_flags, "~> 0.7.1"},
+      {:fun_with_flags, "~> 0.8"},
       {:ex_doc, ">= 0.0.0", only: :dev},
     ]
   end

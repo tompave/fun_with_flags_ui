@@ -117,7 +117,8 @@ For this reason this library enforces some stricter rules when creating flags an
 
 ## Installation
 
-The package can be installed by adding `fun_with_flags_ui` to your list of dependencies in `mix.exs`:
+The package can be installed by adding `fun_with_flags_ui` to your list of dependencies in `mix.exs`.  
+It requires [`fun_with_flags`](https://hex.pm/packages/fun_with_flags), see its [installation documentation](https://github.com/tompave/fun_with_flags#installation) for more details.
 
 ```elixir
 def deps do

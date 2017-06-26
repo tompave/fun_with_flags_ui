@@ -103,12 +103,17 @@ defmodule FunWithFlags.UI.TemplatesTest do
     test "with actors and groups it contains their rows", %{conn: conn, flag: flag} do
       group_gate = %Gate{type: :group, for: :rocks, enabled: true}
       actor_gate = %Gate{type: :actor, for: "moss:123", enabled: true}
-      flag = %Flag{flag | gates: [actor_gate, group_gate]}
+      actor_gate_with_transform = %Gate{type: :actor, for: {"user:123", "User 123"}, enabled: true}
+      flag = %Flag{flag | gates: [actor_gate, actor_gate_with_transform, group_gate]}
 
       out = Templates.details(conn: conn, flag: flag)
 
       assert String.contains?(out, ~s{<div id="actor_moss:123"})
       assert String.contains?(out, ~s{<form action="/pear/flags/avocado/actors/moss:123" method="post"})
+
+      assert String.contains?(out, ~s{<div id="actor_user:123"})
+      assert String.contains?(out, ~s{User 123})
+      assert String.contains?(out, ~s{<form action="/pear/flags/avocado/actors/user:123" method="post"})
 
       assert String.contains?(out, ~s{<div id="group_rocks"})
       assert String.contains?(out, ~s{<form action="/pear/flags/avocado/groups/rocks" method="post"})

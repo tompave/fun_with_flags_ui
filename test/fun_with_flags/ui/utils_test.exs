@@ -2,6 +2,7 @@ defmodule FunWithFlags.UI.UtilsTest do
   use ExUnit.Case, async: true
 
   alias FunWithFlags.UI.Utils
+  alias FunWithFlags.UI.TestUser
   alias FunWithFlags.{Flag, Gate}
 
   import FunWithFlags.UI.TestUtils
@@ -76,6 +77,14 @@ defmodule FunWithFlags.UI.UtilsTest do
       FunWithFlags.enable(name, for_group: :berries)
 
       gate = Gate.new(:group, :berries, true)
+      assert {:ok, %Flag{name: ^name, gates: [^gate]}} = Utils.get_flag(to_string(name))
+    end
+
+    test "it transforms actor aliases" do
+      name = unique_atom()
+      FunWithFlags.enable(name, for_actor: %TestUser{id: 123})
+
+      gate = %Gate{type: :actor, for: {"user:123", "User 123"}, enabled: true}
       assert {:ok, %Flag{name: ^name, gates: [^gate]}} = Utils.get_flag(to_string(name))
     end
   end

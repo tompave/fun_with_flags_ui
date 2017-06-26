@@ -51,6 +51,11 @@ defmodule FunWithFlags.UI.Templates do
     |> Enum.join(", ")
   end
 
+  def gate_alias({_, target_alias}), do: target_alias
+  def gate_alias(target), do: target
+
+  def gate_for({target_for, _}), do: target_for
+  def gate_for(target), do: target
 
   def path(conn, path) do
     Path.join(conn.assigns[:namespace], path)

@@ -69,8 +69,8 @@ defmodule FunWithFlags.UI.Utils do
   def get_flag(name) do
     if safe_flag_exists?(name) do
       case FunWithFlags.SimpleStore.lookup(String.to_existing_atom(name)) do
-        {:ok, _flag} = result ->
-          result
+        {:ok, flag} ->
+          {:ok, alias_targets(flag)}
         {:error, _reason} = error ->
           error
       end
@@ -149,6 +149,18 @@ defmodule FunWithFlags.UI.Utils do
   def sanitize(name) do
     name
     |> String.trim()
+  end
+
+  defp alias_targets(flag) do
+    config = Application.get_env(:fun_with_flags_ui, :flag_page, [])
+    alias_fn = Keyword.get(config, :alias_fn, nil)
+
+    case alias_fn do
+      {mod, fun} ->
+        apply(mod, fun, [flag])
+      _ ->
+        flag
+    end
   end
 
   def validate(name) do

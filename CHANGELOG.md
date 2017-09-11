@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.3.0
+
+* Update `fun_with_flags` to `0.10`, which allows binary group names.
+* Stop converting submitted group names to atoms.
+
 ## v0.2.0
 
 * Updated dependencies.

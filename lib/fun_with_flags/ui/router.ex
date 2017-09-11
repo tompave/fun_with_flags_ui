@@ -156,7 +156,7 @@ defmodule FunWithFlags.UI.Router do
   patch "/flags/:name/groups/:group_name" do
     enabled = Utils.parse_bool(conn.params["enabled"])
     flag_name = String.to_existing_atom(name)
-    group_name = String.to_atom(group_name)
+    group_name = to_string(group_name)
 
     if enabled do
       FunWithFlags.enable(flag_name, for_group: group_name)
@@ -172,7 +172,7 @@ defmodule FunWithFlags.UI.Router do
   #
   delete "/flags/:name/groups/:group_name" do
     flag_name = String.to_existing_atom(name)
-    group_name = String.to_existing_atom(group_name)
+    group_name = to_string(group_name)
 
     FunWithFlags.clear(flag_name, for_group: group_name)
 
@@ -213,7 +213,6 @@ defmodule FunWithFlags.UI.Router do
     case Utils.validate(group_name) do
       :ok ->
         enabled = Utils.parse_bool(conn.params["enabled"])
-        group_name = String.to_atom(group_name)
         if enabled do
           FunWithFlags.enable(flag_name, for_group: group_name)
         else

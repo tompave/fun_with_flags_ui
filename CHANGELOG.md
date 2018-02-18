@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* Require `fun_with_flags 0.11`.
+
 ## v0.3.0
 
 * Update `fun_with_flags` to `0.10`, which allows binary group names.

@@ -34,8 +34,15 @@ defmodule FunWithFlags.UI.Templates do
     end
   end
 
+  def html_status_for({:ok, bool}) do
+    html_status_for(bool)
+  end
 
-  def html_status_for(bool) do
+  def html_status_for(:missing) do
+    ~s{<span class="badge badge-default">Disabled (missing)</span>}
+  end
+
+  def html_status_for(bool) when is_boolean(bool) do
     if bool do
       ~s(<span class="badge badge-success">Enabled</span>)
     else

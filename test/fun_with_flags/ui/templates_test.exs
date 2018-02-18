@@ -75,11 +75,30 @@ defmodule FunWithFlags.UI.TemplatesTest do
 
     test "it includes the global toggle, the new actor and new group forms, and the global delete form", %{conn: conn, flag: flag} do
       out = Templates.details(conn: conn, flag: flag)
-
       assert String.contains?(out, ~s{<form id="fwf-global-toggle-form" action="/pear/flags/avocado/boolean" method="post"})
       assert String.contains?(out, ~s{<form id="fwf-new-actor-form" action="/pear/flags/avocado/actors" method="post"})
       assert String.contains?(out, ~s{<form id="fwf-new-group-form" action="/pear/flags/avocado/groups" method="post"})
       assert String.contains?(out, ~s{<form id="fwf-delete-flag-form" action="/pear/flags/avocado" method="post">})
+    end
+
+    test "with no boolean gate, it includes both the enabled and disable boolean buttons", %{conn: conn, flag: flag} do
+      out = Templates.details(conn: conn, flag: flag)
+      assert String.contains?(out, ~s{<button id="enable-boolean-btn" type="submit"})
+      assert String.contains?(out, ~s{<button id="disable-boolean-btn" type="submit"})
+    end
+
+    test "with an enabled boolean gate, it includes both the disable and clear boolean buttons", %{conn: conn, flag: flag} do
+      f = %Flag{flag | gates: [Gate.new(:boolean, true)]}
+      out = Templates.details(conn: conn, flag: f)
+      assert String.contains?(out, ~s{<button id="disable-boolean-btn" type="submit"})
+      assert String.contains?(out, ~s{<button id="clear-boolean-btn" type="submit"})
+    end
+
+    test "with a disabled boolean gate, it includes both the enable and clear boolean buttons", %{conn: conn, flag: flag} do
+      f = %Flag{flag | gates: [Gate.new(:boolean, false)]}
+      out = Templates.details(conn: conn, flag: f)
+      assert String.contains?(out, ~s{<button id="enable-boolean-btn" type="submit"})
+      assert String.contains?(out, ~s{<button id="clear-boolean-btn" type="submit"})
     end
 
 

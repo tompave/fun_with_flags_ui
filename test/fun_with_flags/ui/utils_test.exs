@@ -18,6 +18,11 @@ defmodule FunWithFlags.UI.UtilsTest do
     end
 
     test "with a globally disabled flag it returns :closed" do
+      flag = %Flag{name: :pineapple, gates: [Gate.new(:boolean, false)]}
+      assert :closed = Utils.get_flag_status(flag)
+    end
+
+    test "with a flag without any gate it returns :closed" do
       flag = %Flag{name: :pineapple, gates: []}
       assert :closed = Utils.get_flag_status(flag)
     end
@@ -25,6 +30,23 @@ defmodule FunWithFlags.UI.UtilsTest do
     test "with a partially enabled flag it returns :half_open" do
       flag = %Flag{name: :pineapple, gates: [Gate.new(:group, :people, true)]}
       assert :half_open = Utils.get_flag_status(flag)
+    end
+  end
+
+  describe "boolean_gate_open?(flag)" do
+    test "with a globally enabled flag it returns {:ok, true}" do
+      flag = %Flag{name: :pineapple, gates: [Gate.new(:boolean, true)]}
+      assert {:ok, true} = Utils.boolean_gate_open?(flag)
+    end
+
+    test "with a globally disabled flag it returns {:ok, false}" do
+      flag = %Flag{name: :pineapple, gates: [Gate.new(:boolean, false)]}
+      assert {:ok, false} = Utils.boolean_gate_open?(flag)
+    end
+
+    test "with a flag without boolean gate it returns :missing" do
+      flag = %Flag{name: :pineapple, gates: [Gate.new(:group, :people, true)]}
+      assert :missing = Utils.boolean_gate_open?(flag)
     end
   end
 

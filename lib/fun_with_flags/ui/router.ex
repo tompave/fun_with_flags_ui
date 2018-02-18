@@ -123,6 +123,15 @@ defmodule FunWithFlags.UI.Router do
   end
 
 
+  # to clear a boolean gate
+  #
+  delete "/flags/:name/boolean" do
+    flag_name = String.to_existing_atom(name)
+    FunWithFlags.clear(flag_name, boolean: true)
+    redirect_to conn, "/flags/#{name}"
+  end
+
+
   # to toggle an actor gate
   #
   patch "/flags/:name/actors/:actor_id" do

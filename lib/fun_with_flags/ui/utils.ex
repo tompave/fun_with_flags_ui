@@ -5,19 +5,25 @@ defmodule FunWithFlags.UI.Utils do
 
 
   def get_flag_status(%Flag{gates: gates} = flag) do
-    if boolean_gate_open?(flag) do
-      :fully_open
-    else
-      if any_other_gate_open?(gates) do
-        :half_open
-      else
-        :closed
-      end
+    case boolean_gate_open?(flag) do
+      {:ok, true} ->
+        :fully_open
+      _ ->
+        if any_other_gate_open?(gates) do
+          :half_open
+        else
+          :closed
+        end
     end
   end
 
-  defp boolean_gate_open?(flag) do
-    Flag.enabled?(flag)
+  def boolean_gate_open?(%Flag{gates: gates}) do
+    case Enum.find(gates, &Gate.boolean?/1) do
+      %Gate{type: :boolean, enabled: enabled} ->
+        {:ok, enabled}
+      nil ->
+        :missing
+    end
   end
 
   defp any_other_gate_open?(gates) do

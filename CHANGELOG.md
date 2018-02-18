@@ -3,6 +3,7 @@
 ## Unreleased
 
 * Require `fun_with_flags 0.11`.
+* Add support for clearing boolean gates, and display when a boolan gate is missing.
 
 ## v0.3.0
 

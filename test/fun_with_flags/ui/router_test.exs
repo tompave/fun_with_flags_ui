@@ -4,6 +4,7 @@ defmodule FunWithFlags.UI.RouterTest do
   import FunWithFlags.UI.TestUtils
 
   alias FunWithFlags.UI.Router
+  alias FunWithFlags.{Flag, Gate}
 
   setup_all do
     on_exit(__MODULE__, fn() -> clear_redis_test_db() end)
@@ -99,6 +100,21 @@ defmodule FunWithFlags.UI.RouterTest do
       assert 404 = conn.status
       assert is_binary(conn.resp_body)
       assert ["text/html; charset=utf-8"] = get_resp_header(conn, "content-type")
+    end
+  end
+
+
+  describe "DELETE /flags/:name/boolean" do
+    test "when the flag exists, it deletes its boolean gate and redirects to the flag page" do
+      {:ok, true} = FunWithFlags.enable :frozen_yogurt
+
+      assert %Flag{name: :frozen_yogurt, gates: [%Gate{type: :boolean}]} = FunWithFlags.get_flag(:frozen_yogurt)
+
+      conn = request!(:delete, "/flags/frozen_yogurt/boolean")
+      assert 302 = conn.status
+      assert ["/flags/frozen_yogurt"] = get_resp_header(conn, "location")
+
+      assert %Flag{name: :frozen_yogurt, gates: []} = FunWithFlags.get_flag(:frozen_yogurt)
     end
   end
 

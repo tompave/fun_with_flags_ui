@@ -1,20 +1,35 @@
-<% is_enabled = Flag.enabled?(@flag) %>
+<%
+  status = Utils.boolean_gate_open?(@flag)
+  is_enabled = case status do
+    {:ok, bool} -> bool
+    :missing -> false
+  end
+%>
 
 <div class="card-block">
   <span class="fwf-global-flag-status">
-    <%= html_status_for is_enabled %>
+    <%= html_status_for status %>
   
-
     <form id="fwf-global-toggle-form" action="<%= path(@conn, "/flags/#{@flag.name}/boolean") %>" method="post" class="fwf-inline-toggle">
       <input type="hidden" name="_method" value="PATCH">
 
-      <%= if is_enabled do %>
+      <%= if is_enabled or (status == :missing) do %>
         <input type="hidden" name="enabled" value="false">
-        <button type="submit" class="btn btn-sm btn-outline-danger">Disable</button>
-      <% else %>
+        <button id="disable-boolean-btn" type="submit" class="btn btn-sm btn-outline-danger">Disable</button>
+      <% end %>
+
+      <%= if !is_enabled or (status == :missing) do %>
         <input type="hidden" name="enabled" value="true">
-        <button type="submit" class="btn btn-sm btn-outline-success">Enable</button>
+        <button id="enable-boolean-btn" type="submit" class="btn btn-sm btn-outline-success">Enable</button>
       <% end %>
     </form>
+
+
+    <%= unless status == :missing do %>
+      <form action="<%= path(@conn, "/flags/#{@flag.name}/boolean") %>" method="post" class="float-right">
+        <input type="hidden" name="_method" value="DELETE">
+        <button id="clear-boolean-btn" type="submit" class="btn btn-sm btn-secondary" data-confirm="Are you sure you want to clear the boolean gate? A missing boolean gate will be the same a as disabled boolean gate, and this option is provided mainly for debugging purposes.">Clear</button>
+      </form>
+    <% end %>
   </span>
 </div>

@@ -105,17 +105,22 @@ defmodule FunWithFlags.UI.TemplatesTest do
     test "with no gates it reports the lists as empty", %{conn: conn, flag: flag} do
       group_gate = %Gate{type: :group, for: :rocks, enabled: true}
       actor_gate = %Gate{type: :actor, for: "moss:123", enabled: true}
+      ptime_gate = %Gate{type: :percentage_of_time, for: 0.1, enabled: true}
 
-      no_actors = %Flag{flag | gates: [group_gate]}
+      no_actors = %Flag{flag | gates: [group_gate, ptime_gate]}
       out = Templates.details(conn: conn, flag: no_actors)
       assert String.contains?(out, ~s{none})
 
-      no_groups = %Flag{flag | gates: [actor_gate]}
+      no_groups = %Flag{flag | gates: [actor_gate, ptime_gate]}
       out = Templates.details(conn: conn, flag: no_groups)
       assert String.contains?(out, ~s{none})
 
-      with_both = %Flag{flag | gates: [actor_gate, group_gate]}
-      out = Templates.details(conn: conn, flag: with_both)
+      no_percent = %Flag{flag | gates: [actor_gate, group_gate]}
+      out = Templates.details(conn: conn, flag: no_percent)
+      assert String.contains?(out, ~s{none})
+
+      with_all = %Flag{flag | gates: [actor_gate, group_gate, ptime_gate]}
+      out = Templates.details(conn: conn, flag: with_all)
       refute String.contains?(out, ~s{none})
     end
 

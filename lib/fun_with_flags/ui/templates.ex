@@ -14,6 +14,7 @@ defmodule FunWithFlags.UI.Templates do
     _boolean_row: "rows/_boolean",
     _actor_row: "rows/_actor",
     _group_row: "rows/_group",
+    _percentage_row: "rows/_percentage",
     _new_actor_row: "rows/_new_actor",
     _new_group_row: "rows/_new_group",
   ]

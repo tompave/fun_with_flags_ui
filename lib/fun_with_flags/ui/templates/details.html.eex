@@ -95,6 +95,34 @@
         </div>
       </div>
 
+
+      <div id="percentage_gates" class="row mb-3">
+        <div class="col">
+          <div class="card">
+            <h5 class="card-header">
+              Percentage
+            </h5>
+            <ul class="list-group list-group-flush fwf-gate-list">
+              <% percentage_gate = Utils.percentage_gate(@flag) %>
+
+              <%= if is_nil(percentage_gate) do %>
+                <li class="list-group-item">
+                  none
+                </li>
+              <% else %>
+                <li class="list-group-item px-0">
+                  <%= _percentage_row(conn: @conn, flag: @flag, gate: percentage_gate) %>
+                </li>
+              <% end %>
+
+              <li class="list-group-item">
+                
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
       <div id="danger_zone" class="row mb-3">
         <div class="col">
           <div class="card">

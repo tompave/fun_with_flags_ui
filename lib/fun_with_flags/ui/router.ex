@@ -189,6 +189,15 @@ defmodule FunWithFlags.UI.Router do
   end
 
 
+  # to clear a percentage gate
+  #
+  delete "/flags/:name/percentage" do
+    flag_name = String.to_existing_atom(name)
+    FunWithFlags.clear(flag_name, for_percentage: true)
+    redirect_to conn, "/flags/#{name}"
+  end
+
+
   # to add a new actor to a flag
   #
   post "/flags/:name/actors" do

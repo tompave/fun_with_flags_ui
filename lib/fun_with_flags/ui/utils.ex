@@ -111,6 +111,12 @@ defmodule FunWithFlags.UI.Utils do
     |> Enum.sort_by(&(&1.for))
   end
 
+  def percentage_gate(%Flag{gates: gates}) do
+    Enum.find(gates, fn(g) ->
+      Gate.percentage_of_time?(g)
+    end)
+  end
+
 
   def parse_bool("true"), do: true
   def parse_bool("1"), do: true

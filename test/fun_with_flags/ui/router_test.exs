@@ -107,14 +107,31 @@ defmodule FunWithFlags.UI.RouterTest do
   describe "DELETE /flags/:name/boolean" do
     test "when the flag exists, it deletes its boolean gate and redirects to the flag page" do
       {:ok, true} = FunWithFlags.enable :frozen_yogurt
+      {:ok, true} = FunWithFlags.enable :frozen_yogurt, for_group: "some_group" 
 
-      assert %Flag{name: :frozen_yogurt, gates: [%Gate{type: :boolean}]} = FunWithFlags.get_flag(:frozen_yogurt)
+      assert %Flag{name: :frozen_yogurt, gates: [%Gate{type: :boolean}, %Gate{type: :group}]} = FunWithFlags.get_flag(:frozen_yogurt)
 
       conn = request!(:delete, "/flags/frozen_yogurt/boolean")
       assert 302 = conn.status
       assert ["/flags/frozen_yogurt"] = get_resp_header(conn, "location")
 
-      assert %Flag{name: :frozen_yogurt, gates: []} = FunWithFlags.get_flag(:frozen_yogurt)
+      assert %Flag{name: :frozen_yogurt, gates: [%Gate{type: :group}]} = FunWithFlags.get_flag(:frozen_yogurt)
+    end
+  end
+
+
+  describe "DELETE /flags/:name/percentage" do
+    test "when the flag exists, it deletes its current percentage gate and redirects to the flag page" do
+      {:ok, true} = FunWithFlags.enable :pizza, for_percentage_of: {:time, 0.5}
+      {:ok, true} = FunWithFlags.enable :pizza, for_group: "some_group" 
+
+      assert %Flag{name: :pizza, gates: [%Gate{type: :percentage_of_time, for: 0.5}, %Gate{type: :group}]} = FunWithFlags.get_flag(:pizza)
+
+      conn = request!(:delete, "/flags/pizza/percentage")
+      assert 302 = conn.status
+      assert ["/flags/pizza"] = get_resp_header(conn, "location")
+
+      assert %Flag{name: :pizza, gates: [%Gate{type: :group}]} = FunWithFlags.get_flag(:pizza)
     end
   end
 

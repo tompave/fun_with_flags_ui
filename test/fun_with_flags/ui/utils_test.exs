@@ -132,9 +132,10 @@ defmodule FunWithFlags.UI.UtilsTest do
       g2 = Gate.new(:group, :people, true)
       a1 = %Gate{type: :actor, for: "actor:aaa", enabled: true}
       a2 = %Gate{type: :actor, for: "actor:bbb", enabled: true}
+      p1 = %Gate{type: :percentage_of_time, for: 0.42, enabled: true}
 
-      flag = %Flag{name: unique_atom(), gates: [a1, g2, b0, a2, g1]}
-      {:ok, flag: flag, b0: b0, a1: a1, a2: a2, g1: g1, g2: g2}
+      flag = %Flag{name: unique_atom(), gates: [a1, g2, b0, a2, g1, p1]}
+      {:ok, flag: flag, b0: b0, a1: a1, a2: a2, g1: g1, g2: g2, p1: p1}
     end
 
     test "boolean_gate(flag)", %{flag: flag, b0: b0} do
@@ -149,6 +150,11 @@ defmodule FunWithFlags.UI.UtilsTest do
 
     test "group_gates(flag)", %{flag: flag, g1: g1, g2: g2} do
       assert [^g1, ^g2] = Utils.group_gates(flag)
+    end
+
+
+    test "percentage_gate(flag)", %{flag: flag, p1: p1} do
+      assert ^p1 = Utils.percentage_gate(flag)
     end
   end
 

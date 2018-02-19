@@ -4,7 +4,7 @@
 
 * Require `fun_with_flags 0.11`.
 * Add support for clearing boolean gates, and display when a boolan gate is missing.
-* Add support for Percentage gates.
+* Add support for the percentage gates: `percentage_of_time` and `percentage_of_actors`.
 
 ## v0.3.0
 

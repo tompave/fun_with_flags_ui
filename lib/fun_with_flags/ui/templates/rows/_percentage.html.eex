@@ -1,6 +1,7 @@
 <%
   {gate_type, human_name} = case @gate.type do
     :percentage_of_time -> {"time", "percent of time"}
+    :percentage_of_actors -> {"actors", "percent of actors"}
     _ -> {"n/a", "n/a"}
   end
 %>

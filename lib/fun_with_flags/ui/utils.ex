@@ -113,7 +113,7 @@ defmodule FunWithFlags.UI.Utils do
 
   def percentage_gate(%Flag{gates: gates}) do
     Enum.find(gates, fn(g) ->
-      Gate.percentage_of_time?(g)
+      Gate.percentage_of_time?(g) or Gate.percentage_of_actors?(g)
     end)
   end
 

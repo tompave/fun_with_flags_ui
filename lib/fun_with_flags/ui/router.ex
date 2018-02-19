@@ -245,6 +245,24 @@ defmodule FunWithFlags.UI.Router do
   end
 
 
+  # to add or replace a percentage gate
+  #
+  post "/flags/:name/percentage" do
+    flag_name = String.to_existing_atom(name)
+    type = Utils.parse_percentage_type(conn.params["percent_type"])
+
+    case Utils.parse_and_validate_float(conn.params["percent_value"]) do
+      {:ok, float} ->
+        FunWithFlags.enable(flag_name, for_percentage_of: {type, float})
+        redirect_to conn, "/flags/#{name}#percentage_gate"
+      {:fail, reason} ->
+        {:ok, flag} = Utils.get_flag(name)
+        body = Templates.details(conn: conn, flag: flag, percentage_error_message: "The percentage value #{reason}.")
+        html_resp(conn, 400, body)
+    end
+  end
+
+
   match _ do
     send_resp(conn, 404, "")
   end

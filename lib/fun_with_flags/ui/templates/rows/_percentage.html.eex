@@ -4,7 +4,7 @@
     _ -> {"n/a", "n/a"}
   end
 %>
-<div id="percentage-<%= @gate.type %>" class="container fwf-I-hate-grids">
+<div id="percentage_gate" class="container fwf-I-hate-grids">
   <div class="row no-gutters">
     <div class="col-lg-6 col-md-6 col-sm-5 col-4 text-left">
       <span class="badge badge-default">% of <%= gate_type %></span>

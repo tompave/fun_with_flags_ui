@@ -116,7 +116,7 @@
               <% end %>
 
               <li class="list-group-item">
-                
+                <%= _percentage_form_row(conn: @conn, flag: @flag, gate: percentage_gate, error_message: assigns[:percentage_error_message]) %>
               </li>
             </ul>
           </div>

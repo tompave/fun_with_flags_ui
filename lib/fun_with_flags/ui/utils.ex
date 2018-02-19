@@ -176,6 +176,36 @@ defmodule FunWithFlags.UI.Utils do
   end
 
 
+  def parse_and_validate_float(string) do
+    cond do
+      blank?(string) ->
+        {:fail, "can't be blank"}
+      true ->
+        case Float.parse(string) do
+          {float, _} when float > 0 and float < 1 ->
+            {:ok, float}
+          {_float, _} ->
+            {:fail, "is outside the '0.0 < x < 1.0' range"}
+          :error ->
+            {:fail, "is not a valid decimal number"}
+        end
+    end
+  end
+
+
+  # If we have an unexpected value here it's because people
+  # are messing around with the <input>s in the form. Just
+  # use a default for unexpected values.
+  #
+  def parse_percentage_type(string) do
+    case string do
+      "time" -> :time
+      "actors" -> :actors
+      _ -> :time
+    end
+  end
+
+
   # Deal with floating point rounding errors without
   # losing precision.
   #

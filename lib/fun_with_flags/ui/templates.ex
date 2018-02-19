@@ -17,6 +17,7 @@ defmodule FunWithFlags.UI.Templates do
     _percentage_row: "rows/_percentage",
     _new_actor_row: "rows/_new_actor",
     _new_group_row: "rows/_new_group",
+    _percentage_form_row: "rows/_percentage_form",
   ]
 
   for {fn_name, file_name} <- @templates do

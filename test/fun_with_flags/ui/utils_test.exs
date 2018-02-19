@@ -222,6 +222,52 @@ defmodule FunWithFlags.UI.UtilsTest do
     end
   end
 
+  describe "parse_and_validate_float(float_string)" do
+    test "it rejects blanks" do
+      assert {:fail, "can't be blank"} = Utils.parse_and_validate_float("")
+      assert {:fail, "can't be blank"} = Utils.parse_and_validate_float(" ")
+      assert {:fail, "can't be blank"} = Utils.parse_and_validate_float("   ")
+      assert {:fail, "can't be blank"} = Utils.parse_and_validate_float("\n")
+    end
+
+    test "it rejects invalid strings" do
+      assert {:fail, "is not a valid decimal number"} = Utils.parse_and_validate_float("a")
+      assert {:fail, "is not a valid decimal number"} = Utils.parse_and_validate_float("foo")
+      assert {:fail, "is not a valid decimal number"} = Utils.parse_and_validate_float("bar0.11")
+    end
+
+    test "it rejects floats smaller than equal to 0 or larger than or equal to 1" do
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("0")
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("0.0")
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("1")
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("1.0")
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("-2")
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("11")
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("-2.5")
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("-0.01")
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("1.01")
+    end
+
+    test "it parses and returns valid floats" do
+      assert {:ok, 0.1} = Utils.parse_and_validate_float("0.1")
+      assert {:ok, 0.1} = Utils.parse_and_validate_float("0.1000")
+      assert {:ok, 0.999999999} = Utils.parse_and_validate_float("0.999999999")
+      assert {:ok, 0.54} = Utils.parse_and_validate_float("0.54")
+    end
+  end
+
+
+  describe "parse_percentage_type(string)" do
+    test "it parses and symbolizes the known types" do
+      assert :time = Utils.parse_percentage_type("time")
+      assert :actors = Utils.parse_percentage_type("actors")
+    end
+
+    test "it converts unknown values to the default 'time'" do
+      assert :time = Utils.parse_percentage_type("foobar")
+      assert :time = Utils.parse_percentage_type("")
+    end
+  end
 
   describe "as_percentage(float)" do
     test "it returns float * 100 without rounding errors" do

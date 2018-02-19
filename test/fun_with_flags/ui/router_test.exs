@@ -6,6 +6,11 @@ defmodule FunWithFlags.UI.RouterTest do
   alias FunWithFlags.UI.Router
   alias FunWithFlags.{Flag, Gate}
 
+  setup do
+    clear_redis_test_db()
+    :ok
+  end
+
   setup_all do
     on_exit(__MODULE__, fn() -> clear_redis_test_db() end)
     :ok
@@ -132,6 +137,64 @@ defmodule FunWithFlags.UI.RouterTest do
       assert ["/flags/pizza"] = get_resp_header(conn, "location")
 
       assert %Flag{name: :pizza, gates: [%Gate{type: :group}]} = FunWithFlags.get_flag(:pizza)
+    end
+  end
+
+
+
+  describe "POST /flags/:name/percentage" do
+    test "with no previous percentage gate it creates a new one, then redirects to the details page" do
+      {:ok, false} = FunWithFlags.disable :chocolate
+
+      assert %Flag{name: :chocolate, gates: [%Gate{type: :boolean}]} = FunWithFlags.get_flag(:chocolate)
+
+      conn = request!(:post, "/flags/chocolate/percentage", %{
+        percent_type: "time",
+        percent_value: "0.5"
+      })
+      assert 302 = conn.status
+      assert ["/flags/chocolate#percentage_gate"] = get_resp_header(conn, "location")
+
+      assert %Flag{name: :chocolate, gates: [
+        %Gate{type: :boolean},
+        %Gate{type: :percentage_of_time, for: 0.5},
+      ]} = FunWithFlags.get_flag(:chocolate)
+    end
+
+    test "with a previous percentage gate it replaces it, then redirects to the details page" do
+      {:ok, false} = FunWithFlags.disable :chocolate
+      {:ok, true} = FunWithFlags.enable :chocolate, for_percentage_of: {:time, 0.99}
+
+      assert %Flag{name: :chocolate, gates: [
+        %Gate{type: :boolean},
+        %Gate{type: :percentage_of_time, for: 0.99},
+      ]} = FunWithFlags.get_flag(:chocolate)
+
+      conn = request!(:post, "/flags/chocolate/percentage", %{
+        percent_type: "time",
+        percent_value: "0.5"
+      })
+      assert 302 = conn.status
+      assert ["/flags/chocolate#percentage_gate"] = get_resp_header(conn, "location")
+
+      assert %Flag{name: :chocolate, gates: [
+        %Gate{type: :boolean},
+        %Gate{type: :percentage_of_time, for: 0.5},
+      ]} = FunWithFlags.get_flag(:chocolate)
+    end
+
+
+    test "with invalid params, it renders the details page with errors" do
+      {:ok, false} = FunWithFlags.disable :chocolate
+
+      conn = request!(:post, "/flags/chocolate/percentage", %{
+        percent_type: "time",
+        percent_value: " "
+      })
+      assert 400 = conn.status
+      assert is_binary(conn.resp_body)
+      assert ["text/html; charset=utf-8"] = get_resp_header(conn, "content-type")
+      assert String.contains?(conn.resp_body, "The percentage value can't be blank.")
     end
   end
 

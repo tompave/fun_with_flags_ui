@@ -9,11 +9,11 @@
     <div class="col-lg-6 col-md-6 col-sm-5 col-4 text-left">
       <span class="badge badge-default">% of <%= gate_type %></span>
       -
-      <%= html_status_for @gate.enabled %> for <%= @gate.for * 100 %>% of <%= gate_type %>
+      <%= html_status_for @gate.enabled %> for <%= Utils.as_percentage(@gate.for) %>% of the <%= gate_type %>
     </div>
 
     <div class="col-lg-5 col-md-5 col-sm-5 col-5 text-left">
-      raw value: <code>0.0 < <%= @gate.for %> < 1.0</code>
+      raw value: <code><%= @gate.for %></code>
     </div>
 
     <div class="col-lg-1 col-md-1 col-sm-2 col-3 text-right">

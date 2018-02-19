@@ -174,4 +174,39 @@ defmodule FunWithFlags.UI.Utils do
         :ok
     end
   end
+
+
+  # Deal with floating point rounding errors without
+  # losing precision.
+  #
+  # for example, to avoid these:
+  #   0.421337 * 100 = 42.133700000000005
+  #   0.123457 * 100 = 12.345699999999999
+  #
+  def as_percentage(float) when is_float(float) do
+    percentage = float * 100
+
+    if round(percentage) == percentage do
+      # our job is done
+      percentage
+    else
+      # let's assume that here `percentage` has lots
+      # of decimal digits with a rounding error.
+      #
+      # We know that this will be `> 2`, because
+      # if it was `<= 2` then it would have
+      # short-circuited in the if.
+      decimal_digits = _decimal_digits(float)
+      Float.round(percentage, decimal_digits - 2)
+    end
+  end
+
+
+  defp _decimal_digits(float) do
+    float
+    |> Float.to_string()
+    |> String.split(".")
+    |> List.last()
+    |> String.length()
+  end
 end

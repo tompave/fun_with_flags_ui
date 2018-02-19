@@ -221,4 +221,16 @@ defmodule FunWithFlags.UI.UtilsTest do
       assert :ok = Utils.validate(:foo_bar_CiaoCiao)
     end
   end
+
+
+  describe "as_percentage(float)" do
+    test "it returns float * 100 without rounding errors" do
+      assert 42.1337 = Utils.as_percentage(0.421337) # 42.133700000000005
+      assert 12.3457 = Utils.as_percentage(0.123457) # 12.345699999999999
+      assert 10.0 = Utils.as_percentage(0.1)
+      assert 1.5 = Utils.as_percentage(0.015)
+      assert 99.0 = Utils.as_percentage(0.99)
+      assert 11.45 = Utils.as_percentage(0.1145)
+    end
+  end
 end

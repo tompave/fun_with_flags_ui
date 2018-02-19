@@ -1,12 +1,12 @@
 <span>
   <form id="fwf-new-actor-form" action="<%= path(@conn, "/flags/#{@flag.name}/actors") %>" method="post" class="form-inline">
     <%= if assigns[:error_message] do %>
-      <div class="input-group mr-2 has-danger">
+      <div class="input-group mr-2 has-danger fwf-wide-input">
         <div class="input-group-addon">actor ID</div>
         <input type="text" class="form-control form-control-danger" id="actor_id" name="actor_id" placeholder="e.g. user:123">
       </div>
     <% else %>
-      <div class="input-group mr-2">
+      <div class="input-group mr-2 fwf-wide-input">
         <div class="input-group-addon">actor ID</div>
         <input type="text" class="form-control" id="actor_id" name="actor_id" placeholder="e.g. user:123">
       </div>
@@ -23,7 +23,7 @@
       </label>
     </div>
 
-    <button type="submit" class="btn btn-primary ml-3">Add</button>
+    <button type="submit" class="btn btn-sm btn-primary ml-3">Add</button>
     <small class="form-text text-danger ml-3"><%= assigns[:error_message] %></small>
   </form>
 </span>

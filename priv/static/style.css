@@ -31,3 +31,7 @@ div.container.fwf-I-hate-grids {
     margin-right: 0;
     width: 100%;
 }
+
+div.input-group.fwf-wide-input {
+  width: 420px;
+}

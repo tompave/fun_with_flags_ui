@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.4.1
+
+* Remove compile-time call to `Application.ensure_started` that was causing noisy warning during compilation. [pull/2](https://github.com/tompave/fun_with_flags_ui/pull/2)
+
 ## v0.4.0
 
 * Require `fun_with_flags 1.0.0`.

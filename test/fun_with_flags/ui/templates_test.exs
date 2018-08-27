@@ -13,6 +13,7 @@ defmodule FunWithFlags.UI.TemplatesTest do
 
   setup do
     conn = Plug.Conn.assign(%Plug.Conn{}, :namespace, "/pear")
+    conn = Plug.Conn.assign(conn, :csrf_token, Plug.CSRFProtection.get_csrf_token())
     {:ok, conn: conn}
   end
 
@@ -71,6 +72,12 @@ defmodule FunWithFlags.UI.TemplatesTest do
       assert String.contains?(out, "<title>FunWithFlags - avocado</title>")
       assert String.contains?(out, ~s{<a href="/pear/new" class="btn btn-secondary">New Flag</a>})
       assert String.contains?(out, "<h1>avocado</h1>")
+    end
+
+    test "it includes the CSRF token", %{conn: conn, flag: flag} do
+      csrf_token = Plug.CSRFProtection.get_csrf_token()
+      out = Templates.details(conn: conn, flag: flag)
+      assert String.contains?(out, ~s{<input type="hidden" name="_csrf_token" value="#{csrf_token}">})
     end
 
     test "it includes the global toggle, the new actor and new group forms, and the global delete form", %{conn: conn, flag: flag} do

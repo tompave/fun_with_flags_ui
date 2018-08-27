@@ -3,6 +3,7 @@
 %>
 <span>
   <form id="fwf-new-group-form" action="<%= path(@conn, "/flags/#{@flag.name}/percentage") %>" method="post" class="form-inline">
+    <input type="hidden" name="_csrf_token" value="<%= @conn.assigns[:csrf_token] %>">
     <%= if assigns[:error_message] do %>
       <div class="input-group mr-2 has-danger fwf-wide-input">
         <div class="input-group-addon">percentage</div>

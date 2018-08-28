@@ -21,10 +21,11 @@
       </div>
     </nav>
 
-    <div class="container mt-3">      
+    <div class="container mt-3">
       <div class="row">
         <div class="col">
           <form id="new-flag-form" action="<%= path(@conn, "/flags") %>" method="post">
+            <input type="hidden" name="_csrf_token" value="<%= @conn.assigns[:csrf_token] %>">
 
             <%= if assigns[:error_message] do %>
               <div class="form-group has-danger">

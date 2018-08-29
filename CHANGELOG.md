@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.0
+
+* Add support for the [`Plug.CSRFProtection`](https://hexdocs.pm/plug/1.6.2/Plug.CSRFProtection.html) plug ([`protect_from_forgery`](https://hexdocs.pm/phoenix/1.3.4/Phoenix.Controller.html#protect_from_forgery/2) in Phoenix) plug. [pull/4](https://github.com/tompave/fun_with_flags_ui/pull/4)
+
 ## v0.4.1
 
 * Remove compile-time call to `Application.ensure_started` that was causing noisy warning during compilation. [pull/2](https://github.com/tompave/fun_with_flags_ui/pull/2)

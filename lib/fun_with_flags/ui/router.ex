@@ -23,6 +23,7 @@ defmodule FunWithFlags.UI.Router do
   plug Plug.Parsers, parsers: [:urlencoded]
   plug Plug.MethodOverride
 
+  plug :assign_csrf_token
   plug :match
   plug :dispatch
 
@@ -282,5 +283,11 @@ defmodule FunWithFlags.UI.Router do
   defp extract_namespace(conn, opts) do
     ns = opts[:namespace] || ""
     Plug.Conn.assign(conn, :namespace, "/" <> ns)
+  end
+
+
+  defp assign_csrf_token(conn, _opts) do
+    csrf_token = Plug.CSRFProtection.get_csrf_token()
+    Plug.Conn.assign(conn, :csrf_token, csrf_token)
   end
 end

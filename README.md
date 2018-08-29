@@ -24,6 +24,7 @@ defmodule MyPhoenixApp.Web.Router do
   pipeline :mounted_apps do
     plug :accepts, ["html"]
     plug :put_secure_browser_headers
+    plug :protect_from_forgery
   end
 
   scope path: "/feature-flags" do

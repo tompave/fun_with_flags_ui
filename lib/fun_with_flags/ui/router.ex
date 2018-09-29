@@ -20,6 +20,8 @@ defmodule FunWithFlags.UI.Router do
     at: "/assets",
     from: :fun_with_flags_ui
 
+  plug :protect_from_forgery
+
   plug Plug.Parsers, parsers: [:urlencoded]
   plug Plug.MethodOverride
 
@@ -289,5 +291,10 @@ defmodule FunWithFlags.UI.Router do
   defp assign_csrf_token(conn, _opts) do
     csrf_token = Plug.CSRFProtection.get_csrf_token()
     Plug.Conn.assign(conn, :csrf_token, csrf_token)
+  end
+
+
+  defp protect_from_forgery(conn, opts \\ []) do
+    Plug.CSRFProtection.call(conn, Plug.CSRFProtection.init(opts))
   end
 end

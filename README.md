@@ -33,7 +33,7 @@ defmodule MyPhoenixApp.Web.Router do
 end
 ```
 
->Note: There is no need to `:protect_from_forgery` as this package already implements CSRF protection. 
+>Note: There is no need to `:protect_from_forgery` as this package already implements CSRF protection if you're host application uses the session plug. 
 
 ### Mounted in another Plug application
 

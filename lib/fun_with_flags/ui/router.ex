@@ -303,8 +303,6 @@ defmodule FunWithFlags.UI.Router do
       _e in ArgumentError ->
         Logger.warn("CSRF forgery protection won't work unless your host application uses the session plug")
         conn
-      error ->
-        reraise(error, __STACKTRACE__)
     end
   end
 end

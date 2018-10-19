@@ -300,9 +300,11 @@ defmodule FunWithFlags.UI.Router do
       |> fetch_session()
       |> Plug.CSRFProtection.call(Plug.CSRFProtection.init(opts))
     rescue
-      _error ->
+      _e in Plug.CSRFProtection.InvalidCrossOriginRequestError ->
         Logger.warn("CSRF forgery protection won't work unless your host application uses the session plug")
         conn
+      error ->
+        reraise(error, __STACKTRACE__)
     end
   end
 end

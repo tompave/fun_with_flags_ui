@@ -4,7 +4,7 @@ defmodule FunWithFlags.UI.Router do
 
   See the [Readme](/fun_with_flags_ui/readme.html#how-to-run) for more detailed instructions.
   """
-
+  require Logger
   use Plug.Router
   alias FunWithFlags.UI.{Templates, Utils}
   alias FunWithFlags.UI.SimpleActor
@@ -20,8 +20,7 @@ defmodule FunWithFlags.UI.Router do
     at: "/assets",
     from: :fun_with_flags_ui
 
-  plug :fetch_session
-  plug Plug.CSRFProtection
+  plug :protect_from_forgery
 
   plug Plug.Parsers, parsers: [:urlencoded]
   plug Plug.MethodOverride
@@ -292,5 +291,18 @@ defmodule FunWithFlags.UI.Router do
   defp assign_csrf_token(conn, _opts) do
     csrf_token = Plug.CSRFProtection.get_csrf_token()
     Plug.Conn.assign(conn, :csrf_token, csrf_token)
+  end
+
+
+  defp protect_from_forgery(conn, opts) do
+    try do
+      conn
+      |> fetch_session()
+      |> Plug.CSRFProtection.call(Plug.CSRFProtection.init(opts))
+    rescue
+      _error ->
+        Logger.warn("CSRF forgery protection won't work unless your host application uses the session plug")
+        conn
+    end
   end
 end

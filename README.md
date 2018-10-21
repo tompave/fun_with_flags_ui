@@ -24,7 +24,6 @@ defmodule MyPhoenixApp.Web.Router do
   pipeline :mounted_apps do
     plug :accepts, ["html"]
     plug :put_secure_browser_headers
-    plug :protect_from_forgery
   end
 
   scope path: "/feature-flags" do
@@ -33,6 +32,8 @@ defmodule MyPhoenixApp.Web.Router do
   end
 end
 ```
+
+>Note: There is no need to `:protect_from_forgery` as this package already implements CSRF protection if you're host application uses the session plug. 
 
 ### Mounted in another Plug application
 

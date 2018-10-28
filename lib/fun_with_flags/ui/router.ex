@@ -20,7 +20,7 @@ defmodule FunWithFlags.UI.Router do
     at: "/assets",
     from: :fun_with_flags_ui
 
-  plug :protect_from_forgery
+  plug :protect_from_forgery, Plug.CSRFProtection.init([])
 
   plug Plug.Parsers, parsers: [:urlencoded]
   plug Plug.MethodOverride
@@ -294,14 +294,18 @@ defmodule FunWithFlags.UI.Router do
   end
 
 
+  # Custom CSRF protection plug. It wraps the default plug provided
+  # by `Plug`, it calls `Plug.Conn.fetch_session/1` (no-op if already
+  # fetched), and it bails out gracefully if no session is configured.
+  # 
   defp protect_from_forgery(conn, opts) do
     try do
       conn
       |> fetch_session()
-      |> Plug.CSRFProtection.call(Plug.CSRFProtection.init(opts))
+      |> Plug.CSRFProtection.call(opts)
     rescue
       _e in ArgumentError ->
-        Logger.warn("CSRF forgery protection won't work unless your host application uses the session plug")
+        Logger.warn("CSRF protection won't work unless your host application uses the session plug")
         conn
     end
   end

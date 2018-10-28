@@ -35,3 +35,7 @@ div.container.fwf-I-hate-grids {
 div.input-group.fwf-wide-input {
   width: 420px;
 }
+
+button {
+  cursor: pointer;
+}

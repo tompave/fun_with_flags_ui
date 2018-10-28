@@ -33,7 +33,7 @@ defmodule MyPhoenixApp.Web.Router do
 end
 ```
 
->Note: There is no need to `:protect_from_forgery` as this package already implements CSRF protection if you're host application uses the session plug. 
+Note: There is no need to add `:protect_from_forgery` to the `:mounted_apps` pipeline because this package already implements CSRF protection. In order to enable it, your host application must use the `Plug.Session` plug, which is usually configured in the endpoint module in Phoenix.
 
 ### Mounted in another Plug application
 
@@ -45,6 +45,8 @@ defmodule Another.App do
   forward "/feature-flags", to: FunWithFlags.UI.Router, init_opts: [namespace: "feature-flags"]
 end
 ```
+
+Note: If your plug router uses `Plug.CSRFProtection`, `FunWithFlags.UI.Router` should be added after that declaration because it already implements its own CSRF protection, and because otherwise, the external CSRF protection plug will interfere with this library's static asset routes.
 
 ### Standalone
 

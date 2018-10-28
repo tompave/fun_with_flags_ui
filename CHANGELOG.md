@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.6.0
+
+* Fixed issue with CSRF protextion blocking GET requests for the library's JS file.
+* API change: now there is no need to declare `Plug.CSRFProtection` or `protect_from_forgery` in the host plug or phoenix router because this library's router handles it internally.
+
 ## v0.5.0
 
 * Add support for the [`Plug.CSRFProtection`](https://hexdocs.pm/plug/1.6.2/Plug.CSRFProtection.html) plug ([`protect_from_forgery`](https://hexdocs.pm/phoenix/1.3.4/Phoenix.Controller.html#protect_from_forgery/2) in Phoenix) plug. [pull/4](https://github.com/tompave/fun_with_flags_ui/pull/4)

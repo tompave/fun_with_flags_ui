@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.7.0 (unreleased)
+
+* Drop support for Elixir 1.4 and 1.5. Elixir >= 1.6 is now required.
+* Drop support for OTP 19. OTP >= 20 is now required.
+
 ## v0.6.0
 
 * Fixed issue with CSRF protextion blocking GET requests for the library's JS file.

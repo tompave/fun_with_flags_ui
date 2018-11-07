@@ -2,16 +2,12 @@ language: elixir
 elixir:
   - 1.7
   - 1.6
-  - 1.5
-  - 1.4
 otp_release:
   - 21.1
   - 21.0
   - 20.3
   - 20.2
   - 20.1
-  - 20.0
-  - 19.3
 matrix:
   exclude:
     - elixir: 1.7
@@ -20,17 +16,9 @@ matrix:
       otp_release: 20.2
     - elixir: 1.7
       otp_release: 20.1
-    - elixir: 1.7
-      otp_release: 20.0
-    - elixir: 1.7
-      otp_release: 19.3
-    - elixir: 1.5
+    - elixir: 1.6
       otp_release: 21.1
-    - elixir: 1.5
-      otp_release: 21.0
-    - elixir: 1.4
-      otp_release: 21.1
-    - elixir: 1.4
+    - elixir: 1.6
       otp_release: 21.0
 services:
   - redis-server

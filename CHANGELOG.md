@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.7.0 (unreleased)
+## v0.7.0
 
 * Require `fun_with_flags 1.1.0`.
 * Drop support for Elixir 1.4 and 1.5. Elixir >= 1.6 is now required.

@@ -46,7 +46,7 @@ defmodule Another.App do
 end
 ```
 
-Note: If your plug router uses `Plug.CSRFProtection`, `FunWithFlags.UI.Router` should be added after that declaration because it already implements its own CSRF protection, and because otherwise, the external CSRF protection plug will interfere with this library's static asset routes.
+Note: If your plug router uses `Plug.CSRFProtection`, `FunWithFlags.UI.Router` should be added before your CSRF protection plug because it already implements its own CSRF protection. If you declare `FunWithFlags.UI.Router` after, your CSRF plug will likely block GET requests for the JS assets of the dashboard.
 
 ### Standalone
 

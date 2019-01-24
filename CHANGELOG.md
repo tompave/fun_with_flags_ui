@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.7.1
+
+* Relax `fun_with_flags` version constraint to `~> 1.1`
+
 ## v0.7.0
 
 * Require `fun_with_flags 1.1.0`.

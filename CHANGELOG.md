@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.7.2
+
+* Also include a non-gzipped version of the Bootstrap CSS file, so that applications can still serve it when the pre-gzipped file is not supported. This was a problem in some setups where a reverse proxy would interfere with the browser requests for the CSS file, for example by setting a consertative `Accept-Enconding` request header.
+
 ## v0.7.1
 
 * Relax `fun_with_flags` version constraint to `~> 1.1`

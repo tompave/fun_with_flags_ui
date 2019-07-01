@@ -62,6 +62,6 @@ defmodule FunWithFlags.UI.Templates do
 
 
   def path(conn, path) do
-    Path.join(conn.assigns[:namespace], path)
+    "/" <> Path.join(conn.script_name ++ [path])
   end
 end

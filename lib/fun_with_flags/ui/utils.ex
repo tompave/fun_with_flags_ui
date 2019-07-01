@@ -128,7 +128,7 @@ defmodule FunWithFlags.UI.Utils do
   def validate_flag_name(conn, name) do
     if Regex.match?(~r/^\w+$/, name) do
       if safe_flag_exists?(name) do
-        path = Path.join(conn.assigns[:namespace], "/flags/" <> name)
+        path = "/" <> Path.join(conn.script_name ++ ["/flags/" <> name])
         {:fail, "A flag named '#{name}' <u><a href='#{path}' class='text-danger'>already exists</a></u>."}
       else
         :ok

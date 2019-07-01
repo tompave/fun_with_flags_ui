@@ -28,7 +28,7 @@ defmodule MyPhoenixApp.Web.Router do
 
   scope path: "/feature-flags" do
     pipe_through :mounted_apps
-    forward "/", FunWithFlags.UI.Router, namespace: "feature-flags"
+    forward "/", FunWithFlags.UI.Router
   end
 end
 ```
@@ -42,7 +42,7 @@ Since it's just a plug, it can also be mounted into any other Plug application u
 ```elixir
 defmodule Another.App do
   use Plug.Router
-  forward "/feature-flags", to: FunWithFlags.UI.Router, init_opts: [namespace: "feature-flags"]
+  forward "/feature-flags", to: FunWithFlags.UI.Router
 end
 ```
 
@@ -98,7 +98,7 @@ defmodule MyPhoenixApp.Web.Router do
 
   scope path: "/feature-flags" do
     pipe_through :mounted_and_protected_apps
-    forward "/", FunWithFlags.UI.Router, namespace: "feature-flags"
+    forward "/", FunWithFlags.UI.Router
   end
 end
 ```

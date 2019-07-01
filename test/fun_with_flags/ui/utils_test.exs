@@ -115,7 +115,7 @@ defmodule FunWithFlags.UI.UtilsTest do
     test "a blank string is blank" do
       assert Utils.blank?(" ")
       assert Utils.blank?("       ")
-      assert Utils.blank?("  
+      assert Utils.blank?("
        ")
     end
 
@@ -179,7 +179,7 @@ defmodule FunWithFlags.UI.UtilsTest do
 
   describe "validate_flag_name(conn, name)" do
     setup do
-      conn = Plug.Conn.assign(%Plug.Conn{}, :namespace, "/")
+      conn = %Plug.Conn{}
       {:ok, conn: conn}
     end
     test "returns :ok for a valid name", %{conn: conn} do

@@ -283,10 +283,12 @@ defmodule FunWithFlags.UI.Router do
 
 
   defp extract_namespace(conn, opts) do
-    ns = opts[:namespace] || ""
+    ns = opts[:namespace] || namespace_from_script_name(conn.script_name)
     Plug.Conn.assign(conn, :namespace, "/" <> ns)
   end
 
+  defp namespace_from_script_name([]), do: ""
+  defp namespace_from_script_name(list), do: Path.join(list)
 
   defp assign_csrf_token(conn, _opts) do
     csrf_token = Plug.CSRFProtection.get_csrf_token()
@@ -297,7 +299,7 @@ defmodule FunWithFlags.UI.Router do
   # Custom CSRF protection plug. It wraps the default plug provided
   # by `Plug`, it calls `Plug.Conn.fetch_session/1` (no-op if already
   # fetched), and it bails out gracefully if no session is configured.
-  # 
+  #
   defp protect_from_forgery(conn, opts) do
     try do
       conn

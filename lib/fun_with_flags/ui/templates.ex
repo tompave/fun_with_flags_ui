@@ -52,11 +52,21 @@ defmodule FunWithFlags.UI.Templates do
     end
   end
 
+  @gate_type_order [
+    :boolean,
+    :actor,
+    :group,
+    :percentage_of_actors,
+    :percentage_of_time,
+  ]
+  |> Enum.with_index()
+  |> Map.new()
 
   def html_gate_list(%Flag{gates: gates}) do
     gates
     |> Enum.map(&(&1.type))
     |> Enum.uniq()
+    |> Enum.sort_by(&Map.get(@gate_type_order, &1, 99))
     |> Enum.join(", ")
   end
 

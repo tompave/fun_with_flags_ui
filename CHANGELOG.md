@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* In the Flag index page, for each flag, always display the gates in a consistent order. Previously the order depended on how the data was returned by the persistent datastore. (Thanks [LostKobrakai](https://github.com/LostKobrakai), [pull/16](https://github.com/tompave/fun_with_flags_ui/pull/16))
+
 ## v0.7.2
 
 * Also include a non-gzipped version of the Bootstrap CSS file, so that applications can still serve it when the pre-gzipped file is not supported. This was a problem in some setups where a reverse proxy would interfere with the browser requests for the CSS file, for example by setting a consertative `Accept-Enconding` request header.

@@ -1,7 +1,8 @@
 # Changelog
 
-## Unreleased
+## v0.8.0 (unreleased)
 
+* Drop support for Elixir 1.6. Elixir >= 1.7 is now required.
 * In the Flag index page, for each flag, always display the gates in a consistent order. Previously the order depended on how the data was returned by the persistent datastore. (Thanks [LostKobrakai](https://github.com/LostKobrakai), [pull/16](https://github.com/tompave/fun_with_flags_ui/pull/16))
 
 ## v0.7.2

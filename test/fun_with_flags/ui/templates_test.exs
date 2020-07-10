@@ -12,8 +12,7 @@ defmodule FunWithFlags.UI.TemplatesTest do
   end
 
   setup do
-    conn = Plug.Conn.assign(%Plug.Conn{}, :namespace, "/pear")
-    conn = Plug.Conn.assign(conn, :csrf_token, Plug.CSRFProtection.get_csrf_token())
+    conn = Plug.Conn.assign(%Plug.Conn{}, :csrf_token, Plug.CSRFProtection.get_csrf_token())
     {:ok, conn: conn}
   end
 
@@ -27,7 +26,7 @@ defmodule FunWithFlags.UI.TemplatesTest do
     test "it includes the right content", %{conn: conn} do
       out = Templates._head(conn: conn, title: "Coconut")
       assert String.contains?(out, "<title>FunWithFlags - Coconut</title>")
-      assert String.contains?(out, ~s{href="/pear/assets/style.css"})
+      assert String.contains?(out, ~s{href="/assets/style.css"})
     end
   end
 
@@ -49,9 +48,9 @@ defmodule FunWithFlags.UI.TemplatesTest do
     test "it includes the right content", %{conn: conn, flags: flags} do
       out = Templates.index(conn: conn, flags: flags)
       assert String.contains?(out, "<title>FunWithFlags - List</title>")
-      assert String.contains?(out, ~s{<a href="/pear/new" class="btn btn-secondary">New Flag</a>})
-      assert String.contains?(out, ~s{<a href="/pear/flags/pineapple">pineapple</a>})
-      assert String.contains?(out, ~s{<a href="/pear/flags/papaya">papaya</a>})
+      assert String.contains?(out, ~s{<a href="/new" class="btn btn-secondary">New Flag</a>})
+      assert String.contains?(out, ~s{<a href="/flags/pineapple">pineapple</a>})
+      assert String.contains?(out, ~s{<a href="/flags/papaya">papaya</a>})
     end
   end
 
@@ -70,7 +69,7 @@ defmodule FunWithFlags.UI.TemplatesTest do
     test "it includes the right content", %{conn: conn, flag: flag} do
       out = Templates.details(conn: conn, flag: flag)
       assert String.contains?(out, "<title>FunWithFlags - avocado</title>")
-      assert String.contains?(out, ~s{<a href="/pear/new" class="btn btn-secondary">New Flag</a>})
+      assert String.contains?(out, ~s{<a href="/new" class="btn btn-secondary">New Flag</a>})
       assert String.contains?(out, "<h1>avocado</h1>")
     end
 
@@ -82,10 +81,10 @@ defmodule FunWithFlags.UI.TemplatesTest do
 
     test "it includes the global toggle, the new actor and new group forms, and the global delete form", %{conn: conn, flag: flag} do
       out = Templates.details(conn: conn, flag: flag)
-      assert String.contains?(out, ~s{<form id="fwf-global-toggle-form" action="/pear/flags/avocado/boolean" method="post"})
-      assert String.contains?(out, ~s{<form id="fwf-new-actor-form" action="/pear/flags/avocado/actors" method="post"})
-      assert String.contains?(out, ~s{<form id="fwf-new-group-form" action="/pear/flags/avocado/groups" method="post"})
-      assert String.contains?(out, ~s{<form id="fwf-delete-flag-form" action="/pear/flags/avocado" method="post">})
+      assert String.contains?(out, ~s{<form id="fwf-global-toggle-form" action="/flags/avocado/boolean" method="post"})
+      assert String.contains?(out, ~s{<form id="fwf-new-actor-form" action="/flags/avocado/actors" method="post"})
+      assert String.contains?(out, ~s{<form id="fwf-new-group-form" action="/flags/avocado/groups" method="post"})
+      assert String.contains?(out, ~s{<form id="fwf-delete-flag-form" action="/flags/avocado" method="post">})
     end
 
     test "with no boolean gate, it includes both the enabled and disable boolean buttons", %{conn: conn, flag: flag} do
@@ -139,10 +138,10 @@ defmodule FunWithFlags.UI.TemplatesTest do
       out = Templates.details(conn: conn, flag: flag)
 
       assert String.contains?(out, ~s{<div id="actor_moss:123"})
-      assert String.contains?(out, ~s{<form action="/pear/flags/avocado/actors/moss:123" method="post"})
+      assert String.contains?(out, ~s{<form action="/flags/avocado/actors/moss:123" method="post"})
 
       assert String.contains?(out, ~s{<div id="group_rocks"})
-      assert String.contains?(out, ~s{<form action="/pear/flags/avocado/groups/rocks" method="post"})
+      assert String.contains?(out, ~s{<form action="/flags/avocado/groups/rocks" method="post"})
     end
   end
 
@@ -156,7 +155,7 @@ defmodule FunWithFlags.UI.TemplatesTest do
     test "it includes the right content", %{conn: conn} do
       out = Templates.new(conn: conn)
       assert String.contains?(out, "<title>FunWithFlags - New Flag</title>")
-      assert String.contains?(out, ~s{<form id="new-flag-form" action="/pear/flags" method="post">})
+      assert String.contains?(out, ~s{<form id="new-flag-form" action="/flags" method="post">})
     end
   end
 

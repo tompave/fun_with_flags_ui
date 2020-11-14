@@ -2,8 +2,8 @@
 
 ## v0.8.0 (unreleased)
 
-* Drop support for Elixir 1.6. Elixir >= 1.7 is now required.
-* Drop support for Erlang/OTP 20, and Erlang/OTP >= 21 is now required. An older Erlang/OTP might still work with older versions of Elixir, but Elixir 1.10 requires Erlang/OTP >= 21. Dropping support for older versions of Erlang/OTP simply means that this package is not tested with them in CI, and that no compatibility issues are considered bugs.
+* Add support for Elixir 1.11. Drop support for Elixir 1.6 and 1.7. Elixir >= 1.8 is now required. Dropping support for older versions of Elixir simply means that this package is no longer tested with them in CI, and that compatibility issues are not considered bugs.
+* Drop support for Erlang/OTP 20, and Erlang/OTP >= 21 is now required. An older Erlang/OTP might still work with older versions of Elixir, but Elixir 1.10 requires Erlang/OTP >= 21. Dropping support for older versions of Erlang/OTP simply means that this package is not tested with them in CI, and that compatibility issues are not considered bugs.
 * In the Flag index page, for each flag, always display the gates in a consistent order. Previously the order depended on how the data was returned by the persistent datastore. (Thanks [LostKobrakai](https://github.com/LostKobrakai), [pull/16](https://github.com/tompave/fun_with_flags_ui/pull/16))
 
 ## v0.7.2

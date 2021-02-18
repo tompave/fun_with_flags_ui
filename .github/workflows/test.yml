@@ -1,0 +1,66 @@
+name: Mix Tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    name: Elixir ${{ matrix.elixir }} with OTP ${{ matrix.otp }}
+    runs-on: ubuntu-18.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        elixir:
+          - '1.11'
+          - '1.10'
+          - '1.9'
+          - '1.8'
+        otp:
+          - '23.2'
+          - '23.1'
+          - '22.3'
+          - '21.3'
+        exclude:
+          - elixir: '1.9'
+            otp: '23.2'
+          - elixir: '1.9'
+            otp: '23.1'
+          - elixir: '1.8'
+            otp: '23.2'
+          - elixir: '1.8'
+            otp: '23.1'
+
+    services:
+      redis:
+        image: redis
+        ports: ['6379:6379']
+
+    steps:
+
+      - name: Set up Elixir and OTP
+        uses: erlef/setup-elixir@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: 'Restore cache for deps/ and _build/ directories'
+        uses: actions/cache@v2
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-${{ matrix.elixir }}-${{ matrix.otp }}-
+
+      - name: Install Mix dependencies
+        run: mix deps.get
+
+      - name: Run the tests
+        run: mix test

@@ -1,6 +1,6 @@
 # FunWithFlags.UI
 
-[![Build Status](https://travis-ci.org/tompave/fun_with_flags_ui.svg?branch=master)](https://travis-ci.org/tompave/fun_with_flags_ui)
+[![Mix Tests](https://github.com/tompave/fun_with_flags_ui/workflows/Mix%20Tests/badge.svg)](https://github.com/tompave/fun_with_flags_ui/actions?query=branch%3Amaster)
 [![Hex.pm](https://img.shields.io/hexpm/v/fun_with_flags_ui.svg)](https://hex.pm/packages/fun_with_flags_ui)
 
 A Web dashboard for the [FunWithFlags](https://github.com/tompave/fun_with_flags) Elixir package.

@@ -18,8 +18,8 @@ It's primarily meant to be embedded in a host Plug application, either Phoenix o
 The router plug can be mounted inside the Phoenix router with [`Phoenix.Router.forward/4`](https://hexdocs.pm/phoenix/Phoenix.Router.html#forward/4).
 
 ```elixir
-defmodule MyPhoenixApp.Web.Router do
-  use MyPhoenixApp.Web, :router
+defmodule MyPhoenixAppWeb.Router do
+  use MyPhoenixAppWeb, :router
 
   pipeline :mounted_apps do
     plug :accepts, ["html"]
@@ -74,30 +74,23 @@ For obvious reasons, you don't want to make this web control panel publicly acce
 
 The library itself doesn't provide any auth functionality because, as a Plug, it is easier to wrap it into the authentication and authorization logic of the host application.
 
-The easiest thing to do is to protect it with HTTP Basic Auth, provided by the [`basic_auth`](https://hex.pm/packages/basic_auth) plug.
+The easiest thing to do is to protect it with HTTP Basic Auth, provided by Plug itself.
 
 For example, in Phoenix:
 
-```elixir
-defmodule MyPhoenixApp.Web.Router do
-  use MyPhoenixApp.Web, :router
+```diff
+defmodule MyPhoenixAppWeb.Router do
+  use MyPhoenixAppWeb, :router
++ import Plug.BasicAuth
 
-  def my_basic_auth(conn, username, password) do
-    if username == "foo" && password == "bar" do
-      conn
-    else
-      Plug.Conn.halt(conn)
-    end
-  end
-
-  pipeline :mounted_and_protected_apps do
+  pipeline :mounted_apps do
     plug :accepts, ["html"]
     plug :put_secure_browser_headers
-    plug BasicAuth, callback: &__MODULE__.my_basic_auth/3
++   plug :basic_auth, username: "foo", password: "bar"
   end
 
   scope path: "/feature-flags" do
-    pipe_through :mounted_and_protected_apps
+    pipe_through :mounted_apps
     forward "/", FunWithFlags.UI.Router, namespace: "feature-flags"
   end
 end

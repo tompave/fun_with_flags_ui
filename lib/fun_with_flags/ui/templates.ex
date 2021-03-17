@@ -72,6 +72,14 @@ defmodule FunWithFlags.UI.Templates do
 
 
   def path(conn, path) do
-    Path.join(conn.assigns[:namespace], path)
+    Path.join(base_path(conn), path)
+  end
+
+
+  # https://github.com/thoughtbot/bamboo/blob/master/lib/bamboo/plug/sent_email_viewer/email_preview_plug.ex#L107
+  def base_path(%{script_name: []}), do: ""
+
+  def base_path(%{script_name: script_name}) do
+    "/" <> Enum.join(script_name, "/")
   end
 end

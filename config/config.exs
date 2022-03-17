@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # Do not bother trying to emit cache-busting notifications,
 # so that we don't need to declare the optional dependencies.

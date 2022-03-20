@@ -2,8 +2,8 @@ defmodule FunWithFlags.UI.Templates do
   @moduledoc false
 
   require EEx
-  alias FunWithFlags.UI.Utils
   alias FunWithFlags.Flag
+  alias FunWithFlags.UI.Utils
 
   @templates [
     _head: "_head",

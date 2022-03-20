@@ -6,8 +6,7 @@ defmodule FunWithFlags.UI.Router do
   """
   require Logger
   use Plug.Router
-  alias FunWithFlags.UI.{Templates, Utils}
-  alias FunWithFlags.UI.SimpleActor
+  alias FunWithFlags.UI.{SimpleActor, Templates, Utils}
 
   if Mix.env == :dev do
     use Plug.Debugger, otp_app: :fun_with_flags_ui
@@ -297,7 +296,7 @@ defmodule FunWithFlags.UI.Router do
   # Custom CSRF protection plug. It wraps the default plug provided
   # by `Plug`, it calls `Plug.Conn.fetch_session/1` (no-op if already
   # fetched), and it bails out gracefully if no session is configured.
-  # 
+  #
   defp protect_from_forgery(conn, opts) do
     try do
       conn

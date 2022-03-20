@@ -44,7 +44,7 @@ defmodule FunWithFlagsUi.Mixfile do
       {:plug, "~> 1.12"},
       {:plug_cowboy, ">= 2.0.0", optional: true},
       {:cowboy, ">= 2.0.0", optional: true},
-      {:fun_with_flags, "~> 1.1"},
+      {:fun_with_flags, "~> 1.8"},
       {:redix, "~> 1.0", only: [:dev, :test]},
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:credo, "~> 1.6", only: :dev, runtime: false},

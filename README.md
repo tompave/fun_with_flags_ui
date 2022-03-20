@@ -1,6 +1,7 @@
 # FunWithFlags.UI
 
 [![Mix Tests](https://github.com/tompave/fun_with_flags_ui/workflows/Mix%20Tests/badge.svg)](https://github.com/tompave/fun_with_flags_ui/actions?query=branch%3Amaster)
+[![Code Quality](https://github.com/tompave/fun_with_flags_ui/actions/workflows/quality.yml/badge.svg?branch=master)](https://github.com/tompave/fun_with_flags_ui/actions/workflows/quality.yml?query=branch%3Amaster)  
 [![Hex.pm](https://img.shields.io/hexpm/v/fun_with_flags_ui.svg)](https://hex.pm/packages/fun_with_flags_ui)
 
 A Web dashboard for the [FunWithFlags](https://github.com/tompave/fun_with_flags) Elixir package.

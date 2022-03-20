@@ -8,7 +8,7 @@ defmodule FunWithFlagsUi.Mixfile do
       app: :fun_with_flags_ui,
       source_url: "https://github.com/tompave/fun_with_flags_ui",
       version: @version,
-      elixir: "~> 1.10",
+      elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env),
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -41,12 +41,13 @@ defmodule FunWithFlagsUi.Mixfile do
 
   defp deps do
     [
-      {:plug, "~> 1.4"},
-      {:plug_cowboy, ">= 1.0.0", optional: true},
-      {:cowboy, ">= 1.0.0", optional: true},
-      {:fun_with_flags, "~> 1.1"},
-      {:redix, ">= 0.8.2", only: [:dev, :test]},
+      {:plug, "~> 1.12"},
+      {:plug_cowboy, ">= 2.0.0", optional: true},
+      {:cowboy, ">= 2.0.0", optional: true},
+      {:fun_with_flags, "~> 1.8"},
+      {:redix, "~> 1.0", only: [:dev, :test]},
       {:ex_doc, ">= 0.0.0", only: :dev},
+      {:credo, "~> 1.6", only: :dev, runtime: false},
     ]
   end
 

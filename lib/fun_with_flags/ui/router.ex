@@ -28,12 +28,6 @@ defmodule FunWithFlags.UI.Router do
   plug :match
   plug :dispatch
 
-  @doc false
-  def call(conn, opts) do
-    conn = extract_namespace(conn, opts)
-    super(conn, opts)
-  end
-
 
   get "/" do
     conn
@@ -272,18 +266,12 @@ defmodule FunWithFlags.UI.Router do
 
 
   defp redirect_to(conn, uri) do
-    path = Path.join(conn.assigns[:namespace], uri)
+    path = Path.join(Templates.base_path(conn), uri)
 
     conn
     |> put_resp_header("location", path)
     |> put_resp_content_type("text/html")
     |> send_resp(302, "<html><body>You are being <a href=\"#{path}\">redirected</a>.</body></html>")
-  end
-
-
-  defp extract_namespace(conn, opts) do
-    ns = opts[:namespace] || ""
-    Plug.Conn.assign(conn, :namespace, "/" <> ns)
   end
 
 

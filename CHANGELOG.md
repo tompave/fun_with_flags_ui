@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.8.1 (Unreleased)
+
+* Always URI-escape flag names before rendering them in web pages. ([pull/24](https://github.com/tompave/fun_with_flags_ui/pull/24))
+
 ## v0.8.0
 
 * Add support for Elixir 1.11, 1.12, and 1.13. Drop support for Elixir 1.6, 1.7, 1.8, 1.9 and 1.10. Elixir >= 1.11 is now required. Dropping support for older versions of Elixir simply means that this package is no longer tested with them in CI, and that compatibility issues are not considered bugs.

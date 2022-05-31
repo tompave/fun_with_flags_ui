@@ -15,7 +15,7 @@
       </div>
     </nav>
 
-    <div class="container mt-3">      
+    <div class="container mt-3">
       <div class="row">
         <div class="col">
           <table class="table table-hover">
@@ -30,7 +30,9 @@
               <%= for flag <- @flags do %>
                 <tr>
                   <td>
-                    <a href="<%= path(@conn, "/flags/#{flag.name}") %>"><%= flag.name %></a>
+                    <a href="<%= path(@conn, "/flags/#{html_safe(flag.name)}") %>">
+                      <%= html_safe(flag.name) %>
+                    </a>
                   </td>
 
                   <td>

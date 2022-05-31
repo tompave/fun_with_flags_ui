@@ -74,4 +74,10 @@ defmodule FunWithFlags.UI.Templates do
   def path(conn, path) do
     Path.join(conn.assigns[:namespace], path)
   end
+
+  def html_safe(val) do
+    val
+    |> to_string()
+    |> URI.encode()
+  end
 end

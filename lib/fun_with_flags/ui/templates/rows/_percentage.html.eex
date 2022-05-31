@@ -18,7 +18,7 @@
     </div>
 
     <div class="col-lg-1 col-md-1 col-sm-2 col-3 text-right">
-      <form action="<%= path(@conn, "/flags/#{@flag.name}/percentage") %>" method="post" class="float-right">
+      <form action="<%= path(@conn, "/flags/#{html_safe(@flag.name)}/percentage") %>" method="post" class="float-right">
         <input type="hidden" name="_method" value="DELETE">
         <input type="hidden" name="_csrf_token" value="<%= @conn.assigns[:csrf_token] %>">
         <button type="submit" class="btn btn-sm btn-secondary" data-confirm="Are you sure you want to clear the '<%= human_name %>' gate?">Clear</button>

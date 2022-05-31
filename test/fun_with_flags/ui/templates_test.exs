@@ -50,8 +50,8 @@ defmodule FunWithFlags.UI.TemplatesTest do
       out = Templates.index(conn: conn, flags: flags)
       assert String.contains?(out, "<title>FunWithFlags - List</title>")
       assert String.contains?(out, ~s{<a href="/pear/new" class="btn btn-secondary">New Flag</a>})
-      assert String.contains?(out, ~s{<a href="/pear/flags/pineapple">pineapple</a>})
-      assert String.contains?(out, ~s{<a href="/pear/flags/papaya">papaya</a>})
+      assert String.match?(out, ~r{<a href="/pear/flags/pineapple">\n\s*pineapple\n\s*</a>})
+      assert String.match?(out, ~r{<a href="/pear/flags/papaya">\n\s*papaya\n\s*</a>})
     end
   end
 

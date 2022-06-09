@@ -1,7 +1,7 @@
 defmodule FunWithFlagsUi.Mixfile do
   use Mix.Project
 
-  @version "0.8.0"
+  @version "0.8.1"
 
   def project do
     [
@@ -19,7 +19,7 @@ defmodule FunWithFlagsUi.Mixfile do
     ]
   end
 
-  
+
   # The most common use case for this library is to embed it in
   # a host web application and serve it from a sub path: it should
   # just be plug'ed into a Phoenix or Plug router.

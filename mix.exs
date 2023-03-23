@@ -41,7 +41,7 @@ defmodule FunWithFlagsUi.Mixfile do
 
   defp deps do
     [
-      {:plug, "~> 1.12"},
+      {:plug, "~> 1.14"},
       {:plug_cowboy, ">= 2.0.0", optional: true},
       {:cowboy, ">= 2.0.0", optional: true},
       {:fun_with_flags, "~> 1.8"},

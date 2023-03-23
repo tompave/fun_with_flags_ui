@@ -51,7 +51,7 @@ Note: If your plug router uses `Plug.CSRFProtection`, `FunWithFlags.UI.Router` s
 
 ### Standalone
 
-Again, because it's just a plug, it can be run standalone in [different](https://hexdocs.pm/plug/readme.html#supervised-handlers) [ways](https://hexdocs.pm/plug/Plug.Adapters.Cowboy.html#http/3).
+Again, because it's just a plug, it can be run [standalone](https://hexdocs.pm/plug/readme.html#supervised-handlers).
 
 If you clone the repository, the library comes with two convenience functions to accomplish this:
 

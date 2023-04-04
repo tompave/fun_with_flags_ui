@@ -4,7 +4,7 @@
     {:ok, bool} -> bool
     :missing -> false
   end
-  form_path = path(@conn, "/flags/#{html_safe(@flag.name)}/boolean")
+  form_path = path(@conn, "/flags/#{url_safe(@flag.name)}/boolean")
 %>
 
 <div class="card-block">

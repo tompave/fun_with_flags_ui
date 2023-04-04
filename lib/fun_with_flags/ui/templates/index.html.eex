@@ -30,7 +30,7 @@
               <%= for flag <- @flags do %>
                 <tr>
                   <td>
-                    <a href="<%= path(@conn, "/flags/#{html_safe(flag.name)}") %>">
+                    <a href="<%= path(@conn, "/flags/#{url_safe(flag.name)}") %>">
                       <%= html_safe(flag.name) %>
                     </a>
                   </td>

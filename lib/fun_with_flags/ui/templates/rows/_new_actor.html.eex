@@ -1,5 +1,5 @@
 <span>
-  <form id="fwf-new-actor-form" action="<%= path(@conn, "/flags/#{html_safe(@flag.name)}/actors") %>" method="post" class="form-inline">
+  <form id="fwf-new-actor-form" action="<%= path(@conn, "/flags/#{url_safe(@flag.name)}/actors") %>" method="post" class="form-inline">
     <input type="hidden" name="_csrf_token" value="<%= @conn.assigns[:csrf_token] %>">
     <%= if assigns[:error_message] do %>
       <div class="input-group mr-2 has-danger fwf-wide-input">

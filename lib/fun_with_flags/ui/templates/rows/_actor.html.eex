@@ -1,13 +1,13 @@
-<div id="actor_<%= @gate.for %>" class="container fwf-I-hate-grids">
+<div id="actor_<%= html_safe(@gate.for) %>" class="container fwf-I-hate-grids">
   <div class="row no-gutters">
     <div class="col-lg-8 col-md-7 col-sm-5 col-3 text-left">
-      <code><%= @gate.for %></code>
+      <code><%= html_safe(@gate.for) %></code>
     </div>
     <div class="col-lg-2 col-md-2 col-sm-3 col-3 text-left">
       <%= html_status_for @gate.enabled %>
     </div>
     <div class="col-lg-1 col-md-2 col-sm-2 col-3 text-right">
-      <form action="<%= path(@conn, "/flags/#{html_safe(@flag.name)}/actors/#{@gate.for}") %>" method="post" class="fwf-inline-toggle">
+      <form action="<%= path(@conn, "/flags/#{url_safe(@flag.name)}/actors/#{url_safe(@gate.for)}") %>" method="post" class="fwf-inline-toggle">
         <input type="hidden" name="_method" value="PATCH">
         <input type="hidden" name="_csrf_token" value="<%= @conn.assigns[:csrf_token] %>">
 
@@ -21,10 +21,10 @@
       </form>
     </div>
     <div class="col-lg-1 col-md-1 col-sm-2 col-3 text-right">
-      <form action="<%= path(@conn, "/flags/#{html_safe(@flag.name)}/actors/#{@gate.for}") %>" method="post" class="float-right">
+      <form action="<%= path(@conn, "/flags/#{url_safe(@flag.name)}/actors/#{url_safe(@gate.for)}") %>" method="post" class="float-right">
         <input type="hidden" name="_method" value="DELETE">
         <input type="hidden" name="_csrf_token" value="<%= @conn.assigns[:csrf_token] %>">
-        <button type="submit" class="btn btn-sm btn-secondary" data-confirm="Are you sure you want to clear actor '<%= @gate.for %>'?">Clear</button>
+        <button type="submit" class="btn btn-sm btn-secondary" data-confirm="Are you sure you want to clear actor '<%= html_safe(@gate.for) %>'?">Clear</button>
       </form>
     </div>
   </div>

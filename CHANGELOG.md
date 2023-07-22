@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.9.0 (unreleased)
+
+* Add support for Elixir 1.14, 1.15. Drop support for Elixir 1.11 and 1.12. Elixir >= 1.13 is now required. Dropping support for older versions of Elixir simply means that this package is no longer tested with them in CI, and that compatibility issues are not considered bugs.
+* Drop support for Erlang/OTP 22 and 23, and Erlang/OTP >= 24 is now required. Dropping support for older versions of Erlang/OTP simply means that this package is not tested with them in CI, and that compatibility issues are not considered bugs.
+
 ## v0.8.1
 
 * Always URI-escape flag names before rendering them in web pages. ([pull/24](https://github.com/tompave/fun_with_flags_ui/pull/24)) This fixes a XSS vulnerability on the 404 page. Thank you [voltone](https://github.com/voltone) for reporting the issue privately and for discussing possible fixes, and [mmrupp](https://github.com/mmrupp) from [Cure53](https://cure53.de/) for discovering the issue.

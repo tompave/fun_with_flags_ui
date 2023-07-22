@@ -304,7 +304,7 @@ defmodule FunWithFlags.UI.Router do
       |> Plug.CSRFProtection.call(opts)
     rescue
       _e in ArgumentError ->
-        Logger.warn("CSRF protection won't work unless your host application uses the session plug")
+        Logger.warning("CSRF protection won't work unless your host application uses the session plug")
         conn
     end
   end

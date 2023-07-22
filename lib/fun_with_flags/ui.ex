@@ -12,7 +12,7 @@ defmodule FunWithFlags.UI do
     check_cowboy()
 
     children = [
-      Plug.Adapters.Cowboy.child_spec(:http, FunWithFlags.UI.Router, [], [port: 8080])
+      {Plug.Cowboy, scheme: :http, plug: FunWithFlags.UI.Router, options: [port: 8080]}
     ]
 
     opts = [strategy: :one_for_one, name: FunWithFlags.UI.Supervisor]
@@ -48,7 +48,7 @@ defmodule FunWithFlags.UI do
   of :cowboy and :ranch.
   """
   def run_standalone do
-    Plug.Adapters.Cowboy.http FunWithFlags.UI.Router, [], port: 8080
+    Plug.Cowboy.http FunWithFlags.UI.Router, [], port: 8080
   end
 
 

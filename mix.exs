@@ -47,7 +47,7 @@ defmodule FunWithFlagsUi.Mixfile do
       {:fun_with_flags, "~> 1.8"},
       {:redix, "~> 1.0", only: [:dev, :test]},
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:credo, "~> 1.6", only: :dev, runtime: false},
+      {:credo, "~> 1.7", only: :dev, runtime: false},
     ]
   end
 

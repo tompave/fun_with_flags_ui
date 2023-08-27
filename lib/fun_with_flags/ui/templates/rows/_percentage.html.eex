@@ -14,7 +14,7 @@
     </div>
 
     <div class="col-lg-5 col-md-5 col-sm-5 col-5 text-left">
-      raw value: <code><%= html_safe(@gate.for) %></code>
+      raw value: <code><%= html_escape(@gate.for) %></code>
     </div>
 
     <div class="col-lg-1 col-md-1 col-sm-2 col-3 text-right">

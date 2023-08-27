@@ -15,7 +15,7 @@
           </span>
 
           <li class="nav-item active">
-            <a class="nav-link" href="#"><%= html_safe(@name) %></a>
+            <a class="nav-link" href="#"><%= html_escape(@name) %></a>
           </li>
         </ul>
 
@@ -25,7 +25,7 @@
 
     <div class="container mt-3">
       <div class="alert alert-danger" role="alert">
-        The flag <strong><%= html_safe(@name) %></strong> doesn't exist.
+        The flag <strong><%= html_escape(@name) %></strong> doesn't exist.
       </div>
     </div>
   </body>

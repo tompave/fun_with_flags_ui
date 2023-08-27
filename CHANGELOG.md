@@ -5,6 +5,7 @@
 * Add support for Elixir 1.14, 1.15. Drop support for Elixir 1.11 and 1.12. Elixir >= 1.13 is now required. Dropping support for older versions of Elixir simply means that this package is no longer tested with them in CI, and that compatibility issues are not considered bugs.
 * Drop support for Erlang/OTP 22 and 23, and Erlang/OTP >= 24 is now required. Dropping support for older versions of Erlang/OTP simply means that this package is not tested with them in CI, and that compatibility issues are not considered bugs.
 * Addressed Plug an Logger deprecation warnings. Thank you [Ch4s3](https://github.com/Ch4s3) ([pull/27](https://github.com/tompave/fun_with_flags_ui/pull/27)) and [ryvasquez](https://github.com/ryvasquez) ([pull/31](https://github.com/tompave/fun_with_flags_ui/pull/31)) for bringing it up and addressing them.
+* Addressed XSS vulnerability. (Thanks [ryanwinchester](https://github.com/ryanwinchester), [pull/29](https://github.com/tompave/fun_with_flags_ui/pull/29))
 
 ## v0.8.1
 

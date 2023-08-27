@@ -15,7 +15,7 @@
           </span>
 
           <li class="nav-item active">
-            <a class="nav-link" href="<%= path(@conn, "/flags/#{html_safe(@flag.name)}") %>"><%= html_safe(@flag.name) %></a>
+            <a class="nav-link" href="<%= path(@conn, "/flags/#{url_safe(@flag.name)}") %>"><%= url_safe(@flag.name) %></a>
           </li>
         </ul>
 
@@ -130,7 +130,7 @@
               Danger Zone
             </h5>
             <div class="card-block">
-              <form id="fwf-delete-flag-form" action="<%= path(@conn, "/flags/#{html_safe(@flag.name)}") %>" method="post">
+              <form id="fwf-delete-flag-form" action="<%= path(@conn, "/flags/#{url_safe(@flag.name)}") %>" method="post">
                 <input type="hidden" name="_method" value="DELETE">
                 <input type="hidden" name="_csrf_token" value="<%= @conn.assigns[:csrf_token] %>">
                 <button type="submit" class="btn btn-danger" data-confirm="Are you sure you want to completely delete the flag '<%= html_safe(@flag.name) %>'?">Delete Flag</button>

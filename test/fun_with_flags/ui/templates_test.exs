@@ -144,6 +144,20 @@ defmodule FunWithFlags.UI.TemplatesTest do
       assert String.contains?(out, ~s{<div id="group_rocks"})
       assert String.contains?(out, ~s{<form action="/pear/flags/avocado/groups/rocks" method="post"})
     end
+
+    test "with actors and groups it contains their rows with escaped HTML and URLs", %{conn: conn, flag: flag} do
+      group_gate = %Gate{type: :group, for: :rocks, enabled: true}
+      actor_gate = %Gate{type: :actor, for: "moss:<h1>123</h1>", enabled: true}
+      flag = %Flag{flag | gates: [actor_gate, group_gate]}
+
+      out = Templates.details(conn: conn, flag: flag)
+
+      assert String.contains?(out, ~s{<div id="actor_moss:&lt;h1&gt;123&lt;/h1&gt;"})
+      assert String.contains?(out, ~s{<form action="/pear/flags/avocado/actors/moss:%3Ch1%3E123%3C/h1%3E" method="post"})
+
+      assert String.contains?(out, ~s{<div id="group_rocks"})
+      assert String.contains?(out, ~s{<form action="/pear/flags/avocado/groups/rocks" method="post"})
+    end
   end
 
 

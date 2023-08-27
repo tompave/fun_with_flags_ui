@@ -1,7 +1,7 @@
-<div id="actor_<%= html_safe(@gate.for) %>" class="container fwf-I-hate-grids">
+<div id="actor_<%= html_escape(@gate.for) %>" class="container fwf-I-hate-grids">
   <div class="row no-gutters">
     <div class="col-lg-8 col-md-7 col-sm-5 col-3 text-left">
-      <code><%= html_safe(@gate.for) %></code>
+      <code><%= html_escape(@gate.for) %></code>
     </div>
     <div class="col-lg-2 col-md-2 col-sm-3 col-3 text-left">
       <%= html_status_for @gate.enabled %>
@@ -24,7 +24,7 @@
       <form action="<%= path(@conn, "/flags/#{url_safe(@flag.name)}/actors/#{url_safe(@gate.for)}") %>" method="post" class="float-right">
         <input type="hidden" name="_method" value="DELETE">
         <input type="hidden" name="_csrf_token" value="<%= @conn.assigns[:csrf_token] %>">
-        <button type="submit" class="btn btn-sm btn-secondary" data-confirm="Are you sure you want to clear actor '<%= html_safe(@gate.for) %>'?">Clear</button>
+        <button type="submit" class="btn btn-sm btn-secondary" data-confirm="Are you sure you want to clear actor '<%= html_escape(@gate.for) %>'?">Clear</button>
       </form>
     </div>
   </div>

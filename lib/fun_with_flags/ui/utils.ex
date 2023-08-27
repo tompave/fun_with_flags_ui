@@ -74,12 +74,7 @@ defmodule FunWithFlags.UI.Utils do
 
   def get_flag(name) do
     if safe_flag_exists?(name) do
-      case FunWithFlags.SimpleStore.lookup(String.to_existing_atom(name)) do
-        {:ok, _flag} = result ->
-          result
-        {:error, _reason} = error ->
-          error
-      end
+      FunWithFlags.SimpleStore.lookup(String.to_existing_atom(name)) # {:ok, flag}, or raise
     else
       {:error, "not found"}
     end

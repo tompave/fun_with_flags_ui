@@ -1,7 +1,7 @@
 defmodule FunWithFlagsUi.Mixfile do
   use Mix.Project
 
-  @version "0.9.0"
+  @version "1.0.0"
 
   def project do
     [

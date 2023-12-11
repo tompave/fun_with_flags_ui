@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.0
+
+No changes, but this package has been stable for so long that it's time to graduate to `v1`. It's possible to just upgrade from `v0.x` to `v1.0` without issues. This also makes it easier to keep the versions of this UI package and of the `fun_with_flags` package in lockstep, when `v2` is released.
+
 ## v0.9.0
 
 * Add support for Elixir 1.14, 1.15. Drop support for Elixir 1.11 and 1.12. Elixir >= 1.13 is now required. Dropping support for older versions of Elixir simply means that this package is no longer tested with them in CI, and that compatibility issues are not considered bugs.

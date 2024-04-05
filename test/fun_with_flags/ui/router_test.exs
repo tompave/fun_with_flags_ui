@@ -210,8 +210,8 @@ defmodule FunWithFlags.UI.RouterTest do
         |> Router.call(Router.init(csp_opts))
 
       assert 200 = conn.status
-      assert conn.resp_body =~ ~r|<script nonce="mango"|
-      assert conn.resp_body =~ ~r|<link nonce="mango"|
+      assert String.contains?(conn.resp_body, ~s{<script nonce="mango"})
+      assert String.contains?(conn.resp_body, ~s{<link nonce="mango"})
     end
 
     test "if csp_nonce_assign_key is set with differing values, the CSP nonce is rendered in the script and link tags" do
@@ -226,8 +226,8 @@ defmodule FunWithFlags.UI.RouterTest do
         |> Router.call(Router.init(csp_opts))
 
       assert 200 = conn.status
-      assert conn.resp_body =~ ~r|<script nonce="peach"|
-      assert conn.resp_body =~ ~r|<link nonce="apricot"|
+      assert String.contains?(conn.resp_body, ~s{<script nonce="peach"})
+      assert String.contains?(conn.resp_body, ~s{<link nonce="apricot"})
     end
   end
 

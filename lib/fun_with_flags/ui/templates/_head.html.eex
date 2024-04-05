@@ -2,6 +2,6 @@
   <meta charset="utf-8">
   <title>FunWithFlags - <%= @title %></title>
 
-  <link rel="stylesheet" href="<%= path(@conn, "/assets/bootstrap.min.css") %>">
-  <link rel="stylesheet" href="<%= path(@conn, "/assets/style.css") %>">
+  <link nonce="<%= csp_nonce(@conn, :style) %>" rel="stylesheet" href="<%= path(@conn, "/assets/bootstrap.min.css") %>">
+  <link nonce="<%= csp_nonce(@conn, :style) %>" rel="stylesheet" href="<%= path(@conn, "/assets/style.css") %>">
 </head>

@@ -97,6 +97,26 @@ defmodule MyPhoenixAppWeb.Router do
 end
 ```
 
+### Content Security Policy
+
+Content security policy nonces can be passed into the router to allow usage of strict Content Security Policies throughout an application.
+
+This can be achieved by passing in a `csp_nonce_assign_key` to the `FunWithFlags.UI.Router` forward. Values for the nonces should be set in the Conn assigns before reaching this router.
+
+This an either be a single nonce value, or separate values for script and style tags.
+
+For example:
+
+``` elixir
+forward "/", FunWithFlags.UI.Router, namespace: "feature-flags", csp_nonce_assign_key: :my_csp_nonce
+```
+
+Or:
+
+``` elixir
+forward "/", FunWithFlags.UI.Router, namespace: "feature-flags", csp_nonce_assign_key: %{style: :my_style_nonce, script: :my_script_nonce}
+```
+
 ## Caveats
 
 While the base `fun_with_flags` library is quite relaxed in terms of valid flag names, group names and actor identifers, this web dashboard extension applies some more restrictive rules.

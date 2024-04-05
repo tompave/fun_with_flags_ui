@@ -12,8 +12,12 @@ defmodule FunWithFlags.UI.TemplatesTest do
   end
 
   setup do
-    conn = Plug.Conn.assign(%Plug.Conn{}, :namespace, "/pear")
-    conn = Plug.Conn.assign(conn, :csrf_token, Plug.CSRFProtection.get_csrf_token())
+    conn =
+      %Plug.Conn{}
+      |> Plug.Conn.assign(:namespace, "/pear")
+      |> Plug.Conn.put_private(:csp_nonce_assign_key, %{style: :style_key, script: :script_key})
+      |> Plug.Conn.assign(:csrf_token, Plug.CSRFProtection.get_csrf_token())
+
     {:ok, conn: conn}
   end
 

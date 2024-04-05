@@ -99,11 +99,11 @@ end
 
 ### Content Security Policy
 
-Content security policy nonces can be passed into the router to allow usage of strict Content Security Policies throughout an application.
+Content security policy nonces can be passed into the router to allow usage of strict content security policies throughout an application.
 
-This can be achieved by passing in a `csp_nonce_assign_key` to the `FunWithFlags.UI.Router` forward. Values for the nonces should be set in the Conn assigns before reaching this router.
+This can be achieved by passing in a `csp_nonce_assign_key` to the `FunWithFlags.UI.Router` forward. Values for the nonces should be set in the conn assigns before reaching this router.
 
-This an either be a single nonce value, or separate values for script and style tags.
+The value of this can either be a single nonce assign key, or separate assign keys for script and style tags.
 
 For example:
 

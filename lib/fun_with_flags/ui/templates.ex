@@ -84,7 +84,10 @@ defmodule FunWithFlags.UI.Templates do
   end
 
   def csp_nonce(conn, type) do
-    csp_nonce_assign_key = conn.private.csp_nonce_assign_key[type]
-    conn.assigns[csp_nonce_assign_key]
+    assign_key = conn.private[:csp_nonce_assign_key][type]
+    case conn.assigns[assign_key] do
+      nil -> ""
+      nonce -> "nonce=\"#{nonce}\""
+    end
   end
 end

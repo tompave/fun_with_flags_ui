@@ -140,6 +140,6 @@
         </div>
       </div>
     </div>
-    <script nonce="<%= csp_nonce(@conn, :script) %>" type="text/javascript" src="<%= path(@conn, "/assets/details.js") %>"></script>
+    <script <%= csp_nonce(@conn, :script) %> type="text/javascript" src="<%= path(@conn, "/assets/details.js") %>"></script>
   </body>
 </html>

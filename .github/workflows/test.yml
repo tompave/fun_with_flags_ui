@@ -15,19 +15,21 @@ jobs:
       fail-fast: false
       matrix:
         elixir:
+          - '1.17'
+          - '1.16'
           - '1.15'
-          - '1.14'
-          - '1.13'
         otp:
-          - '26.1'
-          - '26.0'
+          - '27.0'
+          - '26.2'
           - '25.3'
           - '24.3'
         exclude:
-          - elixir: '1.13'
-            otp: '26.1'
-          - elixir: '1.13'
-            otp: '26.0'
+          - elixir: '1.17'
+            otp: '24.3'
+          - elixir: '1.16'
+            otp: '27.0'
+          - elixir: '1.15'
+            otp: '27.0'
 
     services:
       redis:
@@ -37,16 +39,16 @@ jobs:
     steps:
 
       - name: Set up Elixir and OTP
-        uses: erlef/setup-elixir@v1
+        uses: erlef/setup-beam@v1
         with:
           elixir-version: ${{ matrix.elixir }}
           otp-version: ${{ matrix.otp }}
 
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 'Restore cache for deps/ and _build/ directories'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             deps

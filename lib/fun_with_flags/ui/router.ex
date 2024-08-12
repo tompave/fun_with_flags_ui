@@ -30,7 +30,10 @@ defmodule FunWithFlags.UI.Router do
 
   @doc false
   def call(conn, opts) do
-    conn = extract_namespace(conn, opts)
+    conn =
+      conn
+      |> extract_namespace(opts)
+      |> extract_csp_nonce_key(opts)
     super(conn, opts)
   end
 
@@ -286,6 +289,16 @@ defmodule FunWithFlags.UI.Router do
     Plug.Conn.assign(conn, :namespace, "/" <> ns)
   end
 
+  defp extract_csp_nonce_key(conn, opts) do
+    csp_nonce_assign_key =
+      case opts[:csp_nonce_assign_key] do
+        nil -> nil
+        key when is_atom(key) -> %{style: key, script: key}
+        %{} = keys -> Map.take(keys, [:style, :script])
+      end
+
+    Plug.Conn.put_private(conn, :csp_nonce_assign_key, csp_nonce_assign_key)
+  end
 
   defp assign_csrf_token(conn, _opts) do
     csrf_token = Plug.CSRFProtection.get_csrf_token()

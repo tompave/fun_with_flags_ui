@@ -18,6 +18,16 @@ defmodule FunWithFlags.UI.TemplatesTest do
   end
 
 
+  describe "url_safe" do
+    test "it escapes / character" do
+      assert Templates.url_safe("/") == "%2F"
+    end
+
+    test "it escapes { character" do
+      assert Templates.url_safe("{") == "%7B"
+    end
+  end
+
   describe "_head()" do
     test "it renders", %{conn: conn} do
       out = Templates._head(conn: conn, title: "Coconut")
@@ -153,7 +163,7 @@ defmodule FunWithFlags.UI.TemplatesTest do
       out = Templates.details(conn: conn, flag: flag)
 
       assert String.contains?(out, ~s{<div id="actor_moss:&lt;h1&gt;123&lt;/h1&gt;"})
-      assert String.contains?(out, ~s{<form action="/pear/flags/avocado/actors/moss:%3Ch1%3E123%3C/h1%3E" method="post"})
+      assert String.contains?(out, ~s{<form action="/pear/flags/avocado/actors/moss:%3Ch1%3E123%3C%2Fh1%3E" method="post"})
 
       assert String.contains?(out, ~s{<div id="group_rocks"})
       assert String.contains?(out, ~s{<form action="/pear/flags/avocado/groups/rocks" method="post"})

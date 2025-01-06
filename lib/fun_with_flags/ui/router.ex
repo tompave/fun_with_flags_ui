@@ -247,9 +247,9 @@ defmodule FunWithFlags.UI.Router do
     flag_name = String.to_existing_atom(name)
     type = Utils.parse_percentage_type(conn.params["percent_type"])
 
-    case Utils.parse_and_validate_float(conn.params["percent_value"]) do
+    case Utils.parse_and_validate_float(conn.params["percent_value"], 0..100) do
       {:ok, float} ->
-        FunWithFlags.enable(flag_name, for_percentage_of: {type, float})
+        FunWithFlags.enable(flag_name, for_percentage_of: {type, float / 100})
         redirect_to conn, "/flags/#{name}#percentage_gate"
       {:fail, reason} ->
         {:ok, flag} = Utils.get_flag(name)

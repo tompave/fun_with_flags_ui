@@ -171,15 +171,16 @@ defmodule FunWithFlags.UI.Utils do
   end
 
 
-  def parse_and_validate_float(string) do
+  ## Validates the string representation of the float is between 0 and less_than_val, exclusive
+  def parse_and_validate_float(string, exclusive_min..exclusive_max//1 \\ 0..1//1) do
     if blank?(string) do
       {:fail, "can't be blank"}
     else
       case Float.parse(string) do
-        {float, _} when float > 0 and float < 1 ->
+        {float, _} when float > exclusive_min and float < exclusive_max ->
           {:ok, float}
         {_float, _} ->
-          {:fail, "is outside the '0.0 < x < 1.0' range"}
+          {:fail, "is outside the '#{exclusive_min} < x < #{exclusive_max}' range"}
         :error ->
           {:fail, "is not a valid decimal number"}
       end

@@ -237,15 +237,15 @@ defmodule FunWithFlags.UI.UtilsTest do
     end
 
     test "it rejects floats smaller than equal to 0 or larger than or equal to 1" do
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("0")
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("0.0")
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("1")
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("1.0")
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("-2")
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("11")
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("-2.5")
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("-0.01")
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("1.01")
+      assert {:fail, "is outside the '0 < x < 1' range"} = Utils.parse_and_validate_float("0")
+      assert {:fail, "is outside the '0 < x < 1' range"} = Utils.parse_and_validate_float("0.0")
+      assert {:fail, "is outside the '0 < x < 1' range"} = Utils.parse_and_validate_float("1")
+      assert {:fail, "is outside the '0 < x < 1' range"} = Utils.parse_and_validate_float("1.0")
+      assert {:fail, "is outside the '0 < x < 1' range"} = Utils.parse_and_validate_float("-2")
+      assert {:fail, "is outside the '0 < x < 1' range"} = Utils.parse_and_validate_float("11")
+      assert {:fail, "is outside the '0 < x < 1' range"} = Utils.parse_and_validate_float("-2.5")
+      assert {:fail, "is outside the '0 < x < 1' range"} = Utils.parse_and_validate_float("-0.01")
+      assert {:fail, "is outside the '0 < x < 1' range"} = Utils.parse_and_validate_float("1.01")
     end
 
     test "it parses and returns valid floats" do
@@ -254,8 +254,19 @@ defmodule FunWithFlags.UI.UtilsTest do
       assert {:ok, 0.999999999} = Utils.parse_and_validate_float("0.999999999")
       assert {:ok, 0.54} = Utils.parse_and_validate_float("0.54")
     end
-  end
 
+    test "supports other ranges" do
+      assert {:ok, -9.2} = Utils.parse_and_validate_float("-9.2", -10..10)
+
+      assert {:fail, "is outside the '-10 < x < 10' range"} =
+               Utils.parse_and_validate_float("-10.1", -10..10)
+
+      assert {:ok, 10.2} = Utils.parse_and_validate_float("10.2", 10..11)
+
+      assert {:fail, "is outside the '10 < x < 11' range"} =
+               Utils.parse_and_validate_float("11.1", 10..11)
+    end
+  end
 
   describe "parse_percentage_type(string)" do
     test "it parses and symbolizes the known types" do

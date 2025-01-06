@@ -150,7 +150,7 @@ defmodule FunWithFlags.UI.RouterTest do
 
       conn = request!(:post, "/flags/chocolate/percentage", %{
         percent_type: "time",
-        percent_value: "0.5"
+        percent_value: "50"
       })
       assert 302 = conn.status
       assert ["/flags/chocolate#percentage_gate"] = get_resp_header(conn, "location")
@@ -172,14 +172,14 @@ defmodule FunWithFlags.UI.RouterTest do
 
       conn = request!(:post, "/flags/chocolate/percentage", %{
         percent_type: "time",
-        percent_value: "0.5"
+        percent_value: "25.5"
       })
       assert 302 = conn.status
       assert ["/flags/chocolate#percentage_gate"] = get_resp_header(conn, "location")
 
       assert %Flag{name: :chocolate, gates: [
         %Gate{type: :boolean},
-        %Gate{type: :percentage_of_time, for: 0.5},
+        %Gate{type: :percentage_of_time, for: 0.255},
       ]} = FunWithFlags.get_flag(:chocolate)
     end
 

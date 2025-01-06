@@ -6,15 +6,15 @@
     <input type="hidden" name="_csrf_token" value="<%= @conn.assigns[:csrf_token] %>">
     <%= if assigns[:error_message] do %>
       <div class="input-group mr-2 has-danger fwf-wide-input">
-        <div class="input-group-addon">percentage</div>
-        <div class="input-group-addon"><code>0 < x < 1</code></div>
-        <input type="number" step="0.000000001" class="form-control form-control-danger" id="percent_value" name="percent_value" placeholder="e.g. 0.421337 for 42.1337%">
+        <div class="input-group-addon">%</div>
+        <div class="input-group-addon"><code>0 < x < 100</code></div>
+        <input type="number" step="0.0000001" class="form-control form-control-danger" id="percent_value" name="percent_value" placeholder="e.g. 42.1337 for 42.1337%">
       </div>
     <% else %>
       <div class="input-group mr-2 fwf-wide-input">
         <div class="input-group-addon">%</div>
-        <div class="input-group-addon"><code>0 < x < 1</code></div>
-        <input type="number" step="0.000000001" class="form-control" id="percent_value" name="percent_value" placeholder="e.g. 0.421337 for 42.1337%">
+        <div class="input-group-addon"><code>0 < x < 100</code></div>
+        <input type="number" step="0.0000001" class="form-control" id="percent_value" name="percent_value" placeholder="e.g. 42.1337 for 42.1337%">
       </div>
     <% end %>
 

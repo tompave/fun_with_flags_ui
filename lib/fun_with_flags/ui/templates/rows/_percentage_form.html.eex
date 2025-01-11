@@ -18,20 +18,22 @@
       </div>
     <% end %>
 
-    <div class="form-check form-check-inline">
-      <label class="form-check-label">
-        <input class="form-check-input" type="radio" name="percent_type" id="radio-percent-type-time" value="time" checked>
-        <span class="badge badge-default">% of time</span>
-      </label>
-    </div>
-    <div class="form-check form-check-inline">
-      <label class="form-check-label">
-        <input class="form-check-input" type="radio" name="percent_type" id="radio-percent-type-actors" value="actors">
-        <span class="badge badge-default">% of actors</span>
-      </label>
-    </div>
+    <div class="d-flex align-items-center">
+      <div class="form-check form-check-inline mb-0">
+        <label class="form-check-label">
+          <input class="form-check-input" type="radio" name="percent_type" id="radio-percent-type-time" value="time" checked>
+          <span class="badge badge-default">% of time</span>
+        </label>
+      </div>
+      <div class="form-check form-check-inline mb-0">
+        <label class="form-check-label">
+          <input class="form-check-input" type="radio" name="percent_type" id="radio-percent-type-actors" value="actors">
+          <span class="badge badge-default">% of actors</span>
+        </label>
+      </div>
 
-    <button type="submit" class="btn btn-sm btn-primary ml-3"><%= action %></button>
+      <button type="submit" class="btn btn-sm btn-primary ml-3"><%= action %></button>
+    </div>
     <small class="form-text text-danger ml-3"><%= assigns[:error_message] %></small>
   </form>
 </span>

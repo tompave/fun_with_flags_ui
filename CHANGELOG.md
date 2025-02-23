@@ -2,7 +2,7 @@
 
 ## v1.1.0 (unreleased)
 
-* Add support for Elixir 1.16 and 1.17. Drop support for Elixir 1.13 and 1.14. Elixir >= 1.15 is now required. Dropping support for older versions of Elixir simply means that this package is no longer tested with them in CI, and that compatibility issues are not considered bugs.
+* Add support for Elixir 1.16, 1.17 and 1.18. Drop support for Elixir 1.13, 1.14, and 1.15. Elixir >= 1.16 is now required. Dropping support for older versions of Elixir simply means that this package is no longer tested with them in CI, and that compatibility issues are not considered bugs.
 * Require `fun_with_flags ~> 1.12`. This is not strictly required because `v1.11` will also work, but it makes it easier to ensure that both libraries are compatible with the latest Elixir and OTP.
 
 ## v1.0.0

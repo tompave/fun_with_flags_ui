@@ -7,7 +7,7 @@
 %>
 <div id="percentage_gate" class="container fwf-I-hate-grids">
   <div class="row no-gutters d-flex flex-nowrap" style="gap: 8px;">
-    <div class="d-flex flex-grow-1 w-100 justify-content-between">
+    <div class="d-md-flex flex-grow-1 w-100 justify-content-between">
       <div>
         <span class="badge badge-default">% of <%= gate_type %></span>
         -

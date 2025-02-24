@@ -8,10 +8,29 @@ colors
 #4e2a8e; elixir-lang link
 */
 
+/* This is present in Bootstrap 4.0, but not the pre-release version we're using. */
+.card-body {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: 1.25rem;
+}
+
 #fwf-top-bar {
   background-color: #714a94;
 }
 
+.navbar-collapse {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.navbar-collapse > ul li {
+  flex-shrink: 0;
+}
 
 ul.fwf-gate-list > li:first-child {
     border-top: none;
@@ -32,10 +51,32 @@ div.container.fwf-I-hate-grids {
     width: 100%;
 }
 
+.form-inline {
+  row-gap: 8px;
+}
+
 div.input-group.fwf-wide-input {
-  width: 420px;
+  width: 320px;
 }
 
 button {
   cursor: pointer;
 }
+
+.flex-wrap-at-small-widths {
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .flex-wrap-at-small-widths {
+    flex-wrap: nowrap;
+  }
+}
+
+@media (min-width: 1024px) {
+  div.input-group.fwf-wide-input {
+    width: 420px;
+  }
+}
+

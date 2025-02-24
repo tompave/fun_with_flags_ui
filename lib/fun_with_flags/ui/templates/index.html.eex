@@ -16,7 +16,7 @@
     </nav>
 
     <div class="container mt-3">
-      <div class="row">
+      <div class="row d-none d-md-flex">
         <div class="col">
           <table class="table table-hover">
             <thead class="thead-default">
@@ -48,6 +48,29 @@
           </table>
         </div>
       </div>
+    </div>
+    <div class="container d-flex flex-column d-md-none">
+      <%= for flag <- @flags do %>
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a href="<%= path(@conn, "/flags/#{url_safe(flag.name)}") %>">
+                <%= html_escape(flag.name) %>
+              </a>
+            </h5>
+            <div class="d-flex flex-column gap-2">
+              <div>
+                <strong>Status:</strong>
+                <%= html_smart_status_for(flag) %>
+              </div>
+              <div>
+                <strong>Gates:</strong>
+                <%= html_gate_list(flag) %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
   </body>
 </html>

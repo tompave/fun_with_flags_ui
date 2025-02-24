@@ -6,18 +6,20 @@
   end
 %>
 <div id="percentage_gate" class="container fwf-I-hate-grids">
-  <div class="row no-gutters">
-    <div class="col-lg-6 col-md-6 col-sm-5 col-4 text-left">
-      <span class="badge badge-default">% of <%= gate_type %></span>
-      -
-      <%= html_status_for @gate.enabled %> for <%= Utils.as_percentage(@gate.for) %>% of the <%= gate_type %>
+  <div class="row no-gutters d-flex flex-nowrap" style="gap: 8px;">
+    <div class="d-md-flex flex-grow-1 w-100 justify-content-between">
+      <div>
+        <span class="badge badge-default">% of <%= gate_type %></span>
+        -
+        <%= html_status_for @gate.enabled %> for <%= Utils.as_percentage(@gate.for) %>% of the <%= gate_type %>
+      </div>
+
+      <div class="text-left">
+        raw value: <code><%= html_escape(@gate.for) %></code>
+      </div>
     </div>
 
-    <div class="col-lg-5 col-md-5 col-sm-5 col-5 text-left">
-      raw value: <code><%= html_escape(@gate.for) %></code>
-    </div>
-
-    <div class="col-lg-1 col-md-1 col-sm-2 col-3 text-right">
+    <div class="flex-shrink-0 text-right">
       <form action="<%= path(@conn, "/flags/#{url_safe(@flag.name)}/percentage") %>" method="post" class="float-right">
         <input type="hidden" name="_method" value="DELETE">
         <input type="hidden" name="_csrf_token" value="<%= @conn.assigns[:csrf_token] %>">

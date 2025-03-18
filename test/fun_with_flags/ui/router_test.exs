@@ -1,6 +1,7 @@
 defmodule FunWithFlags.UI.RouterTest do
   use ExUnit.Case, async: false
-  use Plug.Test
+  import Plug.Test
+  import Plug.Conn
   import FunWithFlags.UI.TestUtils
 
   alias FunWithFlags.UI.Router
@@ -112,7 +113,7 @@ defmodule FunWithFlags.UI.RouterTest do
   describe "DELETE /flags/:name/boolean" do
     test "when the flag exists, it deletes its boolean gate and redirects to the flag page" do
       {:ok, true} = FunWithFlags.enable :frozen_yogurt
-      {:ok, true} = FunWithFlags.enable :frozen_yogurt, for_group: "some_group" 
+      {:ok, true} = FunWithFlags.enable :frozen_yogurt, for_group: "some_group"
 
       assert %Flag{name: :frozen_yogurt, gates: [%Gate{type: :boolean}, %Gate{type: :group}]} = FunWithFlags.get_flag(:frozen_yogurt)
 
@@ -128,7 +129,7 @@ defmodule FunWithFlags.UI.RouterTest do
   describe "DELETE /flags/:name/percentage" do
     test "when the flag exists, it deletes its current percentage gate and redirects to the flag page" do
       {:ok, true} = FunWithFlags.enable :pizza, for_percentage_of: {:time, 0.5}
-      {:ok, true} = FunWithFlags.enable :pizza, for_group: "some_group" 
+      {:ok, true} = FunWithFlags.enable :pizza, for_group: "some_group"
 
       assert %Flag{name: :pizza, gates: [%Gate{type: :percentage_of_time, for: 0.5}, %Gate{type: :group}]} = FunWithFlags.get_flag(:pizza)
 

@@ -82,4 +82,12 @@ defmodule FunWithFlags.UI.Templates do
     |> to_string()
     |> URI.encode()
   end
+
+  def csp_nonce(conn, type) do
+    assign_key = conn.private[:csp_nonce_assign_key][type]
+    case conn.assigns[assign_key] do
+      nil -> ""
+      nonce -> "nonce=\"#{nonce}\""
+    end
+  end
 end

@@ -186,4 +186,20 @@ defmodule FunWithFlags.UI.TemplatesTest do
       assert String.contains?(out, ~s{The flag <strong>watermelon</strong> doesn't exist.})
     end
   end
+
+  describe "CSP nonce" do
+    test "it includes a CSP nonce if provided", %{conn: conn} do
+      flag = %Flag{name: :avocado, gates: []}
+
+      conn =
+        conn
+        |> Plug.Conn.put_private(:csp_nonce_assign_key, %{script: :script_nonce, style: :style_nonce})
+        |> Plug.Conn.assign(:script_nonce, "honeydew")
+        |> Plug.Conn.assign(:style_nonce, "watermelon")
+
+      out = Templates.details(conn: conn, flag: flag)
+      assert String.contains?(out, ~s{<script nonce="honeydew"})
+      assert String.contains?(out, ~s{<link nonce="watermelon"})
+    end
+  end
 end

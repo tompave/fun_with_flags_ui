@@ -122,9 +122,14 @@ defmodule FunWithFlags.UI.Router do
   # to clear a boolean gate
   #
   delete "/flags/:name/boolean" do
-    flag_name = String.to_existing_atom(name)
-    FunWithFlags.clear(flag_name, boolean: true)
-    redirect_to conn, "/flags/#{name}"
+    case Utils.get_flag(name) do
+      {:ok, %{name: flag_name}} ->
+        FunWithFlags.clear(flag_name, boolean: true)
+        redirect_to conn, "/flags/#{name}"
+      {:error, _} ->
+        body = Templates.not_found(conn: conn, name: name)
+        html_resp(conn, 404, body)
+    end
   end
 
 

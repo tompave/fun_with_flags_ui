@@ -160,16 +160,18 @@ defmodule FunWithFlags.UI.Utils do
 
   def validate(name) do
     string = to_string(name)
+
     cond do
       blank?(string) ->
         {:fail, "can't be blank"}
-      String.match?(string, ~r/\?/) ->
-        {:fail, "includes invalid characters: '?'"}
+
+      string |> String.to_charlist() |> Enum.any?(&URI.char_reserved?/1) ->
+        {:fail, "includes URI reserved characters"}
+
       true ->
         :ok
     end
   end
-
 
   def parse_and_validate_float(string) do
     if blank?(string) do

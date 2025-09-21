@@ -19,21 +19,21 @@ jobs:
           - '1.17'
           - '1.16'
         otp:
+          - '28.1'
+          - '28.0'
           - '27.3'
-          - '27.2'
           - '26.2'
-          - '25.3'
         exclude:
-          # Elixir 1.18 + OTP 25 is technically supported:
-          #    https://hexdocs.pm/elixir/1.18.1/compatibility-and-deprecations.html#between-elixir-and-erlang-otp
-          # but not on GHA:
-          #    https://github.com/tompave/fun_with_flags/actions/runs/12515433561/job/34912997388?pr=189#step:5:20
-          - elixir: '1.18'
-            otp: '25.3'
+          - elixir: '1.17'
+            otp: '28.1'
+          - elixir: '1.17'
+            otp: '28.0'
+          - elixir: '1.16'
+            otp: '28.1'
+          - elixir: '1.16'
+            otp: '28.0'
           - elixir: '1.16'
             otp: '27.3'
-          - elixir: '1.16'
-            otp: '27.2'
 
     services:
       redis:

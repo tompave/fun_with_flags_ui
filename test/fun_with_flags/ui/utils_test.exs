@@ -200,21 +200,22 @@ defmodule FunWithFlags.UI.UtilsTest do
     end
   end
 
-
   describe "sanitize(name)" do
     test "it removes leading and trailing whitespace" do
       assert "apricot" = Utils.sanitize(" apricot   ")
     end
   end
 
-
   describe "validate(name)" do
     test "it returns {:fail, reason} for blank values" do
       assert {:fail, "can't be blank"} = Utils.validate(:"")
     end
 
-    test "it returns {:fail, reason} for values with question marks" do
-      assert {:fail, "includes invalid characters: '?'"} = Utils.validate(:banana?)
+    test "it returns {:fail, reason} for values with URI reserved characters" do
+      assert {:fail, "includes URI reserved characters"} = Utils.validate(:banana?)
+      assert {:fail, "includes URI reserved characters"} = Utils.validate(:"ban/ana")
+      assert {:fail, "includes URI reserved characters"} = Utils.validate(:"ban#ana")
+      assert {:fail, "includes URI reserved characters"} = Utils.validate(:"ban&ana")
     end
 
     test "it returns :ok otherwise" do

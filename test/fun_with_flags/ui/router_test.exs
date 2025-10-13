@@ -199,6 +199,39 @@ defmodule FunWithFlags.UI.RouterTest do
     end
   end
 
+  describe "CSP nonce assign key option" do
+    test "if csp_nonce_assign_key is set, the CSP nonce is rendered in the script and link tags" do
+      {:ok, true} = FunWithFlags.enable :coconut
+
+      csp_opts = [csp_nonce_assign_key: :pineapple]
+
+      conn =
+        conn(:get, "/flags/coconut")
+        |> Plug.Conn.assign(:pineapple, "mango")
+        |> Router.call(Router.init(csp_opts))
+
+      assert 200 = conn.status
+      assert String.contains?(conn.resp_body, ~s{<script nonce="mango"})
+      assert String.contains?(conn.resp_body, ~s{<link nonce="mango"})
+    end
+
+    test "if csp_nonce_assign_key is set with differing values, the CSP nonce is rendered in the script and link tags" do
+      {:ok, true} = FunWithFlags.enable :coconut
+
+      csp_opts = [csp_nonce_assign_key: %{script: :lemon, style: :melon}]
+
+      conn =
+        conn(:get, "/flags/coconut")
+        |> Plug.Conn.assign(:lemon, "peach")
+        |> Plug.Conn.assign(:melon, "apricot")
+        |> Router.call(Router.init(csp_opts))
+
+      assert 200 = conn.status
+      assert String.contains?(conn.resp_body, ~s{<script nonce="peach"})
+      assert String.contains?(conn.resp_body, ~s{<link nonce="apricot"})
+    end
+  end
+
 
   # For GET and DELETE
   #

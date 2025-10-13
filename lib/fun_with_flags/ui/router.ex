@@ -282,10 +282,12 @@ defmodule FunWithFlags.UI.Router do
 
 
   defp extract_namespace(conn, opts) do
-    ns = opts[:namespace] || ""
+    ns = opts[:namespace] || namespace_from_script_name(conn.script_name)
     Plug.Conn.assign(conn, :namespace, "/" <> ns)
   end
 
+  defp namespace_from_script_name([]), do: ""
+  defp namespace_from_script_name(list), do: Path.join(list)
 
   defp assign_csrf_token(conn, _opts) do
     csrf_token = Plug.CSRFProtection.get_csrf_token()

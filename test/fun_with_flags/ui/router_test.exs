@@ -19,6 +19,18 @@ defmodule FunWithFlags.UI.RouterTest do
 
   @opts Router.init([])
 
+  describe "script_name" do
+    test "redirects to /pear/flags" do
+      conn =
+        conn(:get, "/")
+        |> Map.put(:script_name, ["pear"])
+        |> Router.call(@opts)
+
+      assert 302 = conn.status
+      assert ["/pear/flags"] = get_resp_header(conn, "location")
+    end
+  end
+
   describe "GET /" do
     test "redirects to /flags" do
       conn = request!(:get, "/")

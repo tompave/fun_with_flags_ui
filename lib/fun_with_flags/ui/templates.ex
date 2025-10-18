@@ -18,20 +18,26 @@ defmodule FunWithFlags.UI.Templates do
     _percentage_row: "rows/_percentage",
     _new_actor_row: "rows/_new_actor",
     _new_group_row: "rows/_new_group",
-    _percentage_form_row: "rows/_percentage_form",
+    _percentage_form_row: "rows/_percentage_form"
   ]
 
   for {fn_name, file_name} <- @templates do
-    EEx.function_from_file :def, fn_name, Path.expand("./templates/#{file_name}.html.eex", __DIR__), [:assigns]
+    EEx.function_from_file(
+      :def,
+      fn_name,
+      Path.expand("./templates/#{file_name}.html.eex", __DIR__),
+      [:assigns]
+    )
   end
-
 
   def html_smart_status_for(flag) do
     case Utils.get_flag_status(flag) do
       :fully_open ->
         ~s(<span class="text-success">Enabled</span>)
+
       :half_open ->
         ~s(<span class="text-warning">Enabled</span>)
+
       :closed ->
         ~s(<span class="text-danger">Disabled</span>)
     end
@@ -54,28 +60,26 @@ defmodule FunWithFlags.UI.Templates do
   end
 
   @gate_type_order [
-    :boolean,
-    :actor,
-    :group,
-    :percentage_of_actors,
-    :percentage_of_time,
-  ]
-  |> Enum.with_index()
-  |> Map.new()
+                     :boolean,
+                     :actor,
+                     :group,
+                     :percentage_of_actors,
+                     :percentage_of_time
+                   ]
+                   |> Enum.with_index()
+                   |> Map.new()
 
   def html_gate_list(%Flag{gates: gates}) do
     gates
-    |> Enum.map(&(&1.type))
+    |> Enum.map(& &1.type)
     |> Enum.uniq()
     |> Enum.sort_by(&Map.get(@gate_type_order, &1, 99))
     |> Enum.join(", ")
   end
 
-
   def path(conn, path) do
     Path.join(conn.assigns[:namespace], path)
   end
-
 
   def url_safe(val) do
     val

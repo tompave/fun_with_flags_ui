@@ -1,7 +1,7 @@
 # FunWithFlags.UI
 
 [![Mix Tests](https://github.com/tompave/fun_with_flags_ui/workflows/Mix%20Tests/badge.svg)](https://github.com/tompave/fun_with_flags_ui/actions?query=branch%3Amaster)
-[![Code Quality](https://github.com/tompave/fun_with_flags_ui/actions/workflows/quality.yml/badge.svg?branch=master)](https://github.com/tompave/fun_with_flags_ui/actions/workflows/quality.yml?query=branch%3Amaster)  
+[![Code Quality](https://github.com/tompave/fun_with_flags_ui/actions/workflows/quality.yml/badge.svg?branch=master)](https://github.com/tompave/fun_with_flags_ui/actions/workflows/quality.yml?query=branch%3Amaster)
 [![Hex.pm](https://img.shields.io/hexpm/v/fun_with_flags_ui.svg)](https://hex.pm/packages/fun_with_flags_ui)
 
 A Web dashboard for the [FunWithFlags](https://github.com/tompave/fun_with_flags) Elixir package.
@@ -56,7 +56,7 @@ Again, because it's just a plug, it can be run [standalone](https://hexdocs.pm/p
 If you clone the repository, the library comes with two convenience functions to accomplish this:
 
 ```elixir
-# Simple, let Cowboy sort out the supervision tree:
+# Simple, let Bandit sort out the supervision tree:
 {:ok, pid} = FunWithFlags.UI.run_standalone()
 
 # Uses some explicit supervision configuration:
@@ -115,7 +115,7 @@ For this reason this library enforces some stricter rules when creating flags an
 
 ## Installation
 
-The package can be installed by adding `fun_with_flags_ui` to your list of dependencies in `mix.exs`.  
+The package can be installed by adding `fun_with_flags_ui` to your list of dependencies in `mix.exs`.
 It requires [`fun_with_flags`](https://hex.pm/packages/fun_with_flags), see its [installation documentation](https://github.com/tompave/fun_with_flags#installation) for more details.
 
 ```elixir

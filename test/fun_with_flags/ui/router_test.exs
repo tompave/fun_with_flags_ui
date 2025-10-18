@@ -13,7 +13,7 @@ defmodule FunWithFlags.UI.RouterTest do
   end
 
   setup_all do
-    on_exit(__MODULE__, fn() -> clear_redis_test_db() end)
+    on_exit(__MODULE__, fn -> clear_redis_test_db() end)
     :ok
   end
 
@@ -27,7 +27,6 @@ defmodule FunWithFlags.UI.RouterTest do
     end
   end
 
-
   describe "GET /new" do
     test "responds with HTML" do
       conn = request!(:get, "/flags")
@@ -39,39 +38,39 @@ defmodule FunWithFlags.UI.RouterTest do
 
   describe "POST /flags" do
     test "with valid parameters it creates the flag and redirects to its page" do
-      refute Enum.member?(elem(FunWithFlags.all_flag_names, 1), :mango)
+      refute Enum.member?(elem(FunWithFlags.all_flag_names(), 1), :mango)
       conn = request!(:post, "/flags", %{flag_name: "mango"})
-      assert Enum.member?(elem(FunWithFlags.all_flag_names, 1), :mango)
+      assert Enum.member?(elem(FunWithFlags.all_flag_names(), 1), :mango)
 
       assert 302 = conn.status
       assert ["/flags/mango"] = get_resp_header(conn, "location")
     end
 
     test "with invalid parameters it re-renders the page" do
-      initially = FunWithFlags.all_flag_names
+      initially = FunWithFlags.all_flag_names()
       conn = request!(:post, "/flags", %{flag_name: ""})
-      assert ^initially = FunWithFlags.all_flag_names # no changes
+      # no changes
+      assert ^initially = FunWithFlags.all_flag_names()
 
       assert 400 = conn.status
       assert is_binary(conn.resp_body)
       assert ["text/html; charset=utf-8"] = get_resp_header(conn, "content-type")
     end
 
-
     test "with valid parameters but a name that is already in use it re-renders the page" do
-      {:ok, true} = FunWithFlags.enable :papaya
-      assert Enum.member?(elem(FunWithFlags.all_flag_names, 1), :papaya)
+      {:ok, true} = FunWithFlags.enable(:papaya)
+      assert Enum.member?(elem(FunWithFlags.all_flag_names(), 1), :papaya)
 
-      initially = FunWithFlags.all_flag_names
+      initially = FunWithFlags.all_flag_names()
       conn = request!(:post, "/flags", %{flag_name: "papaya"})
-      assert ^initially = FunWithFlags.all_flag_names # no changes
+      # no changes
+      assert ^initially = FunWithFlags.all_flag_names()
 
       assert 400 = conn.status
       assert is_binary(conn.resp_body)
       assert ["text/html; charset=utf-8"] = get_resp_header(conn, "content-type")
     end
   end
-
 
   describe "GET /flags" do
     test "responds with HTML" do
@@ -90,10 +89,9 @@ defmodule FunWithFlags.UI.RouterTest do
     end
   end
 
-
   describe "GET /flags/:name" do
     test "when the flag exists, it responds the the details page" do
-      {:ok, true} = FunWithFlags.enable :coconut
+      {:ok, true} = FunWithFlags.enable(:coconut)
 
       conn = request!(:get, "/flags/coconut")
       assert 200 = conn.status
@@ -109,29 +107,32 @@ defmodule FunWithFlags.UI.RouterTest do
     end
   end
 
-
   describe "DELETE /flags/:name/boolean" do
     test "when the flag exists, it deletes its boolean gate and redirects to the flag page" do
-      {:ok, true} = FunWithFlags.enable :frozen_yogurt
-      {:ok, true} = FunWithFlags.enable :frozen_yogurt, for_group: "some_group"
+      {:ok, true} = FunWithFlags.enable(:frozen_yogurt)
+      {:ok, true} = FunWithFlags.enable(:frozen_yogurt, for_group: "some_group")
 
-      assert %Flag{name: :frozen_yogurt, gates: [%Gate{type: :boolean}, %Gate{type: :group}]} = FunWithFlags.get_flag(:frozen_yogurt)
+      assert %Flag{name: :frozen_yogurt, gates: [%Gate{type: :boolean}, %Gate{type: :group}]} =
+               FunWithFlags.get_flag(:frozen_yogurt)
 
       conn = request!(:delete, "/flags/frozen_yogurt/boolean")
       assert 302 = conn.status
       assert ["/flags/frozen_yogurt"] = get_resp_header(conn, "location")
 
-      assert %Flag{name: :frozen_yogurt, gates: [%Gate{type: :group}]} = FunWithFlags.get_flag(:frozen_yogurt)
+      assert %Flag{name: :frozen_yogurt, gates: [%Gate{type: :group}]} =
+               FunWithFlags.get_flag(:frozen_yogurt)
     end
   end
 
-
   describe "DELETE /flags/:name/percentage" do
     test "when the flag exists, it deletes its current percentage gate and redirects to the flag page" do
-      {:ok, true} = FunWithFlags.enable :pizza, for_percentage_of: {:time, 0.5}
-      {:ok, true} = FunWithFlags.enable :pizza, for_group: "some_group"
+      {:ok, true} = FunWithFlags.enable(:pizza, for_percentage_of: {:time, 0.5})
+      {:ok, true} = FunWithFlags.enable(:pizza, for_group: "some_group")
 
-      assert %Flag{name: :pizza, gates: [%Gate{type: :percentage_of_time, for: 0.5}, %Gate{type: :group}]} = FunWithFlags.get_flag(:pizza)
+      assert %Flag{
+               name: :pizza,
+               gates: [%Gate{type: :percentage_of_time, for: 0.5}, %Gate{type: :group}]
+             } = FunWithFlags.get_flag(:pizza)
 
       conn = request!(:delete, "/flags/pizza/percentage")
       assert 302 = conn.status
@@ -141,64 +142,76 @@ defmodule FunWithFlags.UI.RouterTest do
     end
   end
 
-
-
   describe "POST /flags/:name/percentage" do
     test "with no previous percentage gate it creates a new one, then redirects to the details page" do
-      {:ok, false} = FunWithFlags.disable :chocolate
+      {:ok, false} = FunWithFlags.disable(:chocolate)
 
-      assert %Flag{name: :chocolate, gates: [%Gate{type: :boolean}]} = FunWithFlags.get_flag(:chocolate)
+      assert %Flag{name: :chocolate, gates: [%Gate{type: :boolean}]} =
+               FunWithFlags.get_flag(:chocolate)
 
-      conn = request!(:post, "/flags/chocolate/percentage", %{
-        percent_type: "time",
-        percent_value: "0.5"
-      })
+      conn =
+        request!(:post, "/flags/chocolate/percentage", %{
+          percent_type: "time",
+          percent_value: "0.5"
+        })
+
       assert 302 = conn.status
       assert ["/flags/chocolate#percentage_gate"] = get_resp_header(conn, "location")
 
-      assert %Flag{name: :chocolate, gates: [
-        %Gate{type: :boolean},
-        %Gate{type: :percentage_of_time, for: 0.5},
-      ]} = FunWithFlags.get_flag(:chocolate)
+      assert %Flag{
+               name: :chocolate,
+               gates: [
+                 %Gate{type: :boolean},
+                 %Gate{type: :percentage_of_time, for: 0.5}
+               ]
+             } = FunWithFlags.get_flag(:chocolate)
     end
 
     test "with a previous percentage gate it replaces it, then redirects to the details page" do
-      {:ok, false} = FunWithFlags.disable :chocolate
-      {:ok, true} = FunWithFlags.enable :chocolate, for_percentage_of: {:time, 0.99}
+      {:ok, false} = FunWithFlags.disable(:chocolate)
+      {:ok, true} = FunWithFlags.enable(:chocolate, for_percentage_of: {:time, 0.99})
 
-      assert %Flag{name: :chocolate, gates: [
-        %Gate{type: :boolean},
-        %Gate{type: :percentage_of_time, for: 0.99},
-      ]} = FunWithFlags.get_flag(:chocolate)
+      assert %Flag{
+               name: :chocolate,
+               gates: [
+                 %Gate{type: :boolean},
+                 %Gate{type: :percentage_of_time, for: 0.99}
+               ]
+             } = FunWithFlags.get_flag(:chocolate)
 
-      conn = request!(:post, "/flags/chocolate/percentage", %{
-        percent_type: "time",
-        percent_value: "0.5"
-      })
+      conn =
+        request!(:post, "/flags/chocolate/percentage", %{
+          percent_type: "time",
+          percent_value: "0.5"
+        })
+
       assert 302 = conn.status
       assert ["/flags/chocolate#percentage_gate"] = get_resp_header(conn, "location")
 
-      assert %Flag{name: :chocolate, gates: [
-        %Gate{type: :boolean},
-        %Gate{type: :percentage_of_time, for: 0.5},
-      ]} = FunWithFlags.get_flag(:chocolate)
+      assert %Flag{
+               name: :chocolate,
+               gates: [
+                 %Gate{type: :boolean},
+                 %Gate{type: :percentage_of_time, for: 0.5}
+               ]
+             } = FunWithFlags.get_flag(:chocolate)
     end
 
-
     test "with invalid params, it renders the details page with errors" do
-      {:ok, false} = FunWithFlags.disable :chocolate
+      {:ok, false} = FunWithFlags.disable(:chocolate)
 
-      conn = request!(:post, "/flags/chocolate/percentage", %{
-        percent_type: "time",
-        percent_value: " "
-      })
+      conn =
+        request!(:post, "/flags/chocolate/percentage", %{
+          percent_type: "time",
+          percent_value: " "
+        })
+
       assert 400 = conn.status
       assert is_binary(conn.resp_body)
       assert ["text/html; charset=utf-8"] = get_resp_header(conn, "content-type")
       assert String.contains?(conn.resp_body, "The percentage value can't be blank.")
     end
   end
-
 
   # For GET and DELETE
   #

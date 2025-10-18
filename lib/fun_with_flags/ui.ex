@@ -9,19 +9,18 @@ defmodule FunWithFlags.UI do
 
   @doc false
   def start(_type, _args) do
-    check_cowboy()
+    check_bandit()
 
     children = [
-      {Plug.Cowboy, scheme: :http, plug: FunWithFlags.UI.Router, options: [port: 8080]}
+      {Bandit, scheme: :http, plug: FunWithFlags.UI.Router, options: [port: 8080]}
     ]
 
     opts = [strategy: :one_for_one, name: FunWithFlags.UI.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
-
-  # Since :cowboy is an optional dependency, if we want to run this
-  # standalone we want to return a clear error message if Cowboy is
+  # Since :bandit is an optional dependency, if we want to run this
+  # standalone we want to return a clear error message if Bandit is
   # missing.
   #
   # On the other hand, if :fun_with_flags_ui is run as a Plug in a
@@ -29,28 +28,30 @@ defmodule FunWithFlags.UI do
   # here, as the responsibility of managing the HTTP layer belongs
   # to the host app.
   #
-  defp check_cowboy do
-    with :ok <- Application.ensure_started(:ranch),
-         :ok <- Application.ensure_started(:cowlib),
-         :ok <- Application.ensure_started(:cowboy) do
-      :ok
-    else
+  defp check_bandit do
+    case Application.ensure_started(:bandit) do
+      :ok ->
+        :ok
+
       {:error, _} ->
-        raise "You need to add :cowboy to your Mix dependencies to run FunWithFlags.UI standalone."
+        raise "You need to add :bandit to your Mix dependencies to run FunWithFlags.UI standalone."
     end
   end
 
-
   @doc """
-  Convenience function to simply run the Plug in Cowboy.
+  Convenience function to simply run the Plug in Bandit.
 
   This _will_ be supervided, but in the private supervsion tree
-  of :cowboy and :ranch.
+  of :bandit.
   """
   def run_standalone do
-    Plug.Cowboy.http FunWithFlags.UI.Router, [], port: 8080
-  end
+    server_opts = [
+      plug: FunWithFlags.UI.Router,
+      port: 8080
+    ]
 
+    Bandit.start_link(server_opts)
+  end
 
   @doc """
   Convenience function to run the Plug in a custom supervision tree.

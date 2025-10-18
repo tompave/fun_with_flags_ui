@@ -13,7 +13,7 @@ defmodule FunWithFlags.UI.TestUtils do
   def unique_atom do
     :crypto.strong_rand_bytes(7)
     |> Base.encode32(padding: false, case: :lower)
-    |> String.to_atom
+    |> String.to_atom()
   end
 
   def use_redis_test_db do
@@ -24,11 +24,13 @@ defmodule FunWithFlags.UI.TestUtils do
     use_redis_test_db()
 
     Redix.command!(@redis, ["DEL", "fun_with_flags"])
+
     Redix.command!(@redis, ["KEYS", "fun_with_flags:*"])
     |> delete_keys()
   end
 
   defp delete_keys([]), do: 0
+
   defp delete_keys(keys) do
     Redix.command!(@redis, ["DEL" | keys])
   end

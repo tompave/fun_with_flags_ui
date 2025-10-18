@@ -10,5 +10,5 @@ config :fun_with_flags, :cache_bust_notifications, enabled: false
 
 case config_env() do
   :test -> import_config "test.exs"
-  _     -> nil
+  _ -> nil
 end

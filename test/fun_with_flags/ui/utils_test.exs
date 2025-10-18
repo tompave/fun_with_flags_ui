@@ -7,7 +7,7 @@ defmodule FunWithFlags.UI.UtilsTest do
   import FunWithFlags.UI.TestUtils
 
   setup_all do
-    on_exit(__MODULE__, fn() -> clear_redis_test_db() end)
+    on_exit(__MODULE__, fn -> clear_redis_test_db() end)
     :ok
   end
 
@@ -50,7 +50,6 @@ defmodule FunWithFlags.UI.UtilsTest do
     end
   end
 
-
   describe "sort_flags(flags)" do
     test "it sorts the flag by status, then by name" do
       a = %Flag{name: :aaa, gates: [Gate.new(:group, :people, true)]}
@@ -63,13 +62,12 @@ defmodule FunWithFlags.UI.UtilsTest do
       h = %Flag{name: :hhh, gates: []}
       i = %Flag{name: :iii, gates: [Gate.new(:boolean, true)]}
 
-      input  = [i, h, g, f, e, d, c, b, a]
+      input = [i, h, g, f, e, d, c, b, a]
       output = [d, g, i, a, c, f, b, e, h]
 
       assert ^output = Utils.sort_flags(input)
     end
   end
-
 
   describe "create_flag_with_name(name)" do
     test "it creates a disabled flag" do
@@ -86,7 +84,6 @@ defmodule FunWithFlags.UI.UtilsTest do
     end
   end
 
-
   describe "get_flag(name)" do
     test "it returns {:error, \"not found\"} for non existing flags" do
       name = unique_atom()
@@ -101,7 +98,6 @@ defmodule FunWithFlags.UI.UtilsTest do
       assert {:ok, %Flag{name: ^name, gates: [^gate]}} = Utils.get_flag(to_string(name))
     end
   end
-
 
   describe "blank?(something)" do
     test "nil is blank" do
@@ -124,7 +120,6 @@ defmodule FunWithFlags.UI.UtilsTest do
     end
   end
 
-
   describe "the gate filters" do
     setup do
       b0 = Gate.new(:boolean, true)
@@ -142,22 +137,18 @@ defmodule FunWithFlags.UI.UtilsTest do
       assert ^b0 = Utils.boolean_gate(flag)
     end
 
-
     test "actor_gates(flag)", %{flag: flag, a1: a1, a2: a2} do
       assert [^a1, ^a2] = Utils.actor_gates(flag)
     end
-
 
     test "group_gates(flag)", %{flag: flag, g1: g1, g2: g2} do
       assert [^g1, ^g2] = Utils.group_gates(flag)
     end
 
-
     test "percentage_gate(flag)", %{flag: flag, p1: p1} do
       assert ^p1 = Utils.percentage_gate(flag)
     end
   end
-
 
   describe "parse_bool(something)" do
     test "true values" do
@@ -176,12 +167,12 @@ defmodule FunWithFlags.UI.UtilsTest do
     end
   end
 
-
   describe "validate_flag_name(conn, name)" do
     setup do
       conn = Plug.Conn.assign(%Plug.Conn{}, :namespace, "/")
       {:ok, conn: conn}
     end
+
     test "returns :ok for a valid name", %{conn: conn} do
       assert :ok = Utils.validate_flag_name(conn, "foo_bar")
     end
@@ -200,13 +191,11 @@ defmodule FunWithFlags.UI.UtilsTest do
     end
   end
 
-
   describe "sanitize(name)" do
     test "it removes leading and trailing whitespace" do
       assert "apricot" = Utils.sanitize(" apricot   ")
     end
   end
-
 
   describe "validate(name)" do
     test "it returns {:fail, reason} for blank values" do
@@ -238,14 +227,29 @@ defmodule FunWithFlags.UI.UtilsTest do
 
     test "it rejects floats smaller than equal to 0 or larger than or equal to 1" do
       assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("0")
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("0.0")
+
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} =
+               Utils.parse_and_validate_float("0.0")
+
       assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("1")
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("1.0")
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("-2")
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("11")
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("-2.5")
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("-0.01")
-      assert {:fail, "is outside the '0.0 < x < 1.0' range"} = Utils.parse_and_validate_float("1.01")
+
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} =
+               Utils.parse_and_validate_float("1.0")
+
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} =
+               Utils.parse_and_validate_float("-2")
+
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} =
+               Utils.parse_and_validate_float("11")
+
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} =
+               Utils.parse_and_validate_float("-2.5")
+
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} =
+               Utils.parse_and_validate_float("-0.01")
+
+      assert {:fail, "is outside the '0.0 < x < 1.0' range"} =
+               Utils.parse_and_validate_float("1.01")
     end
 
     test "it parses and returns valid floats" do
@@ -255,7 +259,6 @@ defmodule FunWithFlags.UI.UtilsTest do
       assert {:ok, 0.54} = Utils.parse_and_validate_float("0.54")
     end
   end
-
 
   describe "parse_percentage_type(string)" do
     test "it parses and symbolizes the known types" do
@@ -271,8 +274,10 @@ defmodule FunWithFlags.UI.UtilsTest do
 
   describe "as_percentage(float)" do
     test "it returns float * 100 without rounding errors" do
-      assert 42.1337 = Utils.as_percentage(0.421337) # 42.133700000000005
-      assert 12.3457 = Utils.as_percentage(0.123457) # 12.345699999999999
+      # 42.133700000000005
+      assert 42.1337 = Utils.as_percentage(0.421337)
+      # 12.345699999999999
+      assert 12.3457 = Utils.as_percentage(0.123457)
       assert 10.0 = Utils.as_percentage(0.1)
       assert 1.5 = Utils.as_percentage(0.015)
       assert 99.0 = Utils.as_percentage(0.99)

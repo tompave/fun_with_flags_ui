@@ -9,16 +9,15 @@ defmodule FunWithFlagsUi.Mixfile do
       source_url: "https://github.com/tompave/fun_with_flags_ui",
       version: @version,
       elixir: "~> 1.16",
-      elixirc_paths: elixirc_paths(Mix.env),
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
+      elixirc_paths: elixirc_paths(Mix.env()),
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
       deps: deps(),
       description: description(),
       package: package(),
-      docs: docs(),
+      docs: docs()
     ]
   end
-
 
   # The most common use case for this library is to embed it in
   # a host web application and serve it from a sub path: it should
@@ -33,28 +32,24 @@ defmodule FunWithFlagsUi.Mixfile do
   #
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger]
       # mod: {FunWithFlags.UI, []},
     ]
   end
 
-
   defp deps do
     [
       {:plug, "~> 1.12"},
-      {:plug_cowboy, ">= 2.0.0", optional: true},
-      {:cowboy, ">= 2.0.0", optional: true},
+      {:bandit, "~> 1.8", optional: true},
       {:fun_with_flags, "~> 1.12"},
       {:redix, "~> 1.0", only: [:dev, :test]},
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:credo, "~> 1.7", only: :dev, runtime: false},
+      {:credo, "~> 1.7", only: :dev, runtime: false}
     ]
   end
 
-
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_),     do: ["lib"]
-
+  defp elixirc_paths(_), do: ["lib"]
 
   defp description do
     """
@@ -71,11 +66,10 @@ defmodule FunWithFlagsUi.Mixfile do
         "MIT"
       ],
       links: %{
-        "GitHub" => "https://github.com/tompave/fun_with_flags_ui",
+        "GitHub" => "https://github.com/tompave/fun_with_flags_ui"
       }
     ]
   end
-
 
   defp docs do
     [

@@ -2,6 +2,7 @@
 
 ## v1.2.0 (unreleased)
 
+* `FunWithFlags.UI.Router` now works under Phoenix's standard `:browser` pipeline (or any host pipeline that uses `Plug.CSRFProtection`) without extra configuration. The router opts its own static asset `GET`/`HEAD` requests out of the host's CSRF protection, so the dashboard's cross-origin `<script>` and `<link>` requests no longer raise `Plug.CSRFProtection.InvalidCrossOriginRequestError`. State-changing requests remain fully CSRF-protected, and the previously documented `:mounted_apps` pipeline (one that omits `:protect_from_forgery`) is no longer necessary. ([issue/52](https://github.com/tompave/fun_with_flags_ui/issues/52))
 * Drop support for Erlang/OTP 25, and Erlang/OTP >= 26 is now required. Dropping support for older versions of Erlang/OTP simply means that this package is not tested with them in CI, and that no compatibility issues are considered bugs.
 
 ## v1.1.0

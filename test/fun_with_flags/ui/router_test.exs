@@ -200,6 +200,87 @@ defmodule FunWithFlags.UI.RouterTest do
   end
 
 
+  # Simulates a host application (for example, a Phoenix `:browser` pipeline)
+  # that runs `Plug.CSRFProtection` *around* the forwarded router. The host's
+  # CSRF plug registers a `before_send` callback that raises
+  # `InvalidCrossOriginRequestError` for non-XHR `GET`s returning JavaScript.
+  # The router must suppress that for its own assets so the dashboard loads.
+  describe "embedded under a host CSRF pipeline" do
+    @session_opts Plug.Session.init(
+                    store: :cookie,
+                    key: "_test_session",
+                    signing_salt: "test-salt",
+                    encryption_salt: "test-enc"
+                  )
+    @csrf_opts Plug.CSRFProtection.init([])
+
+    defp through_host_csrf(conn) do
+      conn
+      |> Map.put(:secret_key_base, String.duplicate("a", 64))
+      |> Plug.Session.call(@session_opts)
+      |> fetch_session()
+      |> Plug.CSRFProtection.call(@csrf_opts)
+      |> Router.call(@opts)
+    end
+
+    test "a JavaScript asset loads without raising InvalidCrossOriginRequestError" do
+      conn = through_host_csrf(conn(:get, "/assets/details.js"))
+
+      assert conn.status == 200
+      assert conn.private[:plug_skip_csrf_protection] == true
+      # `Plug.Static` serves `.js` as `text/javascript`, which is exactly the
+      # content type the host's CSRF `before_send` callback would reject.
+      assert ["text/javascript"] = get_resp_header(conn, "content-type")
+    end
+
+    test "a CSS asset loads as well" do
+      conn = through_host_csrf(conn(:get, "/assets/style.css"))
+
+      assert conn.status == 200
+      assert conn.private[:plug_skip_csrf_protection] == true
+    end
+
+    test "an HTML page is served normally and is not opted out of CSRF" do
+      conn = through_host_csrf(conn(:get, "/flags"))
+
+      assert conn.status == 200
+      refute conn.private[:plug_skip_csrf_protection]
+    end
+
+    test "a forged state-changing request is still rejected" do
+      # No `_csrf_token`, so the host CSRF plug rejects it before the router
+      # can act, and the asset skip never applies to mutations.
+      assert_raise Plug.CSRFProtection.InvalidCSRFTokenError, fn ->
+        through_host_csrf(conn(:post, "/flags", "flag_name=nope"))
+      end
+    end
+  end
+
+
+  describe "asset CSRF skip" do
+    test "is set only for safe methods on /assets/<file>" do
+      for method <- [:get, :head] do
+        conn = conn(method, "/assets/details.js") |> Router.call(@opts)
+        assert conn.private[:plug_skip_csrf_protection] == true,
+               "expected #{method} /assets/details.js to be skipped"
+      end
+    end
+
+    test "is not set for non-asset paths" do
+      for path <- ["/flags", "/new", "/"] do
+        conn = conn(:get, path) |> Router.call(@opts)
+        refute conn.private[:plug_skip_csrf_protection],
+               "expected #{path} to retain CSRF protection"
+      end
+    end
+
+    test "is not set for the bare /assets path with no file" do
+      conn = conn(:get, "/assets") |> Router.call(@opts)
+      refute conn.private[:plug_skip_csrf_protection]
+    end
+  end
+
+
   # For GET and DELETE
   #
   defp request!(method, path) do

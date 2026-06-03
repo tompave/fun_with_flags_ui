@@ -14,6 +14,20 @@ defmodule FunWithFlags.UI.Router do
 
   plug Plug.Logger, log: :debug
 
+  # When the UI is forwarded under a host pipeline that already runs
+  # `Plug.CSRFProtection` (for example, Phoenix's standard `:browser`
+  # pipeline), that plug has registered a `before_send` callback that raises
+  # `Plug.CSRFProtection.InvalidCrossOriginRequestError` whenever a non-XHR
+  # `GET` returns a JavaScript response. The dashboard's `<script>` tag for
+  # `/assets/details.js` is exactly such a request, so the host would reject
+  # the asset and the UI would fail to load.
+  #
+  # `Plug.CSRFProtection` reads `conn.private[:plug_skip_csrf_protection]` at
+  # send time, so setting it here — after the host registered its callback but
+  # before the asset is sent — suppresses that check for asset requests only.
+  # It must run before `Plug.Static` sends the response.
+  plug :skip_csrf_for_assets
+
   plug Plug.Static,
     gzip: true,
     at: "/assets",
@@ -291,6 +305,26 @@ defmodule FunWithFlags.UI.Router do
     csrf_token = Plug.CSRFProtection.get_csrf_token()
     Plug.Conn.assign(conn, :csrf_token, csrf_token)
   end
+
+
+  @safe_methods ~w(GET HEAD)
+
+  # Opt safe asset requests out of CSRF protection (both the host's and this
+  # router's own) by setting the documented `:plug_skip_csrf_protection`
+  # escape hatch. Only `GET`/`HEAD` requests for `/assets/<file>` are skipped:
+  # those are read-only and are the only requests that trip the host's
+  # cross-origin-JavaScript check. State-changing requests are never skipped
+  # and continue to flow through `protect_from_forgery` unchanged.
+  #
+  # `forward` strips the mount prefix from `conn.path_info`, so the asset
+  # subtree is always `["assets" | file]` here regardless of where the router
+  # is mounted — no mount/namespace configuration is needed.
+  defp skip_csrf_for_assets(%Plug.Conn{method: method, path_info: ["assets", _ | _]} = conn, _opts)
+       when method in @safe_methods do
+    Plug.Conn.put_private(conn, :plug_skip_csrf_protection, true)
+  end
+
+  defp skip_csrf_for_assets(conn, _opts), do: conn
 
 
   # Custom CSRF protection plug. It wraps the default plug provided

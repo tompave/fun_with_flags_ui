@@ -16,25 +16,22 @@ It's primarily meant to be embedded in a host Plug application, either Phoenix o
 
 ### Mounted in Phoenix
 
-The router plug can be mounted inside the Phoenix router with [`Phoenix.Router.forward/4`](https://hexdocs.pm/phoenix/Phoenix.Router.html#forward/4).
+The router plug can be mounted inside the Phoenix router with [`Phoenix.Router.forward/4`](https://hexdocs.pm/phoenix/Phoenix.Router.html#forward/4). It works under Phoenix's standard `:browser` pipeline, so you can reuse the same pipeline that already handles sessions, secure headers, and authentication:
 
 ```elixir
 defmodule MyPhoenixAppWeb.Router do
   use MyPhoenixAppWeb, :router
 
-  pipeline :mounted_apps do
-    plug :accepts, ["html"]
-    plug :put_secure_browser_headers
-  end
-
-  scope path: "/feature-flags" do
-    pipe_through :mounted_apps
+  scope "/feature-flags" do
+    pipe_through [:browser, :require_authenticated_admin]
     forward "/", FunWithFlags.UI.Router, namespace: "feature-flags"
   end
 end
 ```
 
-Note: There is no need to add `:protect_from_forgery` to the `:mounted_apps` pipeline because this package already implements CSRF protection. In order to enable it, your host application must use the `Plug.Session` plug, which is usually configured in the endpoint module in Phoenix.
+The dashboard serves its own JavaScript and CSS from `/assets/*`. Because browsers request those `<script>` and `<link>` tags cross-origin, a host CSRF plug such as Phoenix's `:protect_from_forgery` would otherwise reject them with `Plug.CSRFProtection.InvalidCrossOriginRequestError`. `FunWithFlags.UI.Router` handles this for you: it opts its own asset `GET`/`HEAD` requests out of CSRF protection, while every state-changing request (creating, toggling, and deleting flags) stays fully CSRF-protected. No special pipeline and no extra configuration are required.
+
+CSRF protection for those state-changing requests requires your host application to use the `Plug.Session` plug, which Phoenix configures in the endpoint module by default.
 
 ### Mounted in another Plug application
 
@@ -47,7 +44,7 @@ defmodule Another.App do
 end
 ```
 
-Note: If your plug router uses `Plug.CSRFProtection`, `FunWithFlags.UI.Router` should be added before your CSRF protection plug because it already implements its own CSRF protection. If you declare `FunWithFlags.UI.Router` after, your CSRF plug will likely block GET requests for the JS assets of the dashboard.
+The same asset handling described above applies here: the router opts its own asset requests out of CSRF protection, so it works regardless of where your host application's `Plug.CSRFProtection` sits in the pipeline.
 
 ### Standalone
 
@@ -84,14 +81,13 @@ defmodule MyPhoenixAppWeb.Router do
   use MyPhoenixAppWeb, :router
 + import Plug.BasicAuth
 
-  pipeline :mounted_apps do
-    plug :accepts, ["html"]
-    plug :put_secure_browser_headers
++ pipeline :feature_flags_auth do
 +   plug :basic_auth, username: "foo", password: "bar"
-  end
++ end
 
-  scope path: "/feature-flags" do
-    pipe_through :mounted_apps
+  scope "/feature-flags" do
+-   pipe_through :browser
++   pipe_through [:browser, :feature_flags_auth]
     forward "/", FunWithFlags.UI.Router, namespace: "feature-flags"
   end
 end

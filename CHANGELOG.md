@@ -3,6 +3,7 @@
 ## v1.2.0 (unreleased)
 
 * Drop support for Erlang/OTP 25, and Erlang/OTP >= 26 is now required. Dropping support for older versions of Erlang/OTP simply means that this package is not tested with them in CI, and that no compatibility issues are considered bugs.
+* Add the `:actor_labels` router option, to show a label such as an email address next to each actor ID on the flag page.
 
 ## v1.1.0
 

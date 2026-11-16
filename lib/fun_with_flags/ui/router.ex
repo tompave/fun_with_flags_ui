@@ -30,7 +30,11 @@ defmodule FunWithFlags.UI.Router do
 
   @doc false
   def call(conn, opts) do
-    conn = extract_namespace(conn, opts)
+    conn =
+      conn
+      |> extract_namespace(opts)
+      |> Plug.Conn.assign(:actor_labels, opts[:actor_labels])
+
     super(conn, opts)
   end
 

@@ -4,7 +4,7 @@ defmodule FunWithFlags.UI.RouterTest do
   import Plug.Conn
   import FunWithFlags.UI.TestUtils
 
-  alias FunWithFlags.UI.Router
+  alias FunWithFlags.UI.{Router, SimpleActor}
   alias FunWithFlags.{Flag, Gate}
 
   setup do
@@ -18,6 +18,13 @@ defmodule FunWithFlags.UI.RouterTest do
   end
 
   @opts Router.init([])
+
+  defmodule Labels do
+    def labels(ids) do
+      send(self(), {:actor_labels_called, ids})
+      %{"user:1" => "alice@example.com", "user:2" => "<b>bob</b>"}
+    end
+  end
 
   describe "GET /" do
     test "redirects to /flags" do
@@ -99,6 +106,41 @@ defmodule FunWithFlags.UI.RouterTest do
       assert 200 = conn.status
       assert is_binary(conn.resp_body)
       assert ["text/html; charset=utf-8"] = get_resp_header(conn, "content-type")
+    end
+
+    test "without the :actor_labels option, it shows only the actor IDs" do
+      {:ok, true} = FunWithFlags.enable :coconut, for_actor: %SimpleActor{id: "user:1"}
+
+      conn = request!(:get, "/flags/coconut")
+      assert conn.resp_body =~ "<code>user:1</code>"
+      refute conn.resp_body =~ "text-muted ml-2"
+    end
+
+    test "with the :actor_labels option, it shows the label next to each actor ID" do
+      {:ok, true} = FunWithFlags.enable :coconut, for_actor: %SimpleActor{id: "user:1"}
+      {:ok, true} = FunWithFlags.enable :coconut, for_actor: %SimpleActor{id: "user:2"}
+      {:ok, true} = FunWithFlags.enable :coconut, for_actor: %SimpleActor{id: "user:3"}
+
+      conn =
+        conn(:get, "/flags/coconut")
+        |> Router.call(Router.init(actor_labels: {__MODULE__.Labels, :labels}))
+
+      assert 200 = conn.status
+      assert conn.resp_body =~ ~s(<span class="text-muted ml-2">alice@example.com</span>)
+      assert conn.resp_body =~ ~s(<span class="text-muted ml-2">&lt;b&gt;bob&lt;/b&gt;</span>)
+      assert conn.resp_body =~ "<code>user:3</code>"
+      assert_received {:actor_labels_called, ids}
+      assert Enum.sort(ids) == ["user:1", "user:2", "user:3"]
+      refute_received {:actor_labels_called, _}
+    end
+
+    test "with the :actor_labels option and no actor gates, it doesn't call the function" do
+      {:ok, true} = FunWithFlags.enable :coconut
+
+      conn(:get, "/flags/coconut")
+      |> Router.call(Router.init(actor_labels: {__MODULE__.Labels, :labels}))
+
+      refute_received {:actor_labels_called, _}
     end
 
     test "when the flag doesn't exists, it responds the the details page" do

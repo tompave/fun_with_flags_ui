@@ -100,6 +100,17 @@ defmodule FunWithFlags.UI.Utils do
     |> Enum.sort_by(&(&1.for))
   end
 
+  # The host app resolves every label in one call, so it can look them all
+  # up with a single query instead of one per row.
+  def actor_labels(_conn, []), do: %{}
+
+  def actor_labels(conn, actor_gates) do
+    case conn.assigns[:actor_labels] do
+      {module, function} -> apply(module, function, [Enum.map(actor_gates, & &1.for)])
+      nil -> %{}
+    end
+  end
+
   def group_gates(%Flag{gates: gates}) do
     gates
     |> Enum.filter(&Gate.group?/1)

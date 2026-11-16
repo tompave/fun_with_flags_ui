@@ -45,10 +45,11 @@
             </h5>
             <ul class="list-group list-group-flush fwf-gate-list">
               <% actor_gates = Utils.actor_gates(@flag) %>
+              <% actor_labels = Utils.actor_labels(@conn, actor_gates) %>
 
               <%= for gate <- actor_gates do %>
                 <li class="list-group-item px-0">
-                  <%= _actor_row(conn: @conn, flag: @flag, gate: gate) %>
+                  <%= _actor_row(conn: @conn, flag: @flag, gate: gate, label: Map.get(actor_labels, gate.for)) %>
                 </li>
               <% end %>
 

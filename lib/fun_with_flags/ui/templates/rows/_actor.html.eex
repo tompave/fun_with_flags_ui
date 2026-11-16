@@ -2,6 +2,9 @@
   <div class="row no-gutters d-flex align-items-center flex-wrap-at-small-widths">
     <div class="flex-grow-1 flex-shrink-0 mr-auto w-100">
       <code><%= html_escape(@gate.for) %></code>
+      <%= if @label do %>
+        <span class="text-muted ml-2"><%= html_escape(@label) %></span>
+      <% end %>
     </div>
     <div class="d-flex align-items-center w-100" style="gap: 8px;">
       <div class="flex-grow-1 mr-auto">

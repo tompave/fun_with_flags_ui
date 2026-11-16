@@ -69,6 +69,34 @@ Please note that even though the `FunWithFlags.UI` module implements the `Applic
 
 If you really need to run it standalone in a reliable manner, you are encouraged to write your own supervision setup.
 
+### Actor labels
+
+Actor IDs are often opaque, like `"user:109"`. To show something easier to recognize next to each one, such as an email address, pass the `:actor_labels` option with a `{module, function}` tuple:
+
+```elixir
+forward "/", FunWithFlags.UI.Router,
+  namespace: "feature-flags",
+  actor_labels: {MyApp.FeatureFlags, :actor_labels}
+```
+
+The function is called once per flag page with the list of actor IDs on that flag, and must return a map from actor ID to label. IDs missing from the map are shown without a label. Because it gets all the IDs at once, it can load the labels with a single query:
+
+```elixir
+defmodule MyApp.FeatureFlags do
+  import Ecto.Query
+
+  def actor_labels(actor_ids) do
+    ids = for "user:" <> id <- actor_ids, do: String.to_integer(id)
+
+    from(u in MyApp.User, where: u.id in ^ids, select: {u.id, u.email})
+    |> MyApp.Repo.all()
+    |> Map.new(fn {id, email} -> {"user:#{id}", email} end)
+  end
+end
+```
+
+Labels are HTML-escaped before they are rendered.
+
 ### Security
 
 For obvious reasons, you don't want to make this web control panel publicly accessible.
